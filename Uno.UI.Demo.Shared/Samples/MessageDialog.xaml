@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Uno.UI.Demo.Samples.MessageDialog"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Uno.UI.Demo.Samples"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="">
+
+	<ScrollViewer>
+		<StackPanel Style="{StaticResource SamplePanelStyle}">
+
+			<Button Content="Content only"
+					Click="Button_Click" />
+			
+			<Button Content="Content and Title"
+					Click="Button_Click2" />
+			
+			<Button Content="Confirmation prompt"
+					Click="Button_Click3" />
+
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

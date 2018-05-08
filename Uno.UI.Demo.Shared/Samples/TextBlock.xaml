@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="Uno.UI.Demo.Samples.TextBlock"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Uno.UI.Demo.Samples"
+			 xmlns:ios="http://uno.ui/ios"
+			 xmlns:android="http://uno.ui/android"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="ios android">
+
+	<ScrollViewer>
+		<StackPanel Style="{StaticResource SamplePanelStyle}">
+
+			<TextBlock Text="Simple"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<TextBlock Text="Text" />
+
+			<TextBlock Text="Foreground"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<StackPanel>
+				<TextBlock Text="Red"
+						   Foreground="Red" />
+				<TextBlock Text="Green"
+						   Foreground="Green" />
+				<TextBlock Text="Blue"
+						   Foreground="Blue" />
+			</StackPanel>
+
+			<TextBlock Text="FontStyle"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<StackPanel>
+				<TextBlock Text="Normal"
+						   FontStyle="Normal" />
+				<TextBlock Text="Italic"
+						   FontStyle="Italic" />
+			</StackPanel>
+
+			<TextBlock Text="FontWeight"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<StackPanel>
+				<TextBlock Text="Light"
+						   FontWeight="Light" />
+				<TextBlock Text="Normal"
+						   FontWeight="Normal" />
+				<TextBlock Text="SemiBold"
+						   FontWeight="SemiBold" />
+				<TextBlock Text="Bold"
+						   FontWeight="Bold" />
+				<TextBlock Text="ExtraBold"
+						   FontWeight="ExtraBold" />
+			</StackPanel>
+
+			<TextBlock Text="FontFamily"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<StackPanel>
+				<TextBlock Text="Normal" />
+				<TextBlock Text="Serif"
+						   win:FontFamily="Cambria"
+						   ios:FontFamily="Courier New"
+						   android:FontFamily="serif" />
+				<TextBlock Text="Monospace"
+						   win:FontFamily="Consolas"
+						   ios:FontFamily="Courier"
+						   android:FontFamily="monospace" />
+			</StackPanel>
+
+			<TextBlock Text="FontSize"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<StackPanel>
+				<TextBlock Text="10"
+						   FontSize="10" />
+				<TextBlock Text="20"
+						   FontSize="20" />
+				<TextBlock Text="40"
+						   Margin="0,-8,0,0"
+						   FontSize="40" />
+			</StackPanel>
+
+			<TextBlock Text="Inlines"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<TextBlock TextWrapping="Wrap">TextBlock supports inline tags including <Bold>Bold</Bold>, <Italic>Italic</Italic>, <Underline>Underline</Underline>, <Span Foreground="Red">Span</Span>, and <Hyperlink Foreground="#1079CD" NavigateUri="http://nventive.com/en/">Hyperlink</Hyperlink>.</TextBlock>
+
+			<TextBlock Text="TextTrimming + MaxLines"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   TextTrimming="CharacterEllipsis"
+					   TextWrapping="Wrap"
+					   MaxLines="2" />
+
+			<TextBlock Text="TextAlignment"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   MaxLines="4"
+					   TextWrapping="Wrap"
+					   TextAlignment="Left"
+					   HorizontalAlignment="Left"
+					   Width="200" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   MaxLines="4"
+					   TextWrapping="Wrap"
+					   TextAlignment="Center"
+					   HorizontalAlignment="Center"
+					   Width="200" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   MaxLines="4"
+					   TextWrapping="Wrap"
+					   TextAlignment="Right"
+					   HorizontalAlignment="Right"
+					   Width="200" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   MaxLines="4"
+					   TextWrapping="Wrap"
+					   TextAlignment="Justify"
+					   HorizontalAlignment="Left" />
+
+			<TextBlock Text="CharacterSpacing"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   TextWrapping="Wrap"
+					   CharacterSpacing="100" />
+
+			<TextBlock Text="LineHeight"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<TextBlock Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+					   TextWrapping="Wrap"
+					   LineHeight="30" />
+			
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

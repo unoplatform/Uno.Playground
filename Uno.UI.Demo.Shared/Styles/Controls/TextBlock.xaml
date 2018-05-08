@@ -1,0 +1,143 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Uno.UI.Demo.Styles.Controls">
+
+	<Style x:Key="DefaultTypo"
+		   TargetType="TextBlock">
+		<Setter Property="FontSize"
+				Value="15" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color02Brush}" />
+		<Setter Property="FontFamily"
+				Value="{StaticResource FontFamily01}" />
+		<Setter Property="FontWeight"
+				Value="Normal" />
+		<Setter Property="TextTrimming"
+				Value="CharacterEllipsis" />
+		<Setter Property="TextWrapping"
+				Value="Wrap" />
+	</Style>
+
+	<Style x:Key="Typo01"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="13" />
+		<Setter Property="FontWeight"
+				Value="SemiBold" />
+		<Setter Property="FontFamily"
+				Value="{StaticResource FontFamily01Semibold}" />
+	</Style>
+
+	<Style x:Key="Typo02"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="12" />
+	</Style>
+
+	<Style x:Key="Typo03"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="16" />
+	</Style>
+
+	<Style x:Key="Typo04"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="13" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color12Brush}" />
+	</Style>
+
+	<Style x:Key="Typo05"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="14" />
+	</Style>
+
+	<Style x:Key="Typo06"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="14" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color03Brush}" />
+	</Style>
+
+	<Style x:Key="Typo07"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="32" />
+		<Setter Property="FontWeight"
+				Value="ExtraBold" />
+		<Setter Property="FontFamily"
+				Value="{StaticResource FontFamily01ExtraBold}" />
+	</Style>
+
+	<Style x:Key="Typo08"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="20" />
+		<Setter Property="FontWeight"
+				Value="Bold" />
+		<Setter Property="FontFamily"
+				Value="{StaticResource FontFamily01Bold}" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color03Brush}" />
+	</Style>
+
+	<Style x:Key="Typo09"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="16" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color17Brush}" />
+	</Style>
+
+	<Style x:Key="Typo10"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="14" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color09Brush}" />
+		<Setter Property="FontWeight"
+				Value="SemiBold" />
+		<Setter Property="FontFamily"
+				Value="{StaticResource FontFamily01Semibold}" />
+	</Style>
+
+	<Style x:Key="Typo11"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="16" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color19Brush}" />
+	</Style>
+
+	<Style x:Key="Typo12"
+		   TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}">
+		<Setter Property="FontSize"
+				Value="18" />
+		<Setter Property="Foreground"
+				Value="{StaticResource Color04Brush}" />
+		<Setter Property="FontWeight"
+				Value="SemiBold" />
+		<Setter Property="FontFamily"
+				Value="{StaticResource FontFamily01Semibold}" />
+	</Style>
+
+	<!-- Default TextBlock Style -->
+	<Style TargetType="TextBlock"
+		   BasedOn="{StaticResource DefaultTypo}" />
+
+</ResourceDictionary>

@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Uno.UI.Demo.Styles.StyleGuide"
+					xmlns:converters="using:Uno.UI.Demo.Converters">
+
+	<!-- Converters -->
+	<converters:EmptyStringToBoolConverter x:Key="EmptyStringToTrue"
+										   EmptyStringMeansFalse="False" />
+
+	<converters:EmptyStringToBoolConverter x:Key="EmptyStringToFalse"
+										   EmptyStringMeansFalse="True" />
+
+	<!-- Animations Easing -->
+	<CubicEase x:Key="FieldHeaderAnimationEasing"
+			   EasingMode="EaseOut" />
+
+</ResourceDictionary>

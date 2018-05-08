@@ -1,0 +1,61 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Uno.UI.Demo">
+
+	<Style TargetType="local:CodeBox">
+		<!-- Visual Studio Code (dark) -->
+		<Setter Property="Foreground"
+				Value="#D4D4D4" />
+		<Setter Property="Background"
+				Value="#1E1E1E" />
+		<Setter Property="FontFamily"
+				Value="Consolas, Menlo, Monaco, 'Droid Sans Mono', 'Courier New', monospace" />
+		<Setter Property="FontSize"
+				Value="14" />
+		<Setter Property="IsSpellCheckEnabled"
+				Value="False" />
+		<Setter Property="Padding"
+				Value="0" />
+		<Setter Property="AcceptsReturn"
+				Value="True" />
+		<Setter Property="TextWrapping"
+				Value="NoWrap" />
+		<Setter Property="MinWidth"
+				Value="{ThemeResource TextControlThemeMinWidth}" />
+		<Setter Property="MinHeight"
+				Value="{ThemeResource TextControlThemeMinHeight}" />
+		<Setter Property="ScrollViewer.HorizontalScrollMode"
+				Value="Auto" />
+		<Setter Property="ScrollViewer.VerticalScrollMode"
+				Value="Auto" />
+		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
+				Value="Hidden" />
+		<Setter Property="ScrollViewer.VerticalScrollBarVisibility"
+				Value="Hidden" />
+		<Setter Property="ScrollViewer.IsDeferredScrollingEnabled"
+				Value="False" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="local:CodeBox">
+					<Grid Background="{TemplateBinding Background}"
+						  Padding="{TemplateBinding Padding}">
+						<ScrollViewer x:Name="ContentElement"
+									  HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
+									  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+									  VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
+									  VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}"
+									  IsHorizontalRailEnabled="{TemplateBinding ScrollViewer.IsHorizontalRailEnabled}"
+									  IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
+									  IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+									  Margin="{TemplateBinding BorderThickness}"
+									  Padding="{TemplateBinding Padding}"
+									  IsTabStop="False"
+									  AutomationProperties.AccessibilityView="Raw"
+									  ZoomMode="Disabled" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

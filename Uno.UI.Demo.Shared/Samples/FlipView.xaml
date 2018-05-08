@@ -1,0 +1,129 @@
+﻿<UserControl x:Class="Uno.UI.Demo.Samples.FlipView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Uno.UI.Demo.Samples"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d">
+
+	<UserControl.Resources>
+		<Style x:Key="FlipViewNextButtonStyle"
+			   TargetType="Button">
+			<Setter Property="Foreground"
+					Value="White" />
+			<Setter Property="Background"
+					Value="Transparent" />
+			<Setter Property="MinWidth"
+					Value="100" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Grid BorderBrush="{TemplateBinding Foreground}"
+							  Background="{TemplateBinding Background}"
+							  CornerRadius="2"
+							  BorderThickness="1">
+							<ContentPresenter Padding="{TemplateBinding Padding}"
+											  HorizontalContentAlignment="Center"
+											  VerticalContentAlignment="Center"
+											  Content="{TemplateBinding Content}" />
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Resources>
+
+	<ScrollViewer>
+		<FlipView x:Name="flipView"
+				  SelectedIndex="0">
+			<FlipViewItem>
+				<Grid Background="{StaticResource Color13Brush}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+						<RowDefinition Height="100" />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="1"
+							   Foreground="White"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Bottom"
+							   FontSize="30"
+							   Text="Item 1" />
+					<Button Grid.Row="3"
+							Content="Next"
+							Click="Next"
+							Style="{StaticResource FlipViewNextButtonStyle}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center" />
+				</Grid>
+			</FlipViewItem>
+			<FlipViewItem>
+				<Grid Background="{StaticResource Color16Brush}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+						<RowDefinition Height="100" />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="1"
+							   Foreground="White"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Bottom"
+							   FontSize="30"
+							   Text="Item 2" />
+					<Button Grid.Row="3"
+							Content="Next"
+							Click="Next"
+							Style="{StaticResource FlipViewNextButtonStyle}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center" />
+				</Grid>
+			</FlipViewItem>
+			<FlipViewItem>
+				<Grid Background="{StaticResource Color15Brush}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+						<RowDefinition Height="100" />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="1"
+							   Foreground="White"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Bottom"
+							   FontSize="30"
+							   Text="Item 3" />
+					<Button Grid.Row="3"
+							Content="Next"
+							Click="Next"
+							Style="{StaticResource FlipViewNextButtonStyle}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center" />
+				</Grid>
+			</FlipViewItem>
+			<FlipViewItem>
+				<Grid Background="{StaticResource Color14Brush}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+						<RowDefinition Height="100" />
+					</Grid.RowDefinitions>
+					<TextBlock Grid.Row="1"
+							   Foreground="White"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Bottom"
+							   FontSize="30"
+							   Text="Item 4" />
+					<Button Grid.Row="3"
+							Content="Next"
+							Click="Next"
+							Style="{StaticResource FlipViewNextButtonStyle}"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center" />
+				</Grid>
+			</FlipViewItem>
+		</FlipView>
+	</ScrollViewer>
+</UserControl>

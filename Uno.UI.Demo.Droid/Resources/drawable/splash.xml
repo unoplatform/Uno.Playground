@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	<item>
+		<shape>
+			<solid android:color="#FFFFFF"/>
+		</shape>
+	</item>
+	<!-- TODO: This won't work on all devices (some, like tablets, have different status bar heights) -->
+	<!-- TODO: An alternative is to make the splashscreen and extended splashscreen fullscreen, and exit fullscreen when app launches -->
+	<item >
+		<!--android:top="25dp"-->
+		<bitmap
+				android:src="@drawable/SplashScreen"
+				android:gravity="center"/>
+	</item>
+</layer-list>

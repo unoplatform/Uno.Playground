@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Uno.UI.Demo.Samples.CheckBox"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Uno.UI.Demo.Samples"
+			 xmlns:android="http://uno.ui/android"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="android">
+
+	<ScrollViewer>
+		<StackPanel Style="{StaticResource SamplePanelStyle}">
+
+			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+					   Text="Normal" />
+			<CheckBox Content="CheckBox" />
+
+			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+					   Text="Checked" />
+			<CheckBox Content="CheckBox"
+					  IsChecked="True" />
+
+			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+					   Text="Disabled" />
+			<CheckBox Content="CheckBox"
+					  IsEnabled="False"
+					  IsHitTestVisible="False" />
+
+			<android:TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+							   Text="Native" />
+			<android:CheckBox Content="CheckBox"
+							  IsChecked="True"
+							  android:Margin="-6,0,0,0"
+							  Style="{StaticResource NativeDefaultCheckBox}" />
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

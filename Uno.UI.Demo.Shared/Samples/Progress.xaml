@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="Uno.UI.Demo.Samples.Progress"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Uno.UI.Demo.Samples"
+			 xmlns:xamarin="http://uno.ui/xamarin"
+			 xmlns:ios="http://uno.ui/ios"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="xamarin ios">
+
+	<ScrollViewer>
+		<StackPanel Style="{StaticResource SamplePanelStyle}">
+
+			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+					   Text="ProgressBar" />
+			
+			<ProgressBar Value="{Binding}"
+						 IsIndeterminate="False"
+						 HorizontalAlignment="Left"
+						 Width="200" />
+
+			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+					   Text="ProgressRing" />
+			
+			<StackPanel Orientation="Horizontal"
+						Spacing="16">
+				<ProgressRing Foreground="{StaticResource Color13Brush}"
+							  IsActive="True" />
+				<ProgressRing Foreground="{StaticResource Color16Brush}"
+							  IsActive="True" />
+				<ProgressRing Foreground="{StaticResource Color15Brush}"
+							  IsActive="True" />
+				<ProgressRing Foreground="{StaticResource Color14Brush}"
+							  IsActive="True" />
+			</StackPanel>
+
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

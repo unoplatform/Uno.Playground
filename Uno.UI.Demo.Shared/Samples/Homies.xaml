@@ -1,0 +1,313 @@
+﻿<Page x:Class="Uno.UI.Demo.Samples.Homies"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Uno.UI.Demo.Samples"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:converters="using:Uno.UI.Demo.Converters"
+	  xmlns:toolkit="using:Uno.UI.Toolkit"
+	  mc:Ignorable="">
+
+	<Page.Resources>
+		<converters:BoolToDefaultValueConverter x:Key="TrueToVisibility"
+												TrueValue="Visible"
+												NullOrFalseValue="Collapsed" />
+
+		<converters:BoolToDefaultValueConverter x:Key="FalseToVisibility"
+												TrueValue="Collapsed"
+												NullOrFalseValue="Visible" />
+
+		<DataTemplate x:Key="HomiesItemTemplate">
+			<StackPanel>
+
+				<!-- Post Top Part -->
+				<Grid Padding="16,10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<!-- Profile picture -->
+					<Border Height="32"
+							Width="32"
+							CornerRadius="16">
+						<Border.Background>
+							<ImageBrush ImageSource="{Binding ProfileSource}"
+										Stretch="UniformToFill" />
+						</Border.Background>
+					</Border>
+
+					<!-- Artist & Location info-->
+					<StackPanel Grid.Column="1"
+								Margin="6,0,18,0">
+						<TextBlock Text="{Binding Artist}"
+								   Style="{StaticResource Typo01}" />
+
+						<TextBlock Text="{Binding Location}"
+								   Style="{StaticResource Typo02}" />
+					</StackPanel>
+
+					<!-- Notification Bell Icon -->
+					<Path Grid.Column="3"
+						  Data="M17,13.0000001 L17,8.00000006 C17,4.68629157 14.3137085,2.0000001 11,2.0000001 C7.68629154,2.0000001 5.00000005,4.68629157 5,8.00000005 L5,13.0000001 C5,13.7285744 4.80521143,14.4116534 4.46487121,15.0000001 L17.5351288,15.0000001 C17.1947886,14.4116534 17,13.7285744 17,13.0000001 Z M21,17.0000001 L1,17.0000001 C-0.333333333,17.0000001 -0.333333333,15.0000001 1,15.0000001 C2.1045695,15.0000001 3,14.1045696 3,13.0000001 L3,8.00000003 C3.00000007,3.58172206 6.58172205,1.04308128e-07 11,1.04308128e-07 C15.418278,1.04308129e-07 18.9999999,3.58172206 19,8.00000005 L19,13.0000001 C19,14.1045696 19.8954305,15.0000001 21,15.0000001 C22.3333333,15.0000001 22.3333333,17.0000001 21,17.0000001 Z M13.595,20.5017719 C13.0583034,21.4269784 12.0696029,21.9964563 11,21.9964563 C9.93039709,21.9964563 8.94169664,21.4269784 8.405,20.5017719 C8.01827917,19.8351073 8.49928951,19 9.27,19 L12.73,19 C13.5007105,19 13.9817208,19.8351073 13.595,20.5017719 Z"
+						  Fill="{StaticResource Color02Brush}"
+						  Stretch="Uniform"
+						  Height="22"
+						  Width="22" />
+
+					<!-- More Icon -->
+					<Path Grid.Column="4"
+						  Margin="18,0,0,0"
+						  Data="M326.5 20a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm-5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"
+						  Fill="{StaticResource Color02Brush}"
+						  Stretch="Uniform"
+						  Height="3"
+						  Width="13" />
+				</Grid>
+
+				<!-- Post Image Part -->
+				<Image Source="{Binding PhotoSource}"
+					   Stretch="UniformToFill"
+					   Height="316" />
+
+				<!-- Post Bottom Part -->
+				<Grid Padding="16,18,16,16">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+
+					<StackPanel Orientation="Horizontal">
+						<!-- Unlike Icon -->
+						<Path Data="M11 2.682c.085-.128.302-.4.65-.815A6 6 0 0 1 22 6c0 5.313-10.216 13-11.027 13C10.162 19 0 11.313 0 6a6 6 0 0 1 10.35-4.133c.348.415.565.687.65.815m.154 15.126c.341-.209.786-.519 1.284-.892a38.739 38.739 0 0 0 3.655-3.14C19.135 10.814 21 7.993 21 6a5 5 0 0 0-9.167-2.764L11 4.488l-.833-1.252A5 5 0 0 0 1 6c0 1.994 1.856 4.816 4.882 7.778a38.446 38.446 0 0 0 3.636 3.139c.496.374.939.682 1.278.892.064.04.124.077.178.107.054-.03.114-.067.18-.108"
+							  Visibility="{Binding IsLiked, Converter={StaticResource FalseToVisibility}}"
+							  Fill="{StaticResource Color02Brush}"
+							  Stretch="Uniform"
+							  Height="20"
+							  Width="22" />
+
+						<!-- Like Icon -->
+						<Path Data="M11 2.682c.085-.128.302-.4.65-.815A6 6 0 0 1 22 6c0 5.313-10.216 13-11.027 13C10.162 19 0 11.313 0 6a6 6 0 0 1 10.35-4.133c.348.415.565.687.65.815"
+							  Visibility="{Binding IsLiked, Converter={StaticResource TrueToVisibility}}"
+							  Fill="{StaticResource Color11Brush}"
+							  Stretch="Uniform"
+							  Height="20"
+							  Width="22" />
+
+						<!-- Number of likes -->
+						<TextBlock Text="{Binding Likes}"
+								   Margin="8,0,16,0"
+								   Style="{StaticResource Typo03}" />
+
+						<!-- Comments Icon -->
+						<Path Data="M17.3868931,13.5411734 C17.3964063,13.4545019 17.4066161,13.3902311 17.4148403,13.3500378 L17.4491002,13.2442664 C17.9752633,12.0806165 18.2511821,10.8107294 18.2511821,9.49971113 C18.2511821,4.52826605 14.2757806,0.5 9.37559103,0.5 C4.47503106,0.5 0.5,4.52806082 0.5,9.49971113 C0.5,14.4718545 4.47494766,18.5 9.37559103,18.5 C10.7574918,18.5 12.09506,18.179043 13.3089915,17.5708207 C13.4962142,17.4770155 13.7220588,17.5098169 13.8748605,17.6530068 C14.3689596,18.1160251 15.2803409,18.3682014 16.4848106,18.4156329 C17.2803488,18.4469609 18.1405993,18.3884192 18.9909309,18.2713257 C17.6446313,16.6011903 17.2345117,14.9294676 17.3868931,13.5411734 Z M18.5584616,15.3329818 C18.8403604,16.320827 19.414116,17.309088 20.3549314,18.2572806 C20.6336942,18.5382293 20.4910235,19.0163126 20.1038808,19.0985403 C20.0526689,19.1094175 19.960344,19.1276167 19.8321343,19.1506783 C19.6207803,19.1886954 19.3841231,19.2266184 19.127347,19.2619773 C18.2233911,19.386455 17.3072957,19.4487971 16.4454615,19.4148585 C15.1924721,19.3655162 14.1736692,19.1191109 13.4629266,18.6061464 C12.1901277,19.1919099 10.8034247,19.5 9.37559103,19.5 C3.91966514,19.5 -0.5,15.0211852 -0.5,9.49971113 C-0.5,3.97872082 3.91975808,-0.5 9.37559103,-0.5 C14.831044,-0.5 19.2511821,3.97891674 19.2511821,9.49971113 C19.2511821,10.9305785 18.9542928,12.3194177 18.3875718,13.5953773 C18.3323965,14.0923894 18.3688878,14.6686671 18.5584616,15.3329818 Z"
+							  Fill="{StaticResource Color02Brush}"
+							  Stretch="Uniform"
+							  Height="20"
+							  Width="20" />
+
+						<!-- Number of Comments -->
+						<TextBlock Text="{Binding Comments}"
+								   Margin="8,0,16,0"
+								   Style="{StaticResource Typo03}" />
+					</StackPanel>
+
+					<!-- Post Time -->
+					<TextBlock Grid.Column="2"
+							   Text="{Binding Time}"
+							   Margin="8,0,0,0"
+							   Style="{StaticResource Typo04}" />
+
+					<!-- Post Message -->
+					<TextBlock Grid.Row="1"
+							   Grid.ColumnSpan="3"
+							   Margin="0,13,0,11"
+							   Style="{StaticResource Typo05}">
+									<Run Text="{Binding Artist}"
+										 FontWeight="Bold"
+										 FontFamily="{StaticResource FontFamily01Bold}" />
+									<Run Text="{Binding Message}" />
+					</TextBlock>
+
+					<!-- Post Tags -->
+					<TextBlock Grid.Row="2"
+							   Grid.ColumnSpan="3"
+							   Text="{Binding Tags}"
+							   Style="{StaticResource Typo06}" />
+				</Grid>
+			</StackPanel>
+		</DataTemplate>
+
+		<DataTemplate x:Key="GroupsItemTemplate">
+			<!-- Post Top Part -->
+			<Grid Padding="16,10">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+
+				<!-- Profile picture -->
+				<Border Height="32"
+						Width="32"
+						CornerRadius="16">
+					<Border.Background>
+						<ImageBrush ImageSource="{Binding ProfileSource}"
+									Stretch="UniformToFill" />
+					</Border.Background>
+				</Border>
+
+				<!-- Artist & Action-->
+				<TextBlock Grid.Column="1"
+						   Visibility="{Binding IsAddPost, Converter={StaticResource FalseToVisibility}}"
+						   Style="{StaticResource Typo02}"
+						   VerticalAlignment="Center"
+						   Margin="6,0,18,0">
+						<Run Text="{Binding Artist}"
+							 FontWeight="Bold"
+							 FontFamily="{StaticResource FontFamily01Bold}" />
+						<Run Text="{Binding Action}" />
+				</TextBlock>
+
+				<TextBlock Grid.Column="1"
+						   Visibility="{Binding IsAddPost, Converter={StaticResource TrueToVisibility}}"
+						   Style="{StaticResource Typo02}"
+						   VerticalAlignment="Center"
+						   Margin="6,0,18,0">
+						<Run Text="{Binding Artist}"
+							 FontWeight="Bold"
+							 FontFamily="{StaticResource FontFamily01Bold}" />
+						<Run Text="Added" />
+						<Run Text="{Binding ActionParty}"
+							 FontWeight="Bold"
+							 FontFamily="{StaticResource FontFamily01Bold}" />
+						<Run Text="to her" />
+						<Run Text="{Binding ActionGroup}"
+							 FontWeight="Bold"
+							 FontFamily="{StaticResource FontFamily01Bold}" />
+						<Run Text="group." />
+				</TextBlock>
+
+				<!-- Posts -->
+				<GridView Grid.Row="1"
+						  Grid.Column="1"
+						  Margin="6,8"
+						  ItemsSource="{Binding Pictures}">
+					<GridView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<ItemsWrapGrid Orientation="Horizontal"
+										   ItemHeight="54"
+										   ItemWidth="54" />
+						</ItemsPanelTemplate>
+					</GridView.ItemsPanel>
+					<GridView.ItemTemplate>
+						<DataTemplate>
+							<Border Height="50"
+									Width="50"
+									CornerRadius="4">
+								<Border.Background>
+									<ImageBrush ImageSource="{Binding }"
+												Stretch="UniformToFill" />
+								</Border.Background>
+							</Border>
+						</DataTemplate>
+					</GridView.ItemTemplate>
+				</GridView>
+			</Grid>
+		</DataTemplate>
+	</Page.Resources>
+
+	<Grid Background="{StaticResource Color01Brush}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<!-- Header -->
+		<CommandBar Content="Homies Memories"
+					Style="{StaticResource TransparentCommandBarStyle}" />
+
+		<!--Tabs-->
+		<Grid Grid.Row="1"
+			  Height="48">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="*" />
+			</Grid.ColumnDefinitions>
+
+			<Button x:Name="feedButton"
+					Click="feedButton_Click"
+					Foreground="{StaticResource Color11Brush}"
+					Background="{StaticResource Color01Brush}"
+					VerticalAlignment="Stretch"
+					HorizontalAlignment="Stretch"
+					Content="MY FEED"
+					FontWeight="Bold"
+					VerticalContentAlignment="Center" />
+
+			<Border Height="2"
+					x:Name="feedBorder"
+					Background="{StaticResource Color11Brush}"
+					VerticalAlignment="Bottom" />
+
+			<Button x:Name="groupsButton"
+					Click="groupsButton_Click"
+					Foreground="{StaticResource Color05Brush}"
+					Grid.Column="1"
+					Background="{StaticResource Color01Brush}"
+					VerticalAlignment="Stretch"
+					HorizontalAlignment="Stretch"
+					Content="MY GROUPS"
+					FontWeight="Bold"
+					VerticalContentAlignment="Center" />
+
+			<Border Height="2"
+					Visibility="Collapsed"
+					x:Name="groupsBorder"
+					Grid.Column="1"
+					Background="{StaticResource Color11Brush}"
+					VerticalAlignment="Bottom" />
+
+			<Border Height="1"
+					Grid.ColumnSpan="2"
+					Background="{StaticResource Color20Brush}"
+					VerticalAlignment="Bottom" />
+		</Grid>
+
+		<!-- MY FEED -->
+		<ListView Grid.Row="2"
+				  toolkit:VisibleBoundsPadding.PaddingMask="Bottom"
+				  Padding="0,4"
+				  x:Name="feedListView"
+				  ItemsSource="{Binding FeedPosts}"
+				  SelectionMode="None"
+				  IsItemClickEnabled="False"
+				  ItemTemplate="{StaticResource HomiesItemTemplate}"
+				  ItemContainerStyle="{StaticResource HomiesListViewItem}">
+		</ListView>
+
+		<!--MY GROUPS-->
+		<ListView Grid.Row="2"
+				  Visibility="Collapsed"
+				  Padding="0,4"
+				  x:Name="groupsListView"
+				  ItemsSource="{Binding GroupPosts}"
+				  SelectionMode="None"
+				  IsItemClickEnabled="False"
+				  ItemTemplate="{StaticResource GroupsItemTemplate}">
+		</ListView>
+	</Grid>
+</Page>

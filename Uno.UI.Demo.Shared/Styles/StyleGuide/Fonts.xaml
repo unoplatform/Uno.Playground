@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<FontFamily x:Key="FontFamily01">ms-appx:///Assets/Fonts/OpenSans-Regular.ttf#Open Sans</FontFamily>
+	<FontFamily x:Key="FontFamily01Light">ms-appx:///Assets/Fonts/OpenSans-Light.ttf#Open Sans</FontFamily>
+	<FontFamily x:Key="FontFamily01Semibold">ms-appx:///Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</FontFamily>
+	<FontFamily x:Key="FontFamily01Bold">ms-appx:///Assets/Fonts/OpenSans-Bold.ttf#Open Sans</FontFamily>
+	<FontFamily x:Key="FontFamily01ExtraBold">ms-appx:///Assets/Fonts/OpenSans-ExtraBold.ttf#Open Sans Extrabold</FontFamily>
+	
+</ResourceDictionary>

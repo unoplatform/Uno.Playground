@@ -1,0 +1,34 @@
+﻿<Project DefaultTargets="UpdateVersion">
+	<Import Project="obj\Build.csproj.nuget.g.props" Condition="Exists('obj\Build.csproj.nuget.g.props')" />
+ 	<Import Project="obj\Build.csproj.nuget.g.targets" Condition="Exists('obj\Build.csproj.nuget.g.targets')" />
+
+  <Target Name="UpdateVersion" DependsOnTargets="GetVersion">
+		
+    <Message Text="Updating versions" />
+		
+    <XmlUpdate XmlFileName="..\Uno.UI.Demo.iOS\Info.plist" 
+							 XPath="//plist/dict/key[text() = 'CFBundleShortVersionString']/following-sibling::string[1]" 
+							 Value="$(GITVERSION_MAJOR).$(GITVERSION_MINOR)" />
+		
+    <XmlUpdate XmlFileName="..\Uno.UI.Demo.iOS\Info.plist" 
+							 XPath="//plist/dict/key[text() = 'CFBundleVersion']/following-sibling::string[1]" 
+							 Value="$(GITVERSION_COMMITSSINCEVERSIONSOURCE)" />
+
+		<XmlUpdate
+			XmlFileName="..\Uno.UI.Demo.Droid\Properties\AndroidManifest.xml"
+			XPath="/manifest/@android:versionCode"
+			Value="$(GITVERSION_COMMITSSINCEVERSIONSOURCE)"
+			Namespace="http://schemas.android.com/apk/res/android"
+			Prefix="android" />
+
+		<XmlUpdate
+			XmlFileName="..\Uno.UI.Demo.UWP\package.appxmanifest"
+			XPath="/x:Package/x:Identity/@Version"
+			Value="$(GITVERSION_MAJOR).$(GITVERSION_MINOR).$(GITVERSION_COMMITSSINCEVERSIONSOURCE).0"
+			Namespace="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+			Prefix="x"/>
+		
+    <Message Text="Assm: Ver $(GITVERSION_MAJOR).$(GITVERSION_MINOR).$(GITVERSION_COMMITSSINCEVERSIONSOURCE)" />
+  </Target>
+
+</Project>

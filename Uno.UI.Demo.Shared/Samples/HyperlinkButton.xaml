@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Uno.UI.Demo.Samples.HyperlinkButton"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Uno.UI.Demo.Samples"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="">
+
+	<ScrollViewer>
+		<StackPanel Style="{StaticResource SamplePanelStyle}">
+
+			<TextBlock Text="Normal"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<HyperlinkButton Content="HyperlinkButton"
+							 NavigateUri="http://nventive.com/en/" />
+			<TextBlock Text="Disabled"
+					   Style="{StaticResource SampleSectionTextBlockStyle}" />
+			<HyperlinkButton IsEnabled="False"
+							 NavigateUri="http://nventive.com/en/"
+							 Content="HyperlinkButton" />
+
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

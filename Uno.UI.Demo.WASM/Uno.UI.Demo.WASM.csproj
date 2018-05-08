@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<WasmHead>true</WasmHead>
+		<ApplicationIcon />
+		<StartupObject />
+		<DefineConstants>$(DefineConstants);__WASM__</DefineConstants>
+		<AssemblyName>Uno.UI.Demo.WASM</AssemblyName>
+		<RootNamespace>Uno.UI.Demo</RootNamespace>
+		<NoWarn>NU1701</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
+		<None Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+
+		<!-- remove files included by msbuild extras -->
+		<Page Remove="@(Page)" />
+		<Page Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="..\Uno.UI.Demo.UWP\Assets\*.png" Link="Assets\%(FileName)%(Extension)" />
+		<Content Include="Fonts\winjs-symbols.woff2" />
+		<Content Include="ts\GoogleAnalytics.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="WasmCSS\**\*.css" />
+		<EmbeddedResource Include="WasmScripts\**\*.js" />
+
+		<UpToDateCheckInput Include="ts\**\*" />
+		<UpToDateCheckInput Include="WasmCSS\**\*" />
+		<UpToDateCheckInput Include="WasmScripts\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<LinkerDescriptor Include="LinkerConfig.xml" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.8.3" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="2.8.3" />
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="Uno.UI" Version="1.29.1-aobfwasm.2836" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.17" />
+		<PackageReference Include="Uno.CodeGen" Version="1.21.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
+	</ItemGroup>
+
+	<Target Name="CopyPlaygroundFiles" AfterTargets="BuildDist">
+		<ItemGroup>
+			<PlaygroundFiles Include="bin\$(Configuration)\netstandard2.0\dist\**\*.*" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(PlaygroundFiles)" DestinationFolder="..\Uno.UI.Demo.AspnetShell\wwwroot\playground\%(RecursiveDir)" />
+	</Target>
+
+	<Import Project="..\Uno.UI.Demo.Shared\Uno.UI.Demo.Shared.projitems" Label="Shared" />
+
+</Project>
