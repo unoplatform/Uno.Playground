@@ -1,14 +1,13 @@
 # Uno Playground
 
-This is the code for the website <http://platform.uno/>, for published apps on stores
-(Windows, Android & iOS) and for the _Uno Playground_ <http://playground.platform.uno>.
+This is the code for published apps on stores (_Uno Gallery_) - Windows, Android & iOS
+and for the _Uno Playground_ <http://playground.platform.uno>.
 
 ## Building it
 
 You'll need Visual Studio 2017 v15.5+ to compile it. You also need those components:
 
 - Web Site development (aspnet core)
-- NodeJS (optional, for `gulp`)
 - .NET Core cross-platform projects
 - Xamarin SDK (if you want to test iOS & Android)
 
