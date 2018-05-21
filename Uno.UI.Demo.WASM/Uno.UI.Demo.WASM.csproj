@@ -47,9 +47,9 @@
 		<PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.8.3" />
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="2.8.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="1.29.1-aobfwasm.2834" />
+		<PackageReference Include="Uno.UI" Version="1.30.1-aobfwasm.2891" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.17" />
-		<PackageReference Include="Uno.CodeGen" Version="1.21.0" />
+		<PackageReference Include="Uno.CodeGen" Version="1.23.0-dev.3" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 	</ItemGroup>
@@ -59,7 +59,7 @@
 			<PlaygroundFiles Include="bin\$(Configuration)\netstandard2.0\dist\**\*.*" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(PlaygroundFiles)" DestinationFolder="..\Uno.UI.Demo.AspnetShell\wwwroot\playground\%(RecursiveDir)" />
+		<Copy SourceFiles="@(PlaygroundFiles)" DestinationFolder="..\Uno.UI.Demo.AspnetShell\wwwroot\%(RecursiveDir)" />
 	</Target>
 
 	<Import Project="..\Uno.UI.Demo.Shared\Uno.UI.Demo.Shared.projitems" Label="Shared" />

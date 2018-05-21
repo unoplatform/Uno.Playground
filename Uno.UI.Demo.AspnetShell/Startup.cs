@@ -15,68 +15,51 @@ using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Uno.UI.Demo.AspnetShell
 {
-	public class Startup
-	{
-		private const string PlaygroundHost = "playground.platform.uno";
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
 
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-		}
+        public IConfiguration Configuration { get; }
 
-		public IConfiguration Configuration { get; }
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+        }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services)
-		{
-			services.AddMvc();
-		}
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            // Set up custom content types - associating file extension to MIME type
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".wasm"] = "application/wasm";
+            provider.Mappings[".dll"] = "application/dll";
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-			if (env.IsDevelopment())
-			{
-				app.UseBrowserLink();
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Home/Error");
-			}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
-			// Static content
-			app.UseStaticFiles(new StaticFileOptions
-			{
-				ContentTypeProvider = CreateContentTypeProvider(),
-				OnPrepareResponse = ConfigureCacheControl,
-			});
+            app.UseDefaultFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            }
+            );
 
-			// MVC (dynamic) content
-			app.UseMvc(routes =>
-			{
-				routes.MapRoute(
-					name: "default",
-					template: "{controller=Home}/{action=Index}/{id?}");
-			});
-		}
-
-		private static void ConfigureCacheControl(StaticFileResponseContext ctx)
-		{
-			if (ctx.File.Name.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
-			{
-				// Cache managed files for a year, based on this update:
-				// https://github.com/nventive/Uno.Wasm.Bootstrap/commit/f4859452c715c54ac40b968a303a242b0399d59a
-				ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=31536000");
-			}
-		}
-
-		private FileExtensionContentTypeProvider CreateContentTypeProvider()
-		{
-			var provider = new FileExtensionContentTypeProvider();
-			provider.Mappings[".wasm"] = "application/wasm";
-			provider.Mappings[".dll"] = "application/octet-stream";
-			return provider;
-		}
-	}
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
 }
