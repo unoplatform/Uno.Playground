@@ -27,6 +27,7 @@ namespace Uno.UI.Demo.AspnetShell
             // Set up custom content types - associating file extension to MIME type
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".wasm"] = "application/wasm";
+            provider.Mappings[".clr"] = "application/clr";
             provider.Mappings[".dll"] = "application/dll";
 
             if (env.IsDevelopment())

@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>netcoreapp2.1</TargetFramework>
+		<TypeScriptToolsVersion>2.9</TypeScriptToolsVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -11,10 +12,6 @@
 
 	<ItemGroup>
 		<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.3" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="wwwroot\playground\" />
 	</ItemGroup>
 
 </Project>
