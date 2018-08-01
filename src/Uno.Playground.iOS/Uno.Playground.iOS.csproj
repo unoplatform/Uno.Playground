@@ -6,13 +6,14 @@
     <ProjectGuid>{85473ADF-7C3B-415B-B68D-0B90483CEB26}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Uno.UI.Demo</RootNamespace>
+    <RootNamespace>Uno.Playground</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>Uno.UI.Demo.iOS</AssemblyName>
+    <AssemblyName>Uno.Playground.iOS</AssemblyName>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <DefaultLanguage>en</DefaultLanguage>
-    <ResourcesDirectory>..\Uno.UI.Demo.Shared\Strings</ResourcesDirectory>
+    <UpdateAssemblyInfo>false</UpdateAssemblyInfo>
+    <ResourcesDirectory>..\Uno.Playground.Shared\Strings</ResourcesDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -171,7 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="GitVersionTask">
-      <Version>4.0.0-beta0012</Version>
+      <Version>3.6.5</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>1.5.0</Version>
@@ -183,13 +184,13 @@
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Uno.CodeGen">
-      <Version>1.21.0</Version>
+      <Version>1.24.0-dev.27</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.22.0-dev.23</Version>
+      <Version>1.23.0-dev.45</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.30.1-aobfwasm.2873</Version>
+      <Version>1.31.0-dev.226</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
@@ -197,6 +198,6 @@
   <ItemGroup>
     <Folder Include="Resources\Assets\" />
   </ItemGroup>
-  <Import Project="..\Uno.UI.Demo.Shared\Uno.UI.Demo.Shared.projitems" Label="Shared" Condition="Exists('..\Uno.UI.Demo.Shared\Uno.UI.Demo.Shared.projitems')" />
+  <Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" Condition="Exists('..\Uno.Playground.Shared\Uno.Playground.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
