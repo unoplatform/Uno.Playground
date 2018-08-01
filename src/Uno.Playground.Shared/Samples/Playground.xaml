@@ -1,0 +1,484 @@
+﻿<Page x:Class="Uno.UI.Demo.Samples.Playground"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Uno.UI.Demo"
+	  xmlns:toolkit="using:Uno.UI.Toolkit"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:wasm="http://uno.ui/wasm"
+	  xmlns:ios="http://uno.ui/ios"
+	  xmlns:android="http://uno.ui/android"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d wasm ios android">
+
+	<Page.Resources>
+		<!-- TODO: This is a workaround because ComboBoxItems don't measure themselves properly in WASM -->
+		<DataTemplate x:Key="SampleItemTemplate">
+			<Grid Height="40">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="50" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<Grid VerticalAlignment="Center">
+					<Path Data="{Binding IconPath}"
+						  Fill="#979797" />
+					<Path Data="{Binding IconAccentPath}"
+						  Fill="{StaticResource Color08Brush}" />
+				</Grid>
+				<TextBlock Grid.Column="1"
+						   Text="{Binding Title}"
+						   Foreground="#eeeeee"
+						   FontSize="16"
+						   TextWrapping="NoWrap"
+						   HorizontalAlignment="Stretch"
+						   VerticalAlignment="Center" />
+			</Grid>
+		</DataTemplate>
+	</Page.Resources>
+
+	<Grid Background="#242424"
+		  toolkit:VisibleBoundsPadding.PaddingMask="Top"
+		  Name="root">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="72"
+						   x:Name="toolbarRow" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+
+		<!--ToolBar START-->
+		<StackPanel Orientation="Horizontal">
+			<Button Name="backButton"
+					Visibility="Collapsed"
+					Height="40"
+					Width="40"
+					VerticalAlignment="Stretch"
+					HorizontalAlignment="Stretch"
+					Padding="0"
+					Margin="0"
+					Background="Transparent"
+					Click="OnBackClicked">
+				<Path Data="M1 6h14M1 6l3.748-4.685M1 6l4.243 4.243"
+					  Stroke="White"
+					  StrokeThickness="2"
+					  HorizontalAlignment="Center"
+					  VerticalAlignment="Center"
+					  Stretch="Uniform"
+					  Width="22" />
+			</Button>
+			<Button Height="72"
+					Width="72"
+					Padding="0"
+					Margin="0"
+					Background="Transparent"
+					Click="LogoClicked">
+				<Path Data="M35.596 22.32l-2.81 2.87c-2.453 2.475-3.96 3.484-5.204 3.484h-.004c-1.23-.002-2.66-.96-5.1-3.422l-.587-.587 5.149-5.25c2.531-2.553 4.1-4.594 4.105-6.879 0-.33-.032-.654-.094-.976l.002.008c1.65.856 3.23 2.402 4.523 3.787l.026.028c1.196 1.206 1.802 2.2 1.906 3.125.127 1.138-.496 2.383-1.912 3.811zm-7.642 8.808c-.868 1.583-2.332 3.107-3.645 4.352l-.027.026c-2.228 2.248-3.983 2.913-6.877-.006l-2.847-2.834c-2.455-2.477-3.456-3.999-3.454-5.253.003-1.242.953-2.683 3.394-5.145l.756-.77 5.5 5.5c2.53 2.554 4.555 4.137 6.82 4.141h.009c.136 0 .27-.006.405-.017a.254.254 0 0 1-.034.006zm-23.56-6.88l-.027-.028c-1.196-1.206-1.802-2.2-1.906-3.125-.128-1.138.496-2.383 1.911-3.811l2.81-2.872c2.453-2.474 3.961-3.484 5.204-3.484h.005c1.23.003 2.66.961 5.1 3.423l.678.677h-.005l-5.398 5.501c-2.953 2.98-4.317 5.144-4.09 7.377-1.563-.876-3.053-2.34-4.283-3.659zm18.694-4.308l-2.932 2.99-3.183-3.184 2.93-2.986 3.185 3.18zM12.048 8.475c.88-1.463 2.227-2.851 3.448-4.01l.027-.026c2.228-2.248 3.983-2.914 6.878.005l2.847 2.835c2.455 2.476 3.456 3.998 3.453 5.253-.002 1.241-.952 2.682-3.394 5.145l-.5.51-5.592-5.583c-2.531-2.553-4.555-4.136-6.82-4.14h-.01c-.116 0-.232.005-.347.013l.01-.002zm25.295 5.179c-2.031-2.178-4.725-4.695-7.743-5.142-.684-.941-1.575-1.917-2.63-2.982l-2.847-2.834c-4.62-4.66-8.097-2.246-10.314-.014-1.968 1.868-4.214 4.29-4.933 7.008l.012-.007c-1.083.723-2.2 1.743-3.439 2.992l-2.81 2.871C.669 17.534-.184 19.44.033 21.372c.222 1.975 1.582 3.556 2.593 4.577 1.933 2.073 4.465 4.451 7.306 5.062.69 1.033 1.657 2.145 2.904 3.403l2.847 2.834c1.939 1.956 3.676 2.666 5.204 2.666 2.112 0 3.823-1.357 5.11-2.652 2.034-1.93 4.366-4.454 5-7.285l-.015.008c1.113-.726 2.261-1.77 3.538-3.057l2.81-2.872c4.619-4.659 2.226-8.166.013-10.402z"
+					  Height="40"
+					  Width="40"
+					  Margin="0"
+					  Fill="{StaticResource Color08Brush}" />
+			</Button>
+
+			<TextBlock android:Text="Playground"
+					   ios:Text="Playground"
+					   win:Text="Playground"
+					   Foreground="White"
+					   FontSize="20"
+					   VerticalAlignment="Center"
+					   wasm:Visibility="Collapsed" />
+
+			<wasm:Grid VerticalAlignment="Center">
+				<TextBlock Text="Uno Playground"
+						   Foreground="White"
+						   FontSize="20"
+						   Margin="0,0,0,25"
+						   VerticalAlignment="Center" />
+
+				<HyperlinkButton Content="http://platform.uno"
+								 NavigateUri="http://platform.uno"
+								 Foreground="White"
+								 FontSize="16"
+								 Margin="1,30,0,0"
+								 VerticalAlignment="Center" />
+			</wasm:Grid>
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal"
+					HorizontalAlignment="Center"
+					Grid.Column="1"
+					Name="runPane">
+			<Button x:Name="updateBtn"
+					Tapped="Update_OnTapped"
+					Style="{StaticResource RunButtonStyle}" />
+
+			<ToggleButton x:Name="autoUpdate"
+						  Margin="16,0,0,0"
+						  Style="{StaticResource AutoUpdateToggleButtonStyle}"
+						  IsChecked="True"
+						  Checked="AutoUpdate_OnChecked"
+						  ToolTipService.ToolTip="Update update the preview when you change the code.">
+				<TextBlock Text="Auto Run"
+						   Foreground="{StaticResource Color01Brush}"
+						   VerticalAlignment="Center"
+						   FontSize="12" />
+			</ToggleButton>
+		</StackPanel>
+
+		<StackPanel Orientation="Horizontal"
+					Grid.Column="2">
+			<Button Click="Save_Clicked"
+					IsEnabled="False"
+					x:Name="saveBtn"
+					Background="Transparent"
+					Margin="16,0">
+				<StackPanel>
+					<Path Data="M13 12.414V19a1 1 0 0 1-2 0v-6.586l-2.293 2.293a1 1 0 1 1-1.414-1.414l4-4a1 1 0 0 1 1.414 0l4 4a1 1 0 0 1-1.414 1.414L13 12.414zm5.004-6.567c2.736.001 5.13 1.816 5.809 4.419.681 2.61-.538 5.335-2.95 6.617a1 1 0 0 1-.94-1.766c1.6-.85 2.4-2.638 1.954-4.346-.447-1.715-2.04-2.923-3.874-2.924h-1.26a1 1 0 0 1-.966-.744c-.722-2.723-3.098-4.738-5.981-5.059-2.886-.32-5.673 1.123-7.009 3.622-1.33 2.49-.95 5.518.96 7.625a1 1 0 1 1-1.483 1.343c-2.476-2.731-2.97-6.674-1.24-9.91 1.724-3.226 5.3-5.078 8.993-4.667 3.432.382 6.316 2.645 7.46 5.79h.527z"
+						  Fill="#eeeeee"
+						  HorizontalAlignment="Center"
+						  VerticalAlignment="Center"
+						  Stretch="Uniform"
+						  Width="24" />
+					<TextBlock Text="Save Snippet"
+							   FontSize="8"
+							   Margin="0,8,0,0"
+							   Foreground="#eeeeee" />
+				</StackPanel>
+			</Button>
+		</StackPanel>
+		<!--ToolBar END-->
+
+		<SplitView x:Name="MainSplitView"
+				   IsPaneOpen="True"
+				   Grid.Row="1"
+				   Grid.ColumnSpan="3"
+				   DisplayMode="CompactInline"
+				   OpenPaneLength="280">
+			<SplitView.Pane>
+				<Grid Background="#1a1a1a">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<Button x:Name="openPaneButton"
+							Visibility="Collapsed"
+							Height="40"
+							Width="40"
+							VerticalAlignment="Top"
+							Padding="0"
+							Margin="0"
+							Background="Transparent"
+							Click="ToggleSplitView">
+						<Path Data="M1 7h14M1 1h18M1 13h18"
+							  Stroke="White"
+							  StrokeThickness="2"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Stretch="Uniform"
+							  Width="22" />
+					</Button>
+					<ScrollViewer Grid.Column="1">
+						<StackPanel>
+							<wasm:TextBlock Text="Snippets"
+											VerticalAlignment="Center"
+											FontWeight="Bold"
+											Margin="16,12"
+											Foreground="{StaticResource Color08Brush}" />
+							<ListView x:Name="samples"
+									  Width="280"
+									  VerticalAlignment="Center"
+									  ItemTemplate="{StaticResource SampleItemTemplate}" />
+						</StackPanel>
+					</ScrollViewer>
+					<Button Grid.Column="1"
+							wasm:Visibility="Collapsed"
+							Height="40"
+							Width="40"
+							VerticalAlignment="Top"
+							HorizontalAlignment="Right"
+							Padding="0"
+							Margin="0"
+							Background="Transparent"
+							Click="ToggleSplitView">
+						<Path Data="M1 6h14M1 6l3.748-4.685M1 6l4.243 4.243"
+							  Stroke="White"
+							  StrokeThickness="2"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Stretch="Uniform"
+							  Width="22" />
+					</Button>
+				</Grid>
+
+			</SplitView.Pane>
+
+			<Grid x:Name="PlaygroundContent">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition x:Name="codePaneColumn"
+									  Width="*" />
+					<ColumnDefinition x:Name="splitterColumn"
+									  Width="10" />
+					<ColumnDefinition x:Name="previewColumn"
+									  Width="*" />
+				</Grid.ColumnDefinitions>
+
+				<Grid.RowDefinitions>
+					<RowDefinition x:Name="tabsPaneRow"
+								   Height="0" />
+					<RowDefinition x:Name="xamlPaneRow"
+								   Height="*" />
+					<RowDefinition x:Name="corePaneRow"
+								   Height="*" />
+				</Grid.RowDefinitions>
+
+				<Grid Grid.ColumnSpan="3"
+					  Background="{StaticResource Color08Brush}"
+					  Name="TabsPane">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+
+					<Button Height="40"
+							Width="40"
+							Padding="0"
+							Margin="0"
+							Background="Transparent"
+							Click="ToggleSplitView"
+							wasm:Visibility="Collapsed">
+						<Path Data="M1 7h14M1 1h18M1 13h18"
+							  Stroke="White"
+							  StrokeThickness="2"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Stretch="Uniform"
+							  Width="22" />
+					</Button>
+					<Button Content="XAML"
+							Grid.Column="1"
+							Tapped="ShowXaml"
+							Background="Transparent"
+							Foreground="White"
+							Height="40"
+							HorizontalAlignment="Stretch" />
+					<Button Content="Data"
+							Grid.Column="2"
+							Tapped="ShowData"
+							Background="Transparent"
+							Foreground="White"
+							Height="40"
+							HorizontalAlignment="Stretch" />
+					<Button Content="Output"
+							Grid.Column="3"
+							Tapped="ShowOutput"
+							Background="Transparent"
+							Foreground="White"
+							Height="40"
+							HorizontalAlignment="Stretch" />
+				</Grid>
+
+				<Grid Name="codePane"
+					  Grid.Row="1"
+					  Background="#313131">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="38" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<!--XAML-->
+					<Grid Grid.Row="0"
+						  Background="#242424"
+						  VerticalAlignment="Stretch"
+						  HorizontalAlignment="Stretch">
+						<TextBlock Text="XAML EDITOR"
+								   FontSize="16"
+								   FontWeight="SemiBold"
+								   Margin="16,0"
+								   VerticalAlignment="Center"
+								   Foreground="#eeeeee" />
+						<TextBlock x:Name="linkBlock"
+								   Margin="16,0"
+								   Visibility="Collapsed"
+								   Foreground="{StaticResource Color08Brush}"
+								   FontWeight="Bold"
+								   HorizontalAlignment="Right"
+								   VerticalAlignment="Center">
+							<Hyperlink x:Name="link"
+									   Foreground="{StaticResource Color08Brush}" />
+						</TextBlock>
+
+					</Grid>
+					<local:CodeBox x:Name="xamlText"
+								   Background="Transparent"
+								   Margin="4"
+								   Grid.Row="1" />
+				</Grid>
+
+				<Grid Name="dataContextPane"
+					  Grid.Row="2"
+					  Background="#313131">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="38" />
+						<RowDefinition Height="*" />
+					</Grid.RowDefinitions>
+
+					<!--Context-->
+					<Border Grid.Row="0"
+							Background="#242424"
+							VerticalAlignment="Stretch"
+							HorizontalAlignment="Stretch">
+						<TextBlock Text="Data Context"
+								   FontSize="16"
+								   FontWeight="SemiBold"
+								   Margin="16,0"
+								   VerticalAlignment="Center"
+								   Foreground="#eeeeee" />
+					</Border>
+					<local:CodeBox x:Name="jsonDataContext"
+								   Background="Transparent"
+								   Margin="4"
+								   Grid.Row="1" />
+				</Grid>
+
+				<!--Preview Pane-->
+				<Grid Name="previewPane"
+					  Grid.Row="1"
+					  Grid.Column="2"
+					  Grid.RowSpan="2"
+					  Background="White">
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+
+					<ContentControl x:Name="content"
+									Margin="4"
+									HorizontalContentAlignment="Stretch"
+									VerticalContentAlignment="Stretch" />
+
+					<TextBlock x:Name="resolution"
+							   Grid.Row="1"
+							   VerticalAlignment="Bottom"
+							   HorizontalAlignment="Left"
+							   FontSize="9"
+							   Foreground="DarkGray"
+							   IsHitTestVisible="False"
+							   Text="200x200" />
+
+					<TextBlock x:Name="loading"
+							   Visibility="Collapsed"
+							   VerticalAlignment="Center"
+							   HorizontalAlignment="Stretch"
+							   TextAlignment="Center"
+							   FontSize="28"
+							   Foreground="{StaticResource Color08Brush}"
+							   Text="Loading..." />
+				</Grid>
+
+				<Rectangle Fill="#1a1a1a"
+						   x:Name="splitter"
+						   Grid.Column="1"
+						   Grid.RowSpan="3"
+						   PointerPressed="BeginResizeCodePane">
+					<Rectangle.RenderTransform>
+						<TranslateTransform />
+					</Rectangle.RenderTransform>
+				</Rectangle>
+
+				<!--Error Message-->
+				<Border CornerRadius="28"
+						x:Name="errorBorder"
+						Grid.ColumnSpan="3"
+						Grid.RowSpan="3"
+						Visibility="Collapsed"
+						VerticalAlignment="Bottom"
+						MinHeight="56"
+						MaxHeight="150"
+						Margin="28"
+						Background="#f85977">
+					<Grid>
+						<ScrollViewer VerticalScrollBarVisibility="Auto"
+									  Margin="24">
+							<TextBlock x:Name="errorText"
+									   Foreground="White" />
+						</ScrollViewer>
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Right"
+									VerticalAlignment="Top"
+									Margin="0,0,24,0">
+							<HyperlinkButton Background="Transparent"
+											 Content="[copy]"
+											 FontSize="10"
+											 Foreground="White"
+											 BorderThickness="0"
+											 Tapped="CopyError"
+											 Margin="0,0,8,0" />
+							<HyperlinkButton Background="Transparent"
+											 Content="[close]"
+											 FontSize="10"
+											 Foreground="White"
+											 BorderThickness="0"
+											 Tapped="CloseErrorPane" />
+						</StackPanel>
+					</Grid>
+				</Border>
+			</Grid>
+		</SplitView>
+
+		<!--Save message-->
+		<StackPanel x:Name="savedMessage"
+					Visibility="Collapsed"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					Grid.Row="1"
+					Grid.ColumnSpan="3"
+					Height="209"
+					Width="170"
+					CornerRadius="30"
+					Background="#1a1a1a"
+					Opacity="0.9">
+			<Grid Margin="0,24">
+				<Path Data="M24.9726765,0.125 C25.8011036,0.125 26.4726765,0.796572875 26.4726765,1.625 C26.4726765,2.45342712 25.8011036,3.125 24.9726765,3.125 L10.3529412,3.125 C6.58981335,3.125 3.5,6.23838587 3.5,10.0416667 L3.5,81.5833333 C3.5,85.3866141 6.58981335,88.5 10.3529412,88.5 L64.6470588,88.5 C68.4101866,88.5 71.5,85.3866141 71.5,81.5833333 L71.5,10.0416667 C71.5,6.23838587 68.4101866,3.125 64.6470588,3.125 L50.0294118,3.125 C49.2009846,3.125 48.5294118,2.45342712 48.5294118,1.625 C48.5294118,0.796572875 49.2009846,0.125 50.0294118,0.125 L64.6470588,0.125 C70.0721663,0.125 74.5,4.58661413 74.5,10.0416667 L74.5,81.5833333 C74.5,87.0383859 70.0721663,91.5 64.6470588,91.5 L10.3529412,91.5 C4.92783371,91.5 0.5,87.0383859 0.5,81.5833333 L0.5,10.0416667 C0.5,4.58661413 4.92783371,0.125 10.3529412,0.125 L24.9726765,0.125 Z"
+					  Fill="White"
+					  HorizontalAlignment="Center"
+					  VerticalAlignment="Center"
+					  Width="74"
+					  Stretch="Uniform" />
+				<Path Data="M38.0017429,51.1799176 C38.7308043,50.3501325 39.994499,50.2684798 40.8242841,50.9975412 C41.6540692,51.7266026 41.7357219,52.9902973 41.0066605,53.8200824 L19.5276689,78.266511 C18.8455359,79.0428843 17.6842334,79.1716917 16.8485483,78.5636691 L4.31913651,69.4475977 C3.42595922,68.7977453 3.2287054,67.5468726 3.87855777,66.6536953 C4.52841015,65.760518 5.77928284,65.5632642 6.67246013,66.2131166 L17.7267932,74.2559595 L38.0017429,51.1799176 Z"
+					  Fill="{StaticResource Color08Brush}"
+					  HorizontalAlignment="Center"
+					  VerticalAlignment="Center"
+					  Stretch="Uniform"
+					  Width="44" />
+			</Grid>
+			<TextBlock Text="Snippet link saved to clipbaord."
+					   TextAlignment="Center"
+					   TextWrapping="Wrap"
+					   Width="106"
+					   FontSize="16"
+					   FontWeight="SemiBold"
+					   Foreground="White" />
+		</StackPanel>
+
+		<Border Height="4"
+				Grid.Row="1"
+				Grid.ColumnSpan="3"
+				VerticalAlignment="Top">
+			<Border.Background>
+				<LinearGradientBrush StartPoint="0.5,0"
+									 EndPoint="0.5,1">
+					<GradientStop Color="#000000"
+								  Offset="0.0" />
+					<GradientStop Color="#00000000"
+								  Offset="1.0" />
+				</LinearGradientBrush>
+			</Border.Background>
+		</Border>
+	</Grid>
+</Page>
