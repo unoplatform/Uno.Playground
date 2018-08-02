@@ -20,7 +20,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseIntermediateDesignerFile>True</AndroidUseIntermediateDesignerFile>
     <DefaultLanguage>en</DefaultLanguage>
-    <ResourcesDirectory>..\Uno.UI.Demo.Shared\Strings</ResourcesDirectory>
+    <ResourcesDirectory>..\Uno.Playground.Shared\Strings</ResourcesDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,13 +49,12 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidKeyStore>true</AndroidKeyStore>
-    <AndroidSigningKeyStore>../nventive.jks</AndroidSigningKeyStore>
-    <AndroidSigningKeyAlias>uno.ui.demo</AndroidSigningKeyAlias>
     <AotAssemblies>true</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidSupportedAbis />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -79,20 +78,20 @@
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
     </PackageReference>
-    <PackageReference Include="UniversalImageLoader">
-      <Version>1.9.5.8565</Version>
-    </PackageReference>
     <PackageReference Include="Uno.CodeGen">
-      <Version>1.21.0</Version>
+      <Version>1.24.0-dev.27</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.22.0-dev.23</Version>
+      <Version>1.23.0-dev.45</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.30.1-aobfwasm.2873</Version>
+      <Version>1.31.0-dev.226</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
+    <PackageReference Include="Uno.UniversalImageLoader">
+      <Version>1.9.31</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v4">
       <Version>26.1.0.1</Version>
       <PrivateAssets>none</PrivateAssets>
@@ -161,7 +160,7 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
   </ItemGroup>
-  <Import Project="..\Uno.UI.Demo.Shared\Uno.UI.Demo.Shared.projitems" Label="Shared" Condition="Exists('..\Uno.UI.Demo.Shared\Uno.UI.Demo.Shared.projitems')" />
+  <Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" Condition="Exists('..\Uno.Playground.Shared\Uno.Playground.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

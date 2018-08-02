@@ -33,7 +33,6 @@ using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json.Linq;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Toolkit;
-using Uno.UI.Wasm;
 
 namespace Uno.UI.Demo.Samples
 {
@@ -135,13 +134,13 @@ namespace Uno.UI.Demo.Samples
 			base.OnNavigatedTo(e);
 
 #if __WASM__
-			void OnNavigatedToFragment(object snd, NewFragmentEventArgs newFragmentEventArgs)
+			void OnNavigatedToFragment(object snd, Wasm.NewFragmentEventArgs newFragmentEventArgs)
 			{
 				var t = LoadSample(newFragmentEventArgs.Fragment);
 			}
-			FragmentHavigationHandler.NavigatedToFragment += OnNavigatedToFragment;
+			Wasm.FragmentHavigationHandler.NavigatedToFragment += OnNavigatedToFragment;
 
-			var fragment = FragmentHavigationHandler.CurrentFragment;
+			var fragment = Wasm.FragmentHavigationHandler.CurrentFragment;
 			if (!string.IsNullOrWhiteSpace(fragment))
 			{
 				await LoadSample(fragment);
@@ -433,7 +432,9 @@ namespace Uno.UI.Demo.Samples
 			link.Inlines.Add(new Run{Text = id});
 			linkBlock.Visibility = Visibility.Visible;
 
-			FragmentHavigationHandler.CurrentFragment = "#" + id;
+#if __WASM__
+			Wasm.FragmentHavigationHandler.CurrentFragment = "#" + id;
+#endif
 		}
 
 		private static readonly Regex _lineEndingRegex = new Regex(@"\r\n|\n\r|\n|\r");

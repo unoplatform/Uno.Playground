@@ -5,7 +5,7 @@ continuous-delivery-fallback-tag: ""
 branches:
   master:
     tag: dev
-  stable:
+  (stable):
     tag: 
   dev/.*?/(.*?):
     tag: dev.{BranchName}
