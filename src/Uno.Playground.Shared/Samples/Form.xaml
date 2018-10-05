@@ -8,48 +8,47 @@
 	  xmlns:toolkit="using:Uno.UI.Toolkit"
 	  mc:Ignorable="">
 
+  <Grid Background="{StaticResource Color01Brush}">
+	<Grid.RowDefinitions>
+	  <RowDefinition Height="Auto" />
+	  <RowDefinition Height="*" />
+	</Grid.RowDefinitions>
 
+	<!-- Header -->
+	<CommandBar Content="Form" />
+
+	<!-- Form -->
 	<ScrollViewer toolkit:VisibleBoundsPadding.PaddingMask="All">
-		<Grid Background="{StaticResource Color01Brush}">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="*" />
-			</Grid.RowDefinitions>
+	  <StackPanel Grid.Row="1"
+				  Margin="40,30"
+				  MaxWidth="500"
+				  VerticalAlignment="Top">
+		<Border Height="50"
+				Width="50"
+				CornerRadius="9"
+				Margin="0,0,0,11"
+				VerticalAlignment="Center"
+				Background="{StaticResource Color07Brush}">F
+		  <Path Data="M18 36.844V14h6.172v17.86h8.797v4.984z"
+				Width="30"
+				Height="30"
+				Stretch="Uniform"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"
+				Fill="{StaticResource Color01Brush}" />
+		</Border>
 
-			<!-- Header -->
-			<CommandBar Content="Form" />
+		<TextBox Header="First Value"
+				 Style="{StaticResource AnimatedTextBoxStyle}" />
 
-			<!-- Form -->
-			<StackPanel Grid.Row="1"
-						Margin="40,30"
-						MaxWidth="500"
-						VerticalAlignment="Top">
-				<Border Height="50"
-						Width="50"
-						CornerRadius="9"
-						Margin="0,0,0,11"
-						VerticalAlignment="Center"
-						Background="{StaticResource Color07Brush}">
-					<Path Data="M18 36.844V14h6.172v17.86h8.797v4.984z"
-						  Width="30"
-						  Height="30"
-						  Stretch="Uniform"
-						  VerticalAlignment="Center"
-						  HorizontalAlignment="Center"
-						  Fill="{StaticResource Color01Brush}" />
-				</Border>
+		<PasswordBox Header="Second hidden value"
+					 Margin="0,12,0,30"
+					 Style="{StaticResource AnimatedPasswordBoxStyle}" />
 
-				<TextBox Header="First Value"
-						 Style="{StaticResource AnimatedTextBoxStyle}" />
-
-				<PasswordBox Header="Second hidden value"
-							 Margin="0,12,0,30"
-							 Style="{StaticResource AnimatedPasswordBoxStyle}" />
-
-				<Button Content="Check values"
-						Click="OnCheckValues"
-						Style="{StaticResource LoginButtonStyle}" />
-			</StackPanel>
-		</Grid>
+		<Button Content="Check values"
+				Click="OnCheckValues"
+				Style="{StaticResource LoginButtonStyle}" />
+	  </StackPanel>
 	</ScrollViewer>
+  </Grid>
 </Page>
