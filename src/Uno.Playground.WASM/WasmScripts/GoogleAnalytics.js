@@ -29,12 +29,12 @@ var Uno;
 	window.dataLayer = window.dataLayer || [];
 	function gtag() { dataLayer.push(arguments); }
 	gtag('js', new Date());
-	gtag('config', 'UA-26688675-3');
+	gtag('config', 'UA-26688675-9');
 
 	gtag("event", "screen_view", {screen_name: \"${screenName}\", app_name: \"${appName}\"});`;
                     const script1 = document.createElement("script");
                     script1.type = "text/javascript";
-                    script1.src = "https://www.googletagmanager.com/gtag/js?id=UA-26688675-3";
+                    script1.src = "https://www.googletagmanager.com/gtag/js?id=UA-26688675-9";
                     document.body.appendChild(script1);
                     const script2 = document.createElement("script");
                     script2.type = "text/javascript";
