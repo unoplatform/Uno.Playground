@@ -10,6 +10,9 @@
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
+		
+		<UnoSourceGeneratorUseGenerationHost>true</UnoSourceGeneratorUseGenerationHost>
+		<WasmShellEnableAOT Condition="$([MSBuild]::IsOsUnixLike())">true</WasmShellEnableAOT>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -25,7 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\Uno.Playground.UWP\Assets\*.png" Link="Assets\%(FileName)%(Extension)" />
 		<Content Include="Fonts\winjs-symbols.woff2" />
 		<Content Include="ts\GoogleAnalytics.ts" />
 	</ItemGroup>
@@ -40,7 +42,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<LinkerDescriptor Include="LinkerConfig.xml" />
+		<EmbeddedResource Include="Uno.Playground.WASM.xml">
+			<LogicalName>Uno.Playground.WASM.xaml</LogicalName>
+		</EmbeddedResource>
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -53,8 +57,11 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="1.40.0" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.40" />
+		<PackageReference Include="Uno.Core" Version="1.25.0-dev.56" />
+		<PackageReference Include="Uno.Core.Build" Version="1.25.0-dev.56" />
+		<PackageReference Include="Uno.SourceGenerationTasks" Version="1.27.0-dev.117" />
+		<PackageReference Include="Uno.UI" Version="1.41.1-dev.195" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-PullRequest0026.89" />
 		<PackageReference Include="Uno.CodeGen" Version="1.27.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />

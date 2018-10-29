@@ -1,0 +1,9 @@
+﻿<linker>
+  <assembly fullname="Uno.Playground.WASM" />
+  <assembly fullname="WebAssembly.Bindings" />
+
+  <assembly fullname="Uno.UI">
+	<type fullname="Windows.UI.Xaml.Window" />
+	<type fullname="Windows.UI.Xaml.UIElement" />
+  </assembly>
+</linker>
