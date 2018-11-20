@@ -14,7 +14,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
-using Newtonsoft.Json;
 using Uno.Disposables;
 using Uno.Extensions;
 using Windows.Foundation;
@@ -30,9 +29,15 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using Newtonsoft.Json.Linq;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Toolkit;
+using System.Json;
+using Uno.Playground.Extensions;
+
+#if HAS_JSON_NET
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+#endif
 
 namespace Uno.UI.Demo.Samples
 {
@@ -106,7 +111,7 @@ namespace Uno.UI.Demo.Samples
 				{
 					var response = await httpClient.GetAsync(BaseApiUrl);
 					var responsePayload = await response.Content.ReadAsStringAsync();
-					categories = JsonConvert.DeserializeObject<List<SampleCategory>>(responsePayload).ToArray();
+					categories = DesierializeSampleCategory(responsePayload);
 				}
 
 				var samplesForDisplay = categories
@@ -148,7 +153,7 @@ namespace Uno.UI.Demo.Samples
 			else
 #endif
 			{
-				await LoadSample("wasm-start");
+				// await LoadSample("wasm-start");
 			}
 
 //			if (e.Parameter is string args)
@@ -205,7 +210,7 @@ namespace Uno.UI.Demo.Samples
 ";
 
 			jsonDataContext.Text = @"{
-	message: ""Hello World!""
+	""message"": ""Hello World!""
 }
 
 /* Tip: two-way bindings supported */";
@@ -227,13 +232,13 @@ namespace Uno.UI.Demo.Samples
 
 				var jsonData = jsonDataContext.Text;
 				var uncommentedJsonData = CommentStripperRegex.Replace(jsonData, "");
-				var data = JsonConvert.DeserializeObject<ExpandoObject>(uncommentedJsonData);
+				var data = DeserializeExpando(uncommentedJsonData);
 
 				DataContext = data;
 
 				ClearError();
 
-				var allSub = data
+				var allSub = (data as IDictionary<string, object>)
 					.Flatten(i => (i as IDictionary<string, object>)?.Values.OfType<ExpandoObject>())
 					.OfType<INotifyPropertyChanged>();
 
@@ -252,9 +257,11 @@ namespace Uno.UI.Demo.Samples
 
 		private void OnExpandoChanged(object sender, PropertyChangedEventArgs e)
 		{
+#if HAS_JSON_NET
 			var data = JsonConvert.SerializeObject(DataContext);
 
 			jsonDataContext.Text = data;
+#endif
 		}
 
 		private void OnTextChanged(object sender, TextChangedEventArgs e)
@@ -388,6 +395,7 @@ namespace Uno.UI.Demo.Samples
 
 		private async void Save_Clicked(object sender, RoutedEventArgs e)
 		{
+#if HAS_JSON_NET
 			var xaml = UniformizeLineEndings(xamlText.Text);
 			var data = UniformizeLineEndings(jsonDataContext.Text);
 
@@ -408,6 +416,7 @@ namespace Uno.UI.Demo.Samples
 
 			SetLink(id, clipboard: true);
 			ShowHint();
+#endif
 		}
 
 		private async void ShowHint()
@@ -459,7 +468,7 @@ namespace Uno.UI.Demo.Samples
 
 					var response = await httpClient.GetAsync($"{BaseApiUrl}/{Uri.EscapeUriString(id)}");
 					var responsePayload = await response.Content.ReadAsStringAsync();
-					var json = JObject.Parse(responsePayload);
+					var json = System.Json.JsonObject.Parse(responsePayload);
 
 					_isLoadingSample = true;
 					ClearError();
@@ -728,6 +737,72 @@ namespace Uno.UI.Demo.Samples
 					corePaneRow.Height = new GridLength(1, GridUnitType.Star);
 					break;
 			}
+		}
+
+		private static dynamic DeserializeExpando(string uncommentedJsonData)
+		{
+#if HAS_JSON_NET
+			return JsonConvert.DeserializeObject<ExpandoObject>(uncommentedJsonData);
+#else
+			if (!string.IsNullOrEmpty(uncommentedJsonData))
+			{
+				var root = System.Json.JsonObject.Parse(uncommentedJsonData);
+
+				if (root is System.Json.JsonObject rootObject)
+				{
+					return rootObject.BuildExpando();
+				}
+			}
+
+			return null;
+#endif
+		}
+
+		private static SampleCategory[] DesierializeSampleCategory(string responsePayload)
+		{
+#if HAS_JSON_NET
+			return JsonConvert.DeserializeObject<List<SampleCategory>>(responsePayload).ToArray();
+#else
+			var root = System.Json.JsonObject.Parse(responsePayload);
+
+			var list = new List<SampleCategory>();
+			foreach (var item in root as JsonArray)
+			{
+				list.Add(new SampleCategory {
+					CategoryId = item["CategoryId"],
+					DefaultIconAccentPath = item["DefaultIconAccentPath"],
+					DefaultIconPath = item["DefaultIconPath"],
+					Title = item["Title"],
+					Samples = DeserializeSamples(item["Samples"]),
+				});
+			}
+
+			return list.ToArray();
+#endif
+		}
+
+		private static Sample[] DeserializeSamples(JsonValue jsonValue)
+		{
+			if(jsonValue is JsonArray samples)
+			{
+				var result = new List<Sample>();
+
+				foreach(var item in samples)
+				{
+					result.Add(new Sample {
+						Description = (string)item["Description"],
+						IconAccentPath = (string)item["IconAccentPath"],
+						IconPath = (string)item["IconPath"],
+						Id = (string)item["Id"],
+						Title = (string)item["Title"],
+						// Keywords = (string)item["Keywords"],
+					});
+				}
+
+				return result.ToArray();
+			}
+
+			return new Sample[0];
 		}
 	}
 }

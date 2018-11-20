@@ -10,8 +10,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uno.Playground.AspnetShell"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uno.Playground.WASM", "Uno.Playground.WASM\Uno.Playground.WASM.csproj", "{25DA869C-40CB-4C9A-A1E8-A685B7D4EA90}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Uno.Playground.Shared", "Uno.Playground.Shared\Uno.Playground.Shared.shproj", "{6279C845-92F8-4333-AB99-3D213163593C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uno.Playground.UWP", "Uno.Playground.UWP\Uno.Playground.UWP.csproj", "{B9799C1B-6092-4DF2-9274-7C127D1AB700}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Uno.Playground.Droid", "Uno.Playground.Droid\Uno.Playground.Droid.csproj", "{5077C264-AD1A-4FFA-899C-A564F624F161}"
@@ -22,9 +20,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Uno.Playground.Api", "Uno.P
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj", "{ED225EC8-FAAA-439D-B9BA-3723F6F5516C}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Uno.Playground.Shared", "Uno.Playground.Shared\Uno.Playground.Shared.shproj", "{6279C845-92F8-4333-AB99-3D213163593C}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{5077c264-ad1a-4ffa-899c-a564f624f161}*SharedItemsImports = 4
+		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{85473adf-7c3b-415b-b68d-0b90483ceb26}*SharedItemsImports = 4
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{b9799c1b-6092-4df2-9274-7c127d1ab700}*SharedItemsImports = 4
 	EndGlobalSection

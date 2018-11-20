@@ -56,12 +56,12 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
 		<PackageReference Include="Uno.Core" Version="1.25.0-dev.56" />
 		<PackageReference Include="Uno.Core.Build" Version="1.25.0-dev.56" />
 		<PackageReference Include="Uno.SourceGenerationTasks" Version="1.27.0-dev.117" />
 		<PackageReference Include="Uno.UI" Version="1.41.1-dev.195" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-PullRequest0026.89" />
+		<PackageReference Include="System.Json" Version="4.5.0" />
 		<PackageReference Include="Uno.CodeGen" Version="1.27.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
