@@ -29,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\IntToMod4DefaultValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SampleGroupTypeToColorBrushConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\JsonValueExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sample.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleForDisplay.cs" />

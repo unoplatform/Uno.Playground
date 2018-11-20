@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Newtonsoft.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -13,6 +12,13 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Json;
+using Uno.Playground.Extensions;
+
+#if HAS_JSON_NET
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+#endif
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,7 +33,58 @@ namespace Uno.UI.Demo.Samples
 		{
 			this.InitializeComponent();
 
+#if HAS_JSON_NET
 			var data = JsonConvert.DeserializeObject<ViewModel>(DataJson);
+#else
+			var root = System.Json.JsonObject.Parse(DataJson);
+
+			var vm = new ViewModel();
+
+			var feedPosts = new List<FeedPost>();
+			foreach (var item in root["FeedPosts"] as JsonArray)
+			{
+				feedPosts.Add(new FeedPost
+				{
+					Artist = item["Artist"],
+					Comments = item["Comments"],
+					IsLiked = item["IsLiked"],
+					Likes = item["Likes"],
+					Location = item["Location"],
+					Message = item["Message"],
+					PhotoSource = item["PhotoSource"],
+					ProfileSource = item["ProfileSource"],
+					Tags = item["Tags"],
+					Time = item["Time"],
+				});
+			}
+			vm.FeedPosts = feedPosts.ToArray();
+
+			var groupPosts = new List<GroupPost>();
+			foreach (var item in root["GroupPosts"] as JsonArray)
+			{
+				var groupPost = new GroupPost
+				{
+					Action = item["Action"],
+					ActionGroup = item["ActionGroup"],
+					ActionParty = item["ActionParty"],
+					Artist = item["Artist"],
+					IsAddPost = item["IsAddPost"],
+					ProfileSource = item["ProfileSource"],
+				};
+
+				var pictures = new List<string>();
+				foreach (var picture in item["Pictures"] as JsonArray)
+				{
+					pictures.Add(picture);
+				}
+
+				groupPost.Pictures = pictures.ToArray();
+				groupPosts.Add(groupPost);
+			}
+			vm.GroupPosts = groupPosts.ToArray();
+
+			var data = vm;
+#endif
 
 			DataContext = data;
 		}
