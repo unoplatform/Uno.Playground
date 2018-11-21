@@ -2788,22 +2788,6 @@
 				Value="0,8,0,0" />
 	</Style>
 
-	<ios:Style x:Key="NativeDefaultAppBarButton"
-			   TargetType="AppBarButton">
-		<Setter Property="Background"
-				Value="Transparent" />
-		<ios:Setter Property="Foreground"
-					Value="{x:Null}" />
-	</ios:Style>
-
-	<android:Style x:Key="NativeDefaultAppBarButton"
-				   TargetType="AppBarButton">
-		<Setter Property="Background"
-				Value="Transparent" />
-		<ios:Setter Property="Foreground"
-					Value="{x:Null}" />
-	</android:Style>
-
 	<Style x:Key="DatePickerFlyoutButtonStyle"
 		   TargetType="Button">
 		<Setter Property="UseSystemFocusVisuals"
