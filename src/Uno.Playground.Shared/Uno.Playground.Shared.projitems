@@ -15,8 +15,8 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Analytics.others.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Analytics.others.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics.wasm.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -24,40 +24,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DynamicAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\ItemsWrapGridBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToDefaultValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\IntToMod4DefaultValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SampleGroupTypeToColorBrushConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\CheckBox.xaml.cs">
-      <DependentUpon>CheckBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\GridView.xaml.cs">
-      <DependentUpon>GridView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\Animations.xaml.cs">
-      <DependentUpon>Animations.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\Brushes.xaml.cs">
-      <DependentUpon>Brushes.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\CommandBar.xaml.cs">
-      <DependentUpon>CommandBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\FlipView.xaml.cs">
-      <DependentUpon>FlipView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\HyperlinkButton.xaml.cs">
-      <DependentUpon>HyperlinkButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToDefaultValueConverter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\Form.xaml.cs">
-      <DependentUpon>Form.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\PasswordBox.xaml.cs">
-      <DependentUpon>PasswordBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="$(MSBuildThisFileDirectory)Samples\Playground.xaml.cs">
-      <DependentUpon>Playground.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Sample.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleForDisplay.cs" />
@@ -67,11 +37,35 @@
     <Compile Include="$(MSBuildThisFileDirectory)SamplesPage.xaml.cs">
       <DependentUpon>SamplesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\Animations.xaml.cs">
+      <DependentUpon>Animations.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\Brushes.xaml.cs">
+      <DependentUpon>Brushes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Samples\Button.xaml.cs">
       <DependentUpon>Button.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\CheckBox.xaml.cs">
+      <DependentUpon>CheckBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\CommandBar.xaml.cs">
+      <DependentUpon>CommandBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\FlipView.xaml.cs">
+      <DependentUpon>FlipView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\Form.xaml.cs">
+      <DependentUpon>Form.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\GridView.xaml.cs">
+      <DependentUpon>GridView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Samples\Homies.xaml.cs">
       <DependentUpon>Homies.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\HyperlinkButton.xaml.cs">
+      <DependentUpon>HyperlinkButton.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Samples\Image.xaml.cs">
       <DependentUpon>Image.xaml</DependentUpon>
@@ -84,6 +78,12 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Samples\Panels.xaml.cs">
       <DependentUpon>Panels.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\PasswordBox.xaml.cs">
+      <DependentUpon>PasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Samples\Playground.xaml.cs">
+      <DependentUpon>Playground.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Samples\Progress.xaml.cs">
       <DependentUpon>Progress.xaml</DependentUpon>
@@ -125,55 +125,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)TemplateSelectors\SampleItemTemplateSelector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="$(MSBuildThisFileDirectory)DefaultStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)CodeBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="$(MSBuildThisFileDirectory)DefaultStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Icons.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\CheckBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\GridView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\Animations.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\Brushes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\CommandBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\FlipView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\HyperlinkButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\Form.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\PasswordBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Samples\Playground.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -185,11 +145,43 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\Animations.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Samples\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\CheckBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\CommandBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\FlipView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\Form.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\GridView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Samples\Homies.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\HyperlinkButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,6 +198,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Samples\Panels.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\PasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Samples\Playground.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,10 +257,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="$(MSBuildThisFileDirectory)Styles\Controls\SplitView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Styles\Controls\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -278,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Styles\Controls\PasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Styles\Controls\SplitView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -315,6 +315,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\check.scale-400.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-android\scale-150\check.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-android\scale-150\menu.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-android\scale-150\search.png" />
@@ -345,19 +349,10 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-ios\star_empty.scale-300.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-ios\star_full.scale-200.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-ios\star_full.scale-300.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\check.scale-400.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\menu.scale-400.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\search.scale-400.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\star_empty.scale-400.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\star_full.scale-400.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\TestCard.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\UnoLogo.scale-200.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileGirl01.scale-200.jpg" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileGirl02.scale-200.jpg" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileGirl03.scale-200.jpg" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan01.scale-200.jpg" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan02.scale-200.jpg" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan03.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post01.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post02.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post03.scale-200.jpg" />
@@ -370,8 +365,13 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post10.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post11.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post12.scale-200.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileGirl01.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileGirl02.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileGirl03.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan01.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan02.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan03.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\TestCard.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\UnoLogo.scale-200.png" />
   </ItemGroup>
 </Project>
