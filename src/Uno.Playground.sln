@@ -25,6 +25,7 @@ EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{5077c264-ad1a-4ffa-899c-a564f624f161}*SharedItemsImports = 4
+		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{85473adf-7c3b-415b-b68d-0b90483ceb26}*SharedItemsImports = 4
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{b9799c1b-6092-4df2-9274-7c127d1ab700}*SharedItemsImports = 4
 	EndGlobalSection
