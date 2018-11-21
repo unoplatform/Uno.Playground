@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DynamicAnimation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\ItemsWrapGridBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\GalleryNavigationViewItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToDefaultValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\IntToMod4DefaultValueConverter.cs" />
@@ -122,6 +123,7 @@
       <DependentUpon>WebView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)TemplateSelectors\IconTemplateSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TemplateSelectors\MenuItemTemplateSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateSelectors\SampleItemTemplateSelector.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +268,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Styles\Controls\ListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Styles\Controls\GalleryNavigationViewItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

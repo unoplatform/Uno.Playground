@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Uno.Extensions;
+using Uno.Playground.Controls;
+using Uno.UI.Demo.TemplateSelectors;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
@@ -164,16 +166,28 @@ namespace Uno.UI.Demo
 			var featured = new Grouping<string, Sample>("Featured", featuredSamples);
 			var components = new Grouping<string, Sample>("Components", componentsSamples);
 
+			foreach (var item in featured)
+			{
+				navigationView.MenuItems.Add(new GalleryNavigationViewItem { DataContext = item, Content=item.Title, Style = Application.Current.Resources["largeGalleryItem"] as Style });
+			}
+
+			navigationView.MenuItems.Add(new NavigationViewItemSeparator());
+
+			foreach (var item in components)
+			{
+				navigationView.MenuItems.Add(new GalleryNavigationViewItem { DataContext = item, Content=item.Title, Style = Application.Current.Resources["smallGalleryItem"] as Style });
+			}
+
 #if __WASM__
 			DataContext = featured.Concat(components).ToArray();
 #else
-			var cvs = new CollectionViewSource
-			{
-				Source = new[] { featured, components },
-				IsSourceGrouped = true,
-			};
+			//var cvs = new CollectionViewSource
+			//{
+			//	Source = new[] { featured, components },
+			//	IsSourceGrouped = true,
+			//};
 
-			DataContext = cvs.View;
+			// DataContext = cvs.View;
 #endif
 		}
 
@@ -201,18 +215,18 @@ namespace Uno.UI.Demo
 		}
 #endif
 
-		private void SamplesList_ItemClick(object sender, ItemClickEventArgs e)
+		private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs e)
 		{
-			var sample = e.ClickedItem as Sample;
-			var type = Type.GetType($"Uno.UI.Demo.Samples.{sample.Title}");
+			var sample = e.InvokedItem.ToString();
+			var type = Type.GetType($"Uno.UI.Demo.Samples.{sample}");
 
 			if (IsPage(type))
 			{
-				Frame.Navigate(type);
+				samplesFrame.Navigate(type);
 			}
 			else if (IsUserControl(type))
 			{
-				Frame.Navigate(typeof(SamplePage), type);
+				samplesFrame.Navigate(typeof(SamplePage), type);
 			}
 			else
 			{
@@ -252,6 +266,7 @@ namespace Uno.UI.Demo
 
 		private void UpdateCollapsibleCommandBar(double verticalOffset)
 		{
+#if false
 			// We can't simply use Visibility.Collapsed on the CommandBar 
 			// because it would break the navigation transition on iOS.
 
@@ -269,6 +284,7 @@ namespace Uno.UI.Demo
 				CollapsibleCommandBar.Foreground = new SolidColorBrush(Colors.Transparent);
 				CollapsibleCommandBar.Background = new SolidColorBrush(Colors.Transparent);
 			}
+#endif
 		}
 
 		private static IEnumerable<DependencyObject> GetChildren(DependencyObject reference)
@@ -287,6 +303,7 @@ namespace Uno.UI.Demo
 			return children.Concat(children.SelectMany(GetDescendants));
 		}
 
-#endregion
+		#endregion
+
 	}
 }
