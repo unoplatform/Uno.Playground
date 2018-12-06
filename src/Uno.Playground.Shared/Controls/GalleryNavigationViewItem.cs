@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Uno.Playground.Controls
 {
-	public class GalleryNavigationViewItem : NavigationViewItem
+	public partial class GalleryNavigationViewItem : NavigationViewItem
 	{
 		public GalleryNavigationViewItem()
 		{

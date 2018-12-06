@@ -15,6 +15,50 @@
 
 	<templateSelectors:IconTemplateSelector x:Key="IconTemplateSelector" />
 
+	<SolidColorBrush x:Key="SystemControlTransparentBrush"
+					 Color="Transparent" />
+
+	<win:RevealBorderBrush x:Key="SystemControlBackgroundTransparentRevealBorderBrush"
+						   TargetTheme="Dark"
+						   Color="Transparent"
+						   FallbackColor="Transparent" />
+
+	<xamarin:SolidColorBrush x:Key="SystemControlBackgroundTransparentRevealBorderBrush"
+							 Color="Transparent" />
+
+	<win:RevealBorderBrush x:Key="SystemControlHighlightAltTransparentRevealBorderBrush"
+						   TargetTheme="Dark"
+						   Color="Transparent"
+						   FallbackColor="Transparent" />
+
+	<xamarin:SolidColorBrush x:Key="SystemControlHighlightAltTransparentRevealBorderBrush"
+							 Color="Transparent" />
+
+	<StaticResource x:Key="NavigationViewItemBorderBrush"
+					ResourceKey="SystemControlBackgroundTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushPointerOver"
+					ResourceKey="SystemControlHighlightAltTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushPressed"
+					ResourceKey="SystemControlHighlightAltTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushDisabled"
+					ResourceKey="SystemControlTransparentBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushChecked"
+					ResourceKey="SystemControlBackgroundTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushCheckedPointerOver"
+					ResourceKey="SystemControlHighlightAltTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushCheckedPressed"
+					ResourceKey="SystemControlHighlightAltTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushCheckedDisabled"
+					ResourceKey="SystemControlTransparentBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushSelected"
+					ResourceKey="SystemControlBackgroundTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushSelectedPointerOver"
+					ResourceKey="SystemControlHighlightAltTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushSelectedPressed"
+					ResourceKey="SystemControlHighlightAltTransparentRevealBorderBrush" />
+	<StaticResource x:Key="NavigationViewItemBorderBrushSelectedDisabled"
+					ResourceKey="SystemControlTransparentBrush" />
+
 	<Style x:Name="smallGalleryItem"
 		   TargetType="local:GalleryNavigationViewItem">
 		<Setter Property="Foreground"
@@ -24,7 +68,7 @@
 		<Setter Property="BorderBrush"
 				Value="{ThemeResource NavigationViewItemBorderBrush}" />
 		<Setter Property="BorderThickness"
-				Value="{StaticResource NavigationViewItemBorderThickness}" />
+				Value="{ThemeResource NavigationViewItemBorderThickness}" />
 		<Setter Property="UseSystemFocusVisuals"
 				Value="True" />
 		<Setter Property="HorizontalContentAlignment"
