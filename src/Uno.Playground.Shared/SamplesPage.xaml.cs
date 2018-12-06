@@ -168,7 +168,7 @@ namespace Uno.UI.Demo
 
 			foreach (var item in featured)
 			{
-				navigationView.MenuItems.Add(new GalleryNavigationViewItem { DataContext = item, Content=item.Title, Style = Application.Current.Resources["largeGalleryItem"] as Style });
+				navigationView.MenuItems.Add(new GalleryNavigationViewItem { DataContext = item, Content=item.Title, Tag=item.Description, Style = Application.Current.Resources["largeGalleryItem"] as Style });
 			}
 
 			navigationView.MenuItems.Add(new NavigationViewItemSeparator());

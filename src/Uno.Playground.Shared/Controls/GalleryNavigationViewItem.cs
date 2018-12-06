@@ -5,11 +5,11 @@ using Windows.UI.Xaml.Controls;
 
 namespace Uno.Playground.Controls
 {
-    public class GalleryNavigationViewItem : NavigationViewItem
+	public class GalleryNavigationViewItem : NavigationViewItem
 	{
 		public GalleryNavigationViewItem()
 		{
 			DefaultStyleKey = typeof(GalleryNavigationViewItem);
 		}
-    }
+	}
 }

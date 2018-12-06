@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Uno.Playground.TemplateSelectors
 {
-    public class MenuItemTemplateSelector
-    {
-    }
+	public class MenuItemTemplateSelector
+	{
+	}
 }

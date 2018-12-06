@@ -7,6 +7,7 @@
 		<ResourceDictionary Source="GalleryNavigationViewItem.xaml" />
 		<ResourceDictionary Source="ListView.xaml" />
 		<ResourceDictionary Source="ListViewItem.xaml" />
+		<ResourceDictionary Source="NavigationView.xaml" />
 		<ResourceDictionary Source="PasswordBox.xaml" />
 		<ResourceDictionary Source="TextBlock.xaml" />
 		<ResourceDictionary Source="TextBox.xaml" />
