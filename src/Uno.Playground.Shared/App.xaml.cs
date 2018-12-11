@@ -89,9 +89,6 @@ namespace Uno.UI.Demo
 			Console.WriteLine("launched!");
 			SetupAppCenter();
 
-#if __WASM__
-			ApplicationView.GetForCurrentView().Title = "Uno Playground";
-#endif
 #if DEBUG
 			if (System.Diagnostics.Debugger.IsAttached)
 			{
@@ -134,11 +131,7 @@ namespace Uno.UI.Demo
 					// When the navigation stack isn't restored navigate to the first page,
 					// configuring the new page by passing required information as a navigation
 					// parameter
-#if __WASM__
-					_rootFrame.Navigate(typeof(Samples.Playground), e.Arguments);
-#else
 					_rootFrame.Navigate(typeof(SamplesPage), e.Arguments);
-#endif
 				}
 
 				// Ensure the current window is active
