@@ -27,24 +27,10 @@ jobs:
 
     displayName: 'Install Emscripten'
 
-  - task: MSBuild@1
-    inputs:
-      solution: src/Build/Build.csproj
-      msbuildLocationMethod: version
-      msbuildVersion: latest
-      msbuildArchitecture: x86
-      msbuildArguments: "/r"
-      clean: false
-      maximumCpuCount: true
-      restoreNugetPackages: false
-      logProjectEvents: false
-      createLogFile: false
-
-
   - bash: |
       export PATH=$PATH:$(Agent.WorkFolder)/ninja-linux
       source $(Agent.WorkFolder)/emsdk/emsdk_env.sh
-      msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/$(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj
+      msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj
 
   - task: CopyFiles@2
     inputs:
