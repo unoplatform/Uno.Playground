@@ -1,0 +1,64 @@
+parameters:
+  pool: ''
+
+jobs:
+- job: linux
+  pool: ${{ parameters.pool }}
+
+  steps:
+  - checkout: self
+    clean: true
+  
+  - bash: |
+      sudo apt-get update
+      sudo apt-get install libc6
+      cd $(Agent.WorkFolder)
+      wget https://github.com/ninja-build/ninja/releases/download/v1.8.2/ninja-linux.zip
+      unzip -o ninja-linux.zip -d ninja-linux
+     
+    displayName: 'Install Ninja'
+
+  - bash: |
+      cd $(Agent.WorkFolder)
+      git clone https://github.com/juj/emsdk.git
+      cd emsdk
+      ./emsdk install latest
+      ./emsdk activate latest
+
+    displayName: 'Install Emscripten'
+
+  - task: MSBuild@1
+    inputs:
+      solution: src/Build/Build.csproj
+      msbuildLocationMethod: version
+      msbuildVersion: latest
+      msbuildArchitecture: x86
+      msbuildArguments: "/r"
+      clean: false
+      maximumCpuCount: true
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+
+
+  - bash: |
+      export PATH=$PATH:$(Agent.WorkFolder)/ninja-linux
+      source $(Agent.WorkFolder)/emsdk/emsdk_env.sh
+      msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/$(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
+      Contents: "**/*.*"
+      TargetFolder: $(build.artifactstagingdirectory)\wasm
+      CleanTargetFolder: false
+      OverWrite: false
+      flattenFolders: false
+ 
+  - task: PublishBuildArtifacts@1
+    # https://developercommunity.visualstudio.com/content/problem/284991/public-vsts-previouw-cant-set-build-number-of-pr-b.html
+    condition: eq(variables['System.PullRequest.IsFork'], 'False')
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
+      ArtifactName: universal-samples-drop
+      ArtifactType: Container

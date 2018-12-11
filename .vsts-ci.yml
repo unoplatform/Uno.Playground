@@ -186,3 +186,15 @@ jobs:
       PathtoPublish: $(build.artifactstagingdirectory)
       ArtifactName: drop
       ArtifactType: Container
+
+  - powershell: 'git clean -fdx'
+    displayName: Cleanup git repo
+    condition: always()
+
+- template: .vsts-linux-build.yml
+  parameters:
+    name: Linux
+    pool:
+      name: Default
+      demands:
+      - agent.os -equals Linux
