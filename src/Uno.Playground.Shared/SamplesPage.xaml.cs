@@ -191,7 +191,7 @@ namespace Uno.UI.Demo
 #endif
 		}
 
-#if __IOS__ || __ANDROID__
+#if false // __IOS__ || __ANDROID__
 		protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
 		{
 			if (e.SourcePageType == typeof(Samples.Playground))
