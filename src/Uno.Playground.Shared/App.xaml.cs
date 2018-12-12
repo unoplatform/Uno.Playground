@@ -86,7 +86,6 @@ namespace Uno.UI.Demo
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(LaunchActivatedEventArgs e)
 		{
-			Console.WriteLine("launched!");
 			SetupAppCenter();
 
 #if DEBUG

@@ -1,9 +1,22 @@
 ﻿<linker>
   <assembly fullname="Uno.Playground.WASM" />
+
   <assembly fullname="WebAssembly.Bindings" />
+
+  <assembly fullname="System">
+	<type fullname="System.ComponentModel.*Converter" />
+	<type fullname="System.*Converter" />
+  </assembly>
+
+  <assembly fullname="Uno.Foundation">
+	<type fullname="Uno.Foundation.Interop.JSObject" />
+  </assembly>
 
   <assembly fullname="Uno.UI">
 	<type fullname="Windows.UI.Xaml.Window" />
 	<type fullname="Windows.UI.Xaml.UIElement" />
+	<type fullname="Windows.UI.Xaml.GridLength" />
+	<type fullname="Windows.UI.Xaml.Media.ImageSourceConverter" />
   </assembly>
+
 </linker>

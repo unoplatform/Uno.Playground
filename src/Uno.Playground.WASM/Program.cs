@@ -6,9 +6,11 @@ namespace Uno.UI.Demo
 	{
 		private static App _app;
 
-		public static void Main(string[] args)
+		public static int Main(string[] args)
 		{
 			_app = new App();
+
+			return 0;
 		}
 	}
 }
