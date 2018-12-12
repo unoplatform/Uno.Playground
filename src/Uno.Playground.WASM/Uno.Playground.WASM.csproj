@@ -27,7 +27,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\Uno.Playground.UWP\Assets\*.png" Link="Assets\%(FileName)%(Extension)" />
 		<Content Include="Fonts\winjs-symbols.woff2" />
 		<Content Include="ts\GoogleAnalytics.ts" />
 	</ItemGroup>
