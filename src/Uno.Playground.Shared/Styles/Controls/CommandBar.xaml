@@ -4,8 +4,9 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:xamarin="http://uno.ui/xamarin"
 					xmlns:ios="http://uno.ui/ios"
+					xmlns:wasm="http://uno.ui/ios"
 					xmlns:android="http://uno.ui/android"
-					mc:Ignorable="xamarin android ios">
+					mc:Ignorable="xamarin android ios wasm">
 
 	<x:Double x:Key="CommandBarElevation">4</x:Double>
 
@@ -19,6 +20,8 @@
 		<android:Setter Property="(toolkit:UIElementExtensions.Elevation)"
 						Value="0" />
 	</Style>
+
+	<wasm:Style x:Key="NativeDefaultCommandBar" TargetType="CommandBar" />
 
 	<Style x:Key="DefaultCommandBarStyle"
 		   TargetType="CommandBar"

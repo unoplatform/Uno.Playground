@@ -33,8 +33,14 @@ namespace Uno.UI.Demo
 
 			Initialize();
 
+			samplesFrame.NavigationFailed += SamplesFrame_NavigationFailed;
 			Loaded += SamplesPage_Loaded;
 			UpdateCollapsibleCommandBar(0);
+		}
+
+		private void SamplesFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+		{
+			Console.WriteLine($"Navigation to {e.SourcePageType} failed: {e.Exception}");
 		}
 
 		private void Initialize()
@@ -218,7 +224,7 @@ namespace Uno.UI.Demo
 		private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs e)
 		{
 			var sample = e.InvokedItem.ToString();
-			var type = Type.GetType($"Uno.UI.Demo.Samples.{sample}");
+			var type = Type.GetType($"Uno.UI.Demo.Samples.{sample}, {GetType().Assembly.FullName}");
 
 			if (IsPage(type))
 			{

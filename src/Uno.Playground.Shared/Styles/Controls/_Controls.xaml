@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+					xmlns:wasm="http://uno.ui/wasm"
+					xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					mc:Ignorable="d wasm">
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Button.xaml" />
@@ -13,5 +17,9 @@
 		<ResourceDictionary Source="TextBlock.xaml" />
 		<ResourceDictionary Source="TextBox.xaml" />
 	</ResourceDictionary.MergedDictionaries>
+
+	<!-- Add explicit WASM styles for native controls to avoid having complex conditionals -->
+	<wasm:Style x:Key="NativeDefaultToggleSwitch" BasedOn="{StaticResource XamlDefaultToggleSwitch}" TargetType="ToggleSwitch" />
+	<wasm:Style x:Key="NativeDefaultSlider" TargetType="Slider" BasedOn="{StaticResource XamlDefaultSlider}" />
 
 </ResourceDictionary>
