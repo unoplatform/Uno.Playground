@@ -5,7 +5,8 @@
 					xmlns:ios="http://uno.ui/ios"
 					xmlns:android="http://uno.ui/android"
 					xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					mc:Ignorable="ios android">
+					xmlns:wasm="http://uno.ui/wasm"
+					mc:Ignorable="ios android wasm">
 
 	<ios:Style x:Key="NativeDefaultFrame"
 			   TargetType="Frame">
@@ -53,6 +54,10 @@
 			</Setter.Value>
 		</Setter>
 	</win:Style>
+
+	<wasm:Style x:Key="NativeDefaultFrame"
+	            TargetType="Frame">
+	</wasm:Style>
 
 	<Style TargetType="Frame"
 		   BasedOn="{StaticResource NativeDefaultFrame}" />
