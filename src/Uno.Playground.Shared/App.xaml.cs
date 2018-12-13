@@ -72,7 +72,11 @@ namespace Uno.UI.Demo
 						// { "ReferenceHolder", LogLevel.Debug },
 					}
 				)
+#if DEBUG
+				.AddConsole(LogLevel.Trace);
+#else
 				.AddConsole(LogLevel.Debug);
+#endif
 		}
 
 		/// <summary>
