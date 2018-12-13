@@ -29,6 +29,7 @@
 	<ItemGroup>
 		<Content Include="Fonts\winjs-symbols.woff2" />
 		<Content Include="ts\GoogleAnalytics.ts" />
+		<Content Include="web.config" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,6 +39,10 @@
 		<UpToDateCheckInput Include="ts\**\*" />
 		<UpToDateCheckInput Include="WasmCSS\**\*" />
 		<UpToDateCheckInput Include="WasmScripts\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="web.config" />
 	</ItemGroup>
 
 	<ItemGroup>
