@@ -5,8 +5,6 @@ phases:
   variables:
     NUGET_PACKAGES: $(Agent.WorkFolder)\.nuget
     NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)\.nuget-http-cache
-    CombinedConfiguration: Release|Any CPU
-    CI_Build: true
 
   queue:
     name: Default
@@ -30,20 +28,13 @@ phases:
   - task: NuGetCommand@2
     inputs:
       command: restore
-      solution: src\Uno.Playground.Uwp\Uno.Playground.Uwp.csproj
-      selectOrConfig: select
-      includeNuGetOrg: true
-      verbosityRestore: Normal
-
-  - task: NuGetCommand@2
-    inputs:
-      command: restore
-      solution: src\Build\Build.csproj
+      solution: src\Uno.Playground.sln
       selectOrConfig: select
       includeNuGetOrg: true
       verbosityRestore: Normal
 
   - task: MSBuild@1
+    displayName: 'Update version'
     inputs:
       solution: src\Build\Build.proj
       msbuildLocationMethod: version
@@ -57,8 +48,9 @@ phases:
       createLogFile: false
 
   - task: MSBuild@1
+    displayName: 'Build solution'
     inputs:
-      solution: src\Uno.Playground.Uwp\Uno.Playground.Uwp.csproj
+      solution: src\Uno.Playground.sln
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
@@ -68,6 +60,15 @@ phases:
       restoreNugetPackages: false
       logProjectEvents: false
       createLogFile: false
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
+      Contents: '**/*.*'
+      TargetFolder: $(build.artifactstagingdirectory)\wasm
+      CleanTargetFolder: false
+      OverWrite: false
+      flattenFolders: false
 
   - task: PublishBuildArtifacts@1
     condition: always()
@@ -80,12 +81,10 @@ phases:
     displayName: Cleanup git repo
     condition: always()
 
-
 - phase: MacOS_Agent
   variables:
     NUGET_PACKAGES: $(Agent.WorkFolder)/.nuget
     NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)/.nuget-http-cache
-    CombinedConfiguration: Release_iOS|Any CPU
  
   queue:
     name: Default
