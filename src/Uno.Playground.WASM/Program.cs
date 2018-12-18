@@ -8,7 +8,7 @@ namespace Uno.UI.Demo
 
 		public static int Main(string[] args)
 		{
-			Uno.UI.FeatureConfiguration.Interop.ForceJavascriptInterop = true;
+			// Uno.UI.FeatureConfiguration.Interop.ForceJavascriptInterop = true;
 
 			Console.WriteLine("go");
 			_app = new App();
