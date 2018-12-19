@@ -5,11 +5,17 @@ continuous-delivery-fallback-tag: ""
 branches:
   master:
     tag: dev
-  (stable):
+  stable:
+    regex: (stable)
     tag: 
-  dev/.*?/(.*?):
+    source-branches: [master]
+  dev:
+    regex: dev/.*?/(.*?)
     tag: dev.{BranchName}
-  projects/(.*?):
+    source-branches: [master]
+  project:
+    regex: projects/(.*?)
     tag: proj-{BranchName}
+    source-branches: [master]
 ignore:
   sha: []

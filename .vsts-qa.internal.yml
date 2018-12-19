@@ -1,31 +1,33 @@
-phases:
+variables:
+  NUGET_PACKAGES: $(Agent.WorkFolder)/.nuget
+  NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)/.nuget-http-cache
+  UnoPackageOutputPath: $(Build.ArtifactStagingDirectory)/Packages
 
-
-- phase: UWP
-  variables:
-    NUGET_PACKAGES: $(Agent.WorkFolder)\.nuget
-    NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)\.nuget-http-cache
-
-  queue:
+jobs:
+- job: UWP
+  pool:
     name: Default
     demands:
     - VS15.7.2
+  workspace:
+    clean: all
 
   steps:
   - checkout: self
     clean: true
     lfs: true
     
-  - task: GitVersion@3
-    inputs:
-      updateAssemblyInfo: false
+  - task: gittools.gitversion.gitversion-task.GitVersion@4
+    displayName: 'Generate version'
 
   - task: NuGetToolInstaller@0
+    displayName: 'Install NuGet 4.7.0'
     inputs:
       versionSpec: 4.7.0
       checkLatest: false
 
   - task: NuGetCommand@2
+    displayName: 'Restore solution packages'
     inputs:
       command: restore
       solution: src\Uno.Playground.sln
@@ -40,7 +42,6 @@ phases:
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: 
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
@@ -54,64 +55,67 @@ phases:
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\uwp" /t:Publish "/p:Configuration=Release;Platform=x86" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundlePlatforms="x86|x64|arm" /p:AppxBundle=Always
+      configuration: Release
+      platform: 'Any CPU'
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
       logProjectEvents: false
       createLogFile: false
 
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
-      Contents: '**/*.*'
-      TargetFolder: $(build.artifactstagingdirectory)\wasm
-      CleanTargetFolder: false
-      OverWrite: false
-      flattenFolders: false
-
   - task: PublishBuildArtifacts@1
+    displayName: 'Publish artifacts'
     condition: always()
     inputs:
-      PathtoPublish: $(build.artifactstagingdirectory)
+      PathtoPublish: $(Build.ArtifactStagingDirectory)
       ArtifactName: drop
       ArtifactType: Container
 
-  - powershell: 'git clean -fdx'
-    displayName: Cleanup git repo
-    condition: always()
-
-- phase: MacOS_Agent
-  variables:
-    NUGET_PACKAGES: $(Agent.WorkFolder)/.nuget
-    NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)/.nuget-http-cache
- 
-  queue:
+- job: MacOS_Agent 
+  pool:
     name: Default
     demands:
     - Agent.OS -equals Darwin
-    - Xamarin.iOS -equals 11.10.1.178
- 
+    - Xamarin.iOS -equals Latest
+  workspace:
+    clean: all
+  variables:
+    TargetProject: $(Build.SourcesDirectory)/src/Uno.Playground.iOS/Uno.Playground.iOS.csproj
+
   steps:
   - checkout: self
     clean: true
     lfs: true
+
+  #Fixes gitversion task
+  - bash: |
+     shopt -s nullglob
+     function join_by { local IFS="$1"; shift; echo "$*"; }
+     lib_path=$(join_by ';' $(Agent.WorkFolder)/_tasks/GitVersion*/4.0.*/lib/osx)
+     echo LD_LIBRARY_PATH: $lib_path
+     echo "##vso[task.setvariable variable=LD_LIBRARY_PATH]$lib_path"
+
+  - task: gittools.gitversion.gitversion-task.GitVersion@4
+    displayName: 'Generate version'
  
   - task: NuGetToolInstaller@0
+    displayName: 'Install NuGet 4.7.0'
     inputs:
-      versionSpec: 4.3.0
+      versionSpec: 4.7.0
       checkLatest: false
  
   - task: NuGetCommand@2
+    displayName: 'Restore iOS packages'
     inputs:
       command: restore
-      solution: $(Build.SourcesDirectory)/src/Uno.Playground.iOS/Uno.Playground.iOS.csproj
+      solution: $(TargetProject)
       selectOrConfig: select
       includeNuGetOrg: true
       verbosityRestore: Normal
       noCache: true
  
   - task: NuGetCommand@2
+    displayName: 'Restore build packages'
     inputs:
       command: restore
       solution: $(Build.SourcesDirectory)/src/Build/Build.csproj
@@ -121,6 +125,7 @@ phases:
       noCache: true
  
   - task: MSBuild@1
+    displayName: 'Update version'
     inputs:
       solution: src/Build/build.proj
       msbuildLocationMethod: version
@@ -134,34 +139,23 @@ phases:
       createLogFile: false
  
   - task: MSBuild@1
+    displayName: 'Build iOS project'
     inputs:
-      solution: $(Build.SourcesDirectory)/src/Uno.Playground.iOS/Uno.Playground.iOS.csproj
+      solution: $(TargetProject)
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: /p:CheckExclusions=True "/p:Configuration=Release" "/p:Platform=iPhone"
+      configuration: Release
+      platform: iPhone
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
       logProjectEvents: false
       createLogFile: false
-       
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.iOS/bin/iPhone/Release
-      Contents: '**/*.ipa'
-      TargetFolder: $(build.artifactstagingdirectory)/ios
-      CleanTargetFolder: false
-      OverWrite: false
-      flattenFolders: false
  
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: $(build.artifactstagingdirectory)
+      PathtoPublish: $(Build.ArtifactStagingDirectory)
       ArtifactName: drop
       ArtifactType: Container
- 
-  - bash: 'git clean -fdx'
-    displayName: Cleanup git repo
-    condition: always()
 
