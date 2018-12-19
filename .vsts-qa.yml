@@ -1,24 +1,16 @@
-phases:
-
-
-- phase: UWP
-  variables:
-    NUGET_PACKAGES: $(Agent.WorkFolder)\.nuget
-    NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)\.nuget-http-cache
-    CombinedConfiguration: Release|Any CPU
-    CI_Build: true
-
-  queue:
+jobs:
+- job: UWP
+  pool:
     name: "Hosted VS2017"
+  workspace:
+    clean: all
 
   steps:
   - checkout: self
     clean: true
     lfs: true
     
-  - task: GitVersion@3
-    inputs:
-      updateAssemblyInfo: false
+  - task: gittools.gitversion.gitversion-task.GitVersion@4
 
   - task: NuGetToolInstaller@0
     inputs:
@@ -74,27 +66,30 @@ phases:
       ArtifactName: drop
       ArtifactType: Container
 
-  - powershell: 'git clean -fdx'
-    displayName: Cleanup git repo
-    condition: always()
-
-
-- phase: MacOS_Agent
-  variables:
-    NUGET_PACKAGES: $(Agent.WorkFolder)/.nuget
-    NUGET_HTTP_CACHE_PATH: $(Agent.WorkFolder)/.nuget-http-cache
-    CombinedConfiguration: Release_iOS|Any CPU
- 
-  queue:
+- job: MacOS_Agent
+  pool:
     name: "Hosted macOS Preview"
     demands:
     - Agent.OS -equals Darwin
+
+  workspace:
+    clean: all
  
   steps:
   - checkout: self
     clean: true
     lfs: true
- 
+
+  #Fixes gitversion task
+  - bash: |
+     shopt -s nullglob
+     function join_by { local IFS="$1"; shift; echo "$*"; }
+     lib_path=$(join_by ';' $(Agent.WorkFolder)/_tasks/GitVersion*/4.0.*/lib/osx)
+     echo LD_LIBRARY_PATH: $lib_path
+     echo "##vso[task.setvariable variable=LD_LIBRARY_PATH]$lib_path"
+
+  - task: gittools.gitversion.gitversion-task.GitVersion@4
+
   - task: NuGetToolInstaller@0
     inputs:
       versionSpec: 4.3.0
@@ -158,8 +153,4 @@ phases:
       PathtoPublish: $(build.artifactstagingdirectory)
       ArtifactName: drop
       ArtifactType: Container
- 
-  - bash: 'git clean -fdx'
-    displayName: Cleanup git repo
-    condition: always()
 
