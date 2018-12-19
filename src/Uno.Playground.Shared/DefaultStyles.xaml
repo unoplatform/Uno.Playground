@@ -3437,5 +3437,68 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+	
+	<Style TargetType="GridViewItem"
+		   x:Key="LeanGridViewItemExpanded">
+		<Setter Property="FontFamily"
+				Value="{ThemeResource ContentControlThemeFontFamily}" />
+		<Setter Property="FontSize"
+				Value="{ThemeResource ControlContentThemeFontSize}" />
+		<Setter Property="Background"
+				Value="Transparent" />
+		<Setter Property="Foreground"
+				Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+		<Setter Property="TabNavigation"
+				Value="Local" />
+		<Setter Property="IsHoldingEnabled"
+				Value="True" />
+		<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+		<Setter Property="Margin"
+				Value="0,0,4,4" />
+		<Setter Property="MinWidth"
+				Value="{ThemeResource GridViewItemMinWidth}" />
+		<Setter Property="MinHeight"
+				Value="{ThemeResource GridViewItemMinHeight}" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="GridViewItem">
+					<Grid x:Name="RootGrid"
+						  Background="{TemplateBinding Background}"
+						  BorderBrush="{TemplateBinding BorderBrush}"
+						  BorderThickness="{TemplateBinding BorderThickness}">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="PointerOver">
+									<VisualState.Setters>
+										<Setter Target="RootGrid.Background"
+												Value="{StaticResource Color18Brush}" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="Pressed">
+									<VisualState.Setters>
+										<Setter Target="RootGrid.Background"
+												Value="{StaticResource Color18Brush}" />
+									</VisualState.Setters>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+
+						<ContentPresenter x:Name="ContentPresenter"
+										  xamarin:Content="{TemplateBinding Content}"
+										  xamarin:ContentTemplate="{TemplateBinding ContentTemplate}"
+										  xamarin:ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+										  ContentTransitions="{TemplateBinding ContentTransitions}"
+										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										  Margin="{TemplateBinding Padding}" />
+					</Grid>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 
 </ResourceDictionary>
