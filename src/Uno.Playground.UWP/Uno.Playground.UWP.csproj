@@ -208,4 +208,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\Package.targets" />
 </Project>

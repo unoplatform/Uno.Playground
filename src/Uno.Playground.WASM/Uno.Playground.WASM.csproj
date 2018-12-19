@@ -10,6 +10,7 @@
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
+		<WasmHead>true</WasmHead>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -69,5 +70,5 @@
 	</Target>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
-
+	<Import Project="..\Package.targets" />
 </Project>

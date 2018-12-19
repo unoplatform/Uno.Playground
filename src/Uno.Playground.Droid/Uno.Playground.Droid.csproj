@@ -170,4 +170,5 @@
 		</Target>
  -->
   <Target Name="GenerateBuild" DependsOnTargets="SignAndroidPackage" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)'==''" />
+  <Import Project="..\Package.targets" />
 </Project>

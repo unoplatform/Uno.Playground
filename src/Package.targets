@@ -1,0 +1,50 @@
+<Project>
+	<!--
+	The targets in this file copy the output binaries of the different heads to a specific folder.
+	
+	To enable them, the following line needs to be added to every csproj (the location of Package.targets may need to be adjusted):
+	<Import Project="Package.targets" />
+	
+	The UnoPackageOutputPath MSBuild variable will then be used as the target folder for the copy. If it is not set, the copy will not happen.
+	-->
+	
+	<Target Name="_CopyAndroidPackagesForPublishing"
+			AfterTargets="Build"
+			DependsOnTargets="SignAndroidPackage"
+			Condition="'$(UnoPackageOutputPath)'!='' and '$(AndroidApplication)'=='true'">
+		<Copy SourceFiles="@(ApkAbiFilesSigned)"
+			DestinationFiles="@(ApkAbiFilesSigned->'$(UnoPackageOutputPath)\Android\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
+
+	<Target Name="_CopyUWPPackagesForPublishing"
+			AfterTargets="Build"
+			Condition="'$(UnoPackageOutputPath)'!='' and '$(AppxBundle)'=='Always' and Exists('$(AppxBundleOutput)')">
+		<Copy SourceFiles="$(AppxBundleOutput)"
+			  DestinationFolder="$(UnoPackageOutputPath)\UWP\" />
+	</Target>
+
+	<Target Name="_CopyiOSPackagesForPublishing"
+			AfterTargets="Build"
+			Condition="'$(UnoPackageOutputPath)'!='' and '$(BuildIpa)'=='True' and Exists('$(IpaPackagePath)')">
+		<Copy SourceFiles="$(IpaPackagePath)"
+			  DestinationFolder="$(UnoPackageOutputPath)\iOS\" />
+		
+		<ItemGroup>
+			<_dSYMFiles Include="$(AppBundleDir).dSYM\**\*.*" />
+		</ItemGroup>
+
+		<Copy SourceFiles="@(_dSYMFiles)"
+			  DestinationFolder="$(UnoPackageOutputPath)\iOS\$(_AppBundleName).dSYM\" />
+	</Target>
+
+	<Target Name="_CopyWasmPackagesForPublishing"
+			AfterTargets="Build"
+			Condition="'$(UnoPackageOutputPath)'!='' and '$(WasmHead)'=='true'">
+		<ItemGroup>
+			<_WasmFiles Include="$(OutputPath)dist\**\*.*" />
+		</ItemGroup>
+		
+		<Copy SourceFiles="@(_WasmFiles)"
+			  DestinationFolder="$(UnoPackageOutputPath)\Wasm\" />
+	</Target>
+</Project>
