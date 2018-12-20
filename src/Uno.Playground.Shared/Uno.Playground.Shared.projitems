@@ -375,6 +375,7 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post02.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post03.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post04.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\Post05.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post05.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post06.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Post07.scale-200.jpg" />
