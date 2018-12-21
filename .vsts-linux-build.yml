@@ -22,8 +22,10 @@ jobs:
       cd $(Agent.WorkFolder)
       git clone https://github.com/juj/emsdk.git
       cd emsdk
-      ./emsdk install latest
-      ./emsdk activate latest
+      ./emsdk install emscripten-1.38.13
+      ./emsdk activate emscripten-1.38.13
+      cd emscripten/1.38.13
+      patch -N -p1 < $(build.sourcesdirectory)/src/Build/fix-emscripten-7399.diff
 
     displayName: 'Install Emscripten'
 
