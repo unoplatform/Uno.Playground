@@ -31,8 +31,8 @@ namespace Uno.UI.Demo
 
 			Initialize();
 
-			Loaded += SamplesPage_Loaded;
-			UpdateCollapsibleCommandBar(0);
+			//Loaded += SamplesPage_Loaded;
+			//UpdateCollapsibleCommandBar(0);
 		}
 
 		private void Initialize()
@@ -229,64 +229,5 @@ namespace Uno.UI.Demo
 		{
 			return !IsPage(type) && typeof(UserControl).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo());
 		}
-
-#region CollapsibleCommandBar
-
-		private const double CollapsibleCommandBarScrollThreshold = 48;
-
-		private void SamplesPage_Loaded(object sender, RoutedEventArgs e)
-		{
-			var scrollViewer = GetDescendants(this).OfType<ScrollViewer>().FirstOrDefault();
-			if (scrollViewer != null)
-			{
-				scrollViewer.ViewChanged -= ScrollViewer_ViewChanged;
-				scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
-			}
-		}
-
-		private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-		{
-			var scrollViewer = sender as ScrollViewer;
-			UpdateCollapsibleCommandBar(scrollViewer.VerticalOffset);
-		}
-
-		private void UpdateCollapsibleCommandBar(double verticalOffset)
-		{
-			// We can't simply use Visibility.Collapsed on the CommandBar 
-			// because it would break the navigation transition on iOS.
-
-			if (verticalOffset > CollapsibleCommandBarScrollThreshold)
-			{
-				CollapsibleCommandBar.IsHitTestVisible = true;
-				CollapsibleCommandBar.Opacity = 1;
-				CollapsibleCommandBar.Foreground = new SolidColorBrush(Colors.Black);
-				CollapsibleCommandBar.Background = new SolidColorBrush(Colors.White);
-			}
-			else
-			{
-				CollapsibleCommandBar.IsHitTestVisible = false;
-				CollapsibleCommandBar.Opacity = 0;
-				CollapsibleCommandBar.Foreground = new SolidColorBrush(Colors.Transparent);
-				CollapsibleCommandBar.Background = new SolidColorBrush(Colors.Transparent);
-			}
-		}
-
-		private static IEnumerable<DependencyObject> GetChildren(DependencyObject reference)
-		{
-			var childrenCount = VisualTreeHelper.GetChildrenCount(reference);
-			for (int i = 0; i < childrenCount; i++)
-			{
-				var child = VisualTreeHelper.GetChild(reference, i);
-				yield return child;
-			}
-		}
-
-		private static IEnumerable<DependencyObject> GetDescendants(DependencyObject reference)
-		{
-			var children = GetChildren(reference);
-			return children.Concat(children.SelectMany(GetDescendants));
-		}
-
-#endregion
 	}
 }

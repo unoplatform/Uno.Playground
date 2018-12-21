@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)TemplateSelectors\IconTemplateSelector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateSelectors\SampleItemTemplateSelector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UnoPlatformShell.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)CodeBox.xaml">
@@ -313,11 +314,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="$(MSBuildThisFileDirectory)UnoPlatformShell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Assets\GithubLogo.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\check.scale-400.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-android\scale-150\check.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\Icons\custom-android\scale-150\menu.png" />
@@ -371,7 +377,10 @@
     <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan01.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan02.scale-200.jpg" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\ProfileMan03.scale-200.jpg" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\SplashScreen.png" />
     <Content Include="$(MSBuildThisFileDirectory)Assets\TestCard.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Assets\UnoLogo.scale-200.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\TwitterLogo.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\UnoLogo.png" />
+    <Content Include="$(MSBuildThisFileDirectory)Assets\UnoLogo_small.png" />
   </ItemGroup>
 </Project>
