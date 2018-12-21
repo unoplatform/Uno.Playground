@@ -59,7 +59,7 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Json" Version="4.5.0" />
-		<PackageReference Include="Uno.UI" Version="1.43.0-dev.551" />
+		<PackageReference Include="Uno.UI" Version="1.43.0-dev.564" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.131" />
 		<PackageReference Include="Uno.CodeGen" Version="1.30.0-dev.102" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
