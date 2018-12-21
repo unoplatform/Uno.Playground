@@ -24,9 +24,30 @@ namespace Uno.UI.Demo.Behaviors
 
 		private static void OnMaxItemSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var itemsWrapGrid = d as ItemsWrapGrid;
-			UpdateItemSize(itemsWrapGrid);
-			Window.Current.SizeChanged += (_, __) => UpdateItemSize(itemsWrapGrid);
+			// Create a weak reference to the 
+			var weakItemsWrapGrid = new WeakReference(d);
+
+			UpdateItemSize(weakItemsWrapGrid.Target as ItemsWrapGrid);
+
+			WindowSizeChangedEventHandler handler = null;
+
+			handler = (_, __) =>
+			{
+				if (weakItemsWrapGrid.Target is ItemsWrapGrid itemsWrapGrid)
+				{
+					UpdateItemSize(itemsWrapGrid);
+				}
+				else
+				{
+					// Unregister the delegate if the target instance is not available anymore.
+					Window.Current.SizeChanged -= handler;
+				}
+			};
+
+			// The Uno ItemsWrapGrid is "virtual" and does not yet provide a parent for
+			// which we can get the size.
+			// This behavior assumes that the GridView will fill up the screen's width.
+			Window.Current.SizeChanged += handler;
 		}
 
 		private static void UpdateItemSize(ItemsWrapGrid itemsWrapGrid)

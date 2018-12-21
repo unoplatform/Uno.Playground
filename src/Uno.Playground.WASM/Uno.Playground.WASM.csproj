@@ -10,6 +10,7 @@
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
+		<WasmHead>true</WasmHead>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -28,6 +29,7 @@
 		<Content Include="..\Uno.Playground.UWP\Assets\*.png" Link="Assets\%(FileName)%(Extension)" />
 		<Content Include="Fonts\winjs-symbols.woff2" />
 		<Content Include="ts\GoogleAnalytics.ts" />
+		<Content Include="web.config" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,6 +39,10 @@
 		<UpToDateCheckInput Include="ts\**\*" />
 		<UpToDateCheckInput Include="WasmCSS\**\*" />
 		<UpToDateCheckInput Include="WasmScripts\**\*" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="web.config" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,9 +59,9 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="1.40.0" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.40" />
-		<PackageReference Include="Uno.CodeGen" Version="1.27.0" />
+		<PackageReference Include="Uno.UI" Version="1.43.0-dev.551" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.131" />
+		<PackageReference Include="Uno.CodeGen" Version="1.30.0-dev.102" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 	</ItemGroup>
@@ -69,5 +75,5 @@
 	</Target>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
-
+	<Import Project="..\Package.targets" />
 </Project>

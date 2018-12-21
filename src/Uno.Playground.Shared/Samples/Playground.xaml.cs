@@ -31,6 +31,7 @@ using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Newtonsoft.Json.Linq;
+using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Toolkit;
 
@@ -537,7 +538,7 @@ namespace Uno.UI.Demo.Samples
 			LaunchUpdate();
 		}
 
-		private void Update_OnTapped(object sender, TappedRoutedEventArgs e)
+		private void Update_OnTapped(object sender, RoutedEventArgs e)
 		{
 			LaunchUpdate();
 		}
@@ -559,14 +560,14 @@ namespace Uno.UI.Demo.Samples
 			}
 		}
 
-		private void CopyError(object sender, TappedRoutedEventArgs e)
+		private void CopyError(object sender, RoutedEventArgs e)
 		{
 			var clipboardData = new DataPackage();
 			clipboardData.SetText(_currentError?.ToString() ?? "No error");
 			Clipboard.SetContent(clipboardData);
 		}
 
-		private void CloseErrorPane(Object sender, TappedRoutedEventArgs e)
+		private void CloseErrorPane(Object sender, RoutedEventArgs e)
 		{
 			errorBorder.Visibility = Visibility.Collapsed;
 		}
@@ -658,10 +659,10 @@ namespace Uno.UI.Demo.Samples
 			await Launcher.LaunchUriAsync(new Uri("http://platform.uno/"));
 		}
 
-		private void ShowXaml(object sender, TappedRoutedEventArgs e) => SelectTab("XAML");
-		private void ShowData(object sender, TappedRoutedEventArgs e) => SelectTab("DATA");
+		private void ShowXaml(object sender, RoutedEventArgs e) => SelectTab("XAML");
+		private void ShowData(object sender, RoutedEventArgs e) => SelectTab("DATA");
 
-		private void ShowOutput(object sender, TappedRoutedEventArgs e)
+		private void ShowOutput(object sender, RoutedEventArgs e)
 		{
 			SelectTab("OUTPUT");
 			LaunchUpdate();
@@ -669,6 +670,8 @@ namespace Uno.UI.Demo.Samples
 
 		private void SelectTab(string pane)
 		{
+			this.Log().Info($"Going to tab {pane ?? "none"}");
+
 			switch (pane)
 			{
 				case "XAML":

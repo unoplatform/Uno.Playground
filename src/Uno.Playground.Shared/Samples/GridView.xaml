@@ -18,7 +18,7 @@
 	<GridView x:Name="gridView">
 		<GridView.ItemContainerStyle>
 			<Style TargetType="GridViewItem"
-				   xamarin:BasedOn="{StaticResource GridViewItemExpanded}">
+				   xamarin:BasedOn="{StaticResource LeanGridViewItemExpanded}">
 				<Setter Property="VerticalContentAlignment"
 						Value="Stretch" />
 				<Setter Property="HorizontalContentAlignment"

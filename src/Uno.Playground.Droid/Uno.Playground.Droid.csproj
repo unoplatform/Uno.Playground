@@ -37,10 +37,11 @@
     <BundleAssemblies>false</BundleAssemblies>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
+    <AndroidSupportedAbis />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -54,7 +55,8 @@
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis />
+    <AndroidSupportedAbis>armeabi-v7a;arm64-v8a</AndroidSupportedAbis>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -79,18 +81,18 @@
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Uno.CodeGen">
-      <Version>1.27.0</Version>
+      <Version>1.30.0-dev.102</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.24.0</Version>
+      <Version>1.26.0-dev.58</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.40.0</Version>
+      <Version>1.43.0-dev.551</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
     <PackageReference Include="Uno.UniversalImageLoader">
-      <Version>1.9.31</Version>
+      <Version>1.9.32</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v4">
       <Version>26.1.0.1</Version>
@@ -170,4 +172,5 @@
 		</Target>
  -->
   <Target Name="GenerateBuild" DependsOnTargets="SignAndroidPackage" AfterTargets="Build" Condition="'$(BuildingInsideVisualStudio)'==''" />
+  <Import Project="..\Package.targets" />
 </Project>

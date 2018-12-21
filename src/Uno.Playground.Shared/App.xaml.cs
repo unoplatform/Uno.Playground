@@ -35,9 +35,7 @@ namespace Uno.UI.Demo
 		/// </summary>
 		public App()
 		{
-#if DEBUG
 			ConfigureFilters(LogExtensionPoint.AmbientLoggerFactory);
-#endif
 
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
@@ -45,6 +43,7 @@ namespace Uno.UI.Demo
 
 		static void ConfigureFilters(ILoggerFactory factory)
 		{
+#if !DEBUG
 			factory
 				.WithFilter(new FilterLoggerSettings
 					{
@@ -66,13 +65,17 @@ namespace Uno.UI.Demo
 						   
 						// Binding related messages
 						// { "Windows.UI.Xaml.Data", LogLevel.Debug },
-						// { "Windows.UI.Xaml.Data", LogLevel.Debug },
+						// { "Windows.UI.Xamll.Data", LogLevel.Debug },
 						   
 						//  Binder memory references tracking
 						// { "ReferenceHolder", LogLevel.Debug },
 					}
 				)
-				.AddConsole(LogLevel.Debug);
+				.AddConsole(LogLevel.Trace);
+#else
+			factory
+				.AddConsole(LogLevel.Error);
+#endif
 		}
 
 		/// <summary>

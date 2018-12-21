@@ -6,10 +6,9 @@ namespace Uno.UI.Demo
 	{
 		private static App _app;
 
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
-			Console.WriteLine("go");
-			_app = new App();
+			Windows.UI.Xaml.Application.Start(_ => _app = new App());
 		}
 	}
 }

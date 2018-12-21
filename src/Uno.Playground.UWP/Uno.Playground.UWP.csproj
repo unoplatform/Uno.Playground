@@ -9,7 +9,7 @@
       <Version>1.9.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.1.7</Version>
+      <Version>6.1.9</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
@@ -17,13 +17,13 @@
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Uno.CodeGen">
-      <Version>1.27.0</Version>
+      <Version>1.30.0-dev.102</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.24.0</Version>
+      <Version>1.26.0-dev.58</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.40.0</Version>
+      <Version>1.43.0-dev.551</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
@@ -208,4 +208,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\Package.targets" />
 </Project>

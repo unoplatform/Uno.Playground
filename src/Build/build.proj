@@ -2,9 +2,11 @@
 	<Import Project="obj\Build.csproj.nuget.g.props" Condition="Exists('obj\Build.csproj.nuget.g.props')" />
 	<Import Project="obj\Build.csproj.nuget.g.targets" Condition="Exists('obj\Build.csproj.nuget.g.targets')" />
 
-  <Target Name="UpdateVersion" DependsOnTargets="GetVersion">
+  <Target Name="UpdateVersion">
 		
 	<Message Text="Updating versions" />
+
+	<Message Text="Calculated version: $(GITVERSION_INFORMATIONALVERSION)" />
 		
 	<XmlUpdate XmlFileName="..\Uno.Playground.iOS\Info.plist" 
 							 XPath="//plist/dict/key[text() = 'CFBundleShortVersionString']/following-sibling::string[1]" 

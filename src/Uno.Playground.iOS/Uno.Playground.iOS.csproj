@@ -14,6 +14,7 @@
     <DefaultLanguage>en</DefaultLanguage>
     <UpdateAssemblyInfo>false</UpdateAssemblyInfo>
     <ResourcesDirectory>..\Uno.Playground.Shared\Strings</ResourcesDirectory>
+    <UnoSourceGeneratorUseGenerationHost>true</UnoSourceGeneratorUseGenerationHost>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>true</DebugSymbols>
@@ -171,9 +172,6 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GitVersionTask">
-      <Version>3.6.5</Version>
-    </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
       <Version>1.9.0</Version>
     </PackageReference>
@@ -184,13 +182,13 @@
       <Version>11.0.2</Version>
     </PackageReference>
     <PackageReference Include="Uno.CodeGen">
-      <Version>1.27.0</Version>
+      <Version>1.30.0-dev.102</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.24.0</Version>
+      <Version>1.26.0-dev.58</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.40.0</Version>
+      <Version>1.43.0-dev.551</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
@@ -200,4 +198,5 @@
   </ItemGroup>
   <Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" Condition="Exists('..\Uno.Playground.Shared\Uno.Playground.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="..\Package.targets" />
 </Project>
