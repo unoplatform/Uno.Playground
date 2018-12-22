@@ -29,14 +29,27 @@ namespace Uno.UI.Demo.Samples
 	/// </summary>
 	public sealed partial class Homies : Page
 	{
+		private string GetHomiesData()
+		{
+			if (this.GetType().Assembly.GetManifestResourceNames().Where(m => m.EndsWith("homies.json")).FirstOrDefault() is string dataName)
+			{
+				using (var stream = new StreamReader(this.GetType().Assembly.GetManifestResourceStream(dataName)))
+				{
+					return stream.ReadToEnd();
+				}
+			}
+
+			throw new InvalidOperationException($"Failed to find homies.js in embedded resources");
+		}
+
 		public Homies()
 		{
 			this.InitializeComponent();
 
 #if HAS_JSON_NET
-			var data = JsonConvert.DeserializeObject<ViewModel>(DataJson);
+			var data = JsonConvert.DeserializeObject<ViewModel>(GetHomiesData());
 #else
-			var root = System.Json.JsonObject.Parse(DataJson);
+			var root = System.Json.JsonObject.Parse(GetHomiesData());
 
 			var vm = new ViewModel();
 
@@ -45,16 +58,16 @@ namespace Uno.UI.Demo.Samples
 			{
 				feedPosts.Add(new FeedPost
 				{
-					Artist = item["Artist"],
-					Comments = item["Comments"],
-					IsLiked = item["IsLiked"],
-					Likes = item["Likes"],
-					Location = item["Location"],
-					Message = item["Message"],
-					PhotoSource = item["PhotoSource"],
-					ProfileSource = item["ProfileSource"],
-					Tags = item["Tags"],
-					Time = item["Time"],
+					Artist = item["artist"],
+					Comments = item["comments"],
+					IsLiked = item["isLiked"],
+					Likes = item["likes"],
+					Location = item["location"],
+					Message = item["message"],
+					PhotoSource = item["photoSource"],
+					ProfileSource = item["profileSource"],
+					Tags = item["tags"],
+					Time = item["time"],
 				});
 			}
 			vm.FeedPosts = feedPosts.ToArray();
@@ -64,16 +77,16 @@ namespace Uno.UI.Demo.Samples
 			{
 				var groupPost = new GroupPost
 				{
-					Action = item["Action"],
-					ActionGroup = item["ActionGroup"],
-					ActionParty = item["ActionParty"],
-					Artist = item["Artist"],
-					IsAddPost = item["IsAddPost"],
-					ProfileSource = item["ProfileSource"],
+					Action = item.ContainsKey("action") ? (string)item["action"] : "",
+					ActionGroup = item.ContainsKey("actionGroup") ? (string)item["actionGroup"] : "",
+					ActionParty = item.ContainsKey("actionParty") ? (string)item["actionParty"] : "",
+					Artist = item["artist"],
+					IsAddPost = item["isAddPost"],
+					ProfileSource = item["profileSource"],
 				};
 
 				var pictures = new List<string>();
-				foreach (var picture in item["Pictures"] as JsonArray)
+				foreach (var picture in item["pictures"] as JsonArray)
 				{
 					pictures.Add(picture);
 				}
@@ -143,186 +156,5 @@ namespace Uno.UI.Demo.Samples
 			public string ActionGroup { get; set; }
 			public string[] Pictures { get; set; }
 		}
-
-		private static string DataJson = @"{ ""FeedPosts"": 
-   [  
-      {  
-         ""artist"":""Robert Santiago"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan01.jpg"",
-         ""message"":""Record Day… Vintage sound truely never gets old 🎵🎵"",
-         ""photoSource"":""ms-appx:///Assets/Post01.jpg"",
-         ""time"":""18 HOURS AGO"",
-         ""isLiked"":false,
-         ""likes"":875,
-         ""comments"":8,
-         ""tags"":""#vinyls #music #vinylsrecordsnevergetold"",
-         ""location"":""Mile End, Montreal""
-      },
-      {  
-         ""artist"":""Tammy Boyd"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl01.jpg"",
-         ""message"":""Summer time! Group is all back together 🙌🏼"",
-         ""photoSource"":""ms-appx:///Assets/Post02.jpg"",
-         ""time"":""5 DAYS AGO"",
-         ""isLiked"":true,
-         ""likes"":378,
-         ""comments"":10,
-         ""tags"":""#goodtimes #dayones"",
-         ""location"":""Bananas Beach Club, Wasaga Beach""
-      },
-      {  
-         ""artist"":""Karl Fields"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan02.jpg"",
-         ""message"":""God's Brew! Perfect way to start the day !"",
-         ""photoSource"":""ms-appx:///Assets/Post03.jpg"",
-         ""time"":""6 DAYS AGO"",
-         ""isLiked"":false,
-         ""likes"":278,
-         ""comments"":4,
-         ""tags"":""#goodcoffee #greatday"",
-         ""location"":""Entertainment District, Toronto""
-      },
-      {  
-         ""artist"":""Roberta Black"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl02.jpg"",
-         ""message"":""Toast to summer! 2 scoops of sunshine please :)"",
-         ""photoSource"":""ms-appx:///Assets/Post04.jpg"",
-         ""time"":""8 DAYS AGO"",
-         ""isLiked"":true,
-         ""likes"":89362,
-         ""comments"":12,
-         ""tags"":""#icecream #sunshine"",
-         ""location"":""Long Island, New York""
-      },
-      {  
-         ""artist"":""Karl Fields"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan02.jpg"",
-         ""message"":""Vacation throughback... Missed seeing this every morning..."",
-         ""photoSource"":""ms-appx:///Assets/Post05.jpg"",
-         ""time"":""12 DAYS AGO"",
-         ""isLiked"":true,
-         ""likes"":389,
-         ""comments"":9,
-         ""tags"":""#perfecttea #vacationmemories"",
-         ""location"":""Hangzhou, China""
-      },
-      {  
-         ""artist"":""Robert Santiago"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan01.jpg"",
-         ""message"":""Kale! Super food, more like super blah"",
-         ""photoSource"":""ms-appx:///Assets/Post06.jpg"",
-         ""time"":""18 DAYS AGO"",
-         ""isLiked"":false,
-         ""likes"":89154,
-         ""comments"":1,
-         ""tags"":""#superfood #healthyeating"",
-         ""location"":""West End, Vancouver""
-      },
-      {  
-         ""artist"":""Vicki Adams"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl03.jpg"",
-         ""message"":""Momo in Bed... Ready for the day!"",
-         ""photoSource"":""ms-appx:///Assets/Post07.jpg"",
-         ""time"":""22 DAYS AGO"",
-         ""isLiked"":true,
-         ""likes"":99,
-         ""comments"":45,
-         ""tags"":""#catloaf #kittenlife"",
-         ""location"":""Centretown, Ottawa""
-      },
-      {  
-         ""artist"":""Timothy Wilkerson"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan03.jpg"",
-         ""message"":""Good boy! All times are good times!"",
-         ""photoSource"":""ms-appx:///Assets/Post08.jpg"",
-         ""time"":""26 DAYS AGO"",
-         ""isLiked"":false,
-         ""likes"":678,
-         ""comments"":4,
-         ""tags"":""#dogpark #goodboy #summer"",
-         ""location"":""Public Garden, Boston""
-      },
-      {  
-         ""artist"":""Roberta Black"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl02.jpg"",
-         ""message"":""Night out! Brewery is finally open!!!"",
-         ""photoSource"":""ms-appx:///Assets/Post09.jpg"",
-         ""time"":""1 MONTH AGO"",
-         ""isLiked"":false,
-         ""likes"":71836,
-         ""comments"":9,
-         ""tags"":""#goodbeer #openingnight"",
-         ""location"":""Downtown, Toronto""
-      },
-      {  
-         ""artist"":""Timothy Wilkerson"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan03.jpg"",
-         ""message"":""Stream night! Streaming tomorrow 'til 2:00 am..."",
-         ""photoSource"":""ms-appx:///Assets/Post10.jpg"",
-         ""time"":""1 MONTH AGO"",
-         ""isLiked"":false,
-         ""likes"":5463,
-         ""comments"":3,
-         ""tags"":""#streaming #gamingnight"",
-         ""location"":""Orlando, Florida""
-      },
-      {  
-         ""artist"":""Robert Santiago"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan01.jpg"",
-         ""message"":""Sunday Hike Day!"",
-         ""photoSource"":""ms-appx:///Assets/Post11.jpg"",
-         ""time"":""2 MONTHS AGO"",
-         ""isLiked"":false,
-         ""likes"":2354,
-         ""comments"":11,
-         ""tags"":""#sunday #hike #trail #outdoors"",
-         ""location"":""Mont-Tremblant National Park, Quebec""
-      },
-      {  
-         ""artist"":""Tammy Boyd"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl01.jpg"",
-         ""message"":""Great Team Work! Efficiency and Focus!"",
-         ""photoSource"":""ms-appx:///Assets/Post12.jpg"",
-         ""time"":""2 MONTHS AGO"",
-         ""isLiked"":true,
-         ""likes"":5423,
-         ""comments"":6,
-         ""tags"":""#teamwork #efficiency #focus"",
-         ""location"":""Downtown, Vancouver""
-      }
-   ],
-""GroupPosts"": 
-   [  
-      {  
-         ""artist"":""Virg_snydr"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl01.jpg"",
-         ""action"":""Likes 9 posts."",
-         ""isAddPost"":""false"",
-         ""pictures"":[""ms-appx:///Assets/Post03.jpg"",""ms-appx:///Assets/Post04.jpg"",""ms-appx:///Assets/Post05.jpg"",""ms-appx:///Assets/Post06.jpg"",""ms-appx:///Assets/Post09.jpg"",""ms-appx:///Assets/Post10.jpg"",""ms-appx:///Assets/Post11.jpg"",""ms-appx:///Assets/Post07.jpg"",""ms-appx:///Assets/Post08.jpg""]
-      },
-	  {  
-         ""artist"":""Virg_snydr"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl01.jpg"",
-		 ""isAddPost"":""true"",
-         ""actionParty"":""Karl Fields"",
-         ""actionGroup"":""UdeM"",
-         ""pictures"":[]
-      },
-	  {  
-         ""artist"":""mily_west"",
-         ""profileSource"":""ms-appx:///Assets/ProfileGirl02.jpg"",
-         ""action"":""Likes 2 posts."",
-         ""isAddPost"":""false"",
-         ""pictures"":[""ms-appx:///Assets/Post11.jpg"",""ms-appx:///Assets/Post12.jpg""]
-      },
-	  {  
-         ""artist"":""Karl Fields"",
-         ""profileSource"":""ms-appx:///Assets/ProfileMan01.jpg"",
-         ""action"":""Commented on 1 post."",
-         ""isAddPost"":""false"",
-         ""pictures"":[""ms-appx:///Assets/Post09.jpg""]
-      },
-	]
-}";
 	}
 }
