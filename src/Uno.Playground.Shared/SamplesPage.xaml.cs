@@ -196,7 +196,7 @@ namespace Uno.UI.Demo
 			}
 
 #if __WASM__
-			DataContext = featured.Concat(components).ToArray();
+			// DataContext = featured.Concat(components).ToArray();
 #else
 			//var cvs = new CollectionViewSource
 			//{
