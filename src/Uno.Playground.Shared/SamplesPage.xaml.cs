@@ -164,10 +164,10 @@ namespace Uno.UI.Demo
 				{
 					Title = "ToggleSwitch",
 				},
-				new Sample
-				{
-					Title = "Transform",
-				},
+				//new Sample
+				//{
+				//	Title = "Transform",
+				//},
 				new Sample
 				{
 					Title = "Typography",
