@@ -165,14 +165,18 @@
 				</Grid.RowDefinitions>
 
 				<!-- Profile picture -->
-				<Border Height="32"
+				<!--
+				<not_wasm:Border Height="32"
 						Width="32"
 						CornerRadius="16">
 					<Border.Background>
 						<ImageBrush ImageSource="{Binding ProfileSource}"
 									Stretch="UniformToFill" />
 					</Border.Background>
-				</Border>
+				</not_wasm:Border>
+				-->
+				<wasm:Image Height="32"
+						Width="32" Source="{Binding ProfileSource}"/>
 
 				<!-- Artist & Action-->
 				<TextBlock Grid.Column="1"
@@ -206,31 +210,33 @@
 				</TextBlock>
 
 				<!-- Posts -->
-				<GridView Grid.Row="1"
+				<ItemsControl Grid.Row="1"
 						  Grid.Column="1"
 						  Margin="6,8"
 						  ItemsSource="{Binding Pictures}">
-					<GridView.ItemsPanel>
+					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
-							<ItemsWrapGrid Orientation="Horizontal"
-										   ItemHeight="54"
-										   ItemWidth="54" />
+							<WrapPanel Orientation="Horizontal"
+									ItemHeight="54"
+									ItemWidth="54" />
 						</ItemsPanelTemplate>
-					</GridView.ItemsPanel>
-					<GridView.ItemTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<not_wasm:Border Height="50"
-									Width="50"
-									CornerRadius="4">
-								<Border.Background>
-									<ImageBrush ImageSource="{Binding }"
-												Stretch="UniformToFill" />
-								</Border.Background>
-							</not_wasm:Border>
-							<wasm:Image Height="50" Width="50" Source="{Binding}"/>
+							<Border>
+								<!--<Border Height="50"
+										Width="50"
+										CornerRadius="4">
+									<Border.Background>
+										<ImageBrush ImageSource="{Binding }"
+													Stretch="UniformToFill" />
+									</Border.Background>
+								</Border>-->
+								<wasm:Image Height="50" Width="50" Source="{Binding}"/>
+							</Border>
 						</DataTemplate>
-					</GridView.ItemTemplate>
-				</GridView>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</Grid>
 		</DataTemplate>
 	</Page.Resources>
