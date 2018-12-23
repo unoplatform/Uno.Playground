@@ -219,14 +219,15 @@
 					</GridView.ItemsPanel>
 					<GridView.ItemTemplate>
 						<DataTemplate>
-							<Border Height="50"
+							<not_wasm:Border Height="50"
 									Width="50"
 									CornerRadius="4">
 								<Border.Background>
 									<ImageBrush ImageSource="{Binding }"
 												Stretch="UniformToFill" />
 								</Border.Background>
-							</Border>
+							</not_wasm:Border>
+							<wasm:Image Height="50" Width="50" Source="{Binding}"/>
 						</DataTemplate>
 					</GridView.ItemTemplate>
 				</GridView>
