@@ -14,7 +14,7 @@
 	  xmlns:wasm="http://uno.ui/wasm"
 	  xmlns:xamarin="http://uno.ui/xamarin"
 	  NavigationCacheMode="Required"
-	  mc:Ignorable="d ios android xamarin">
+	  mc:Ignorable="d ios android xamarin wasm">
 
 	<Page.Resources>
 		<converters:SampleGroupTypeToColorBrushConverter x:Key="SampleGroupTypeToForegroundColorBrush"
