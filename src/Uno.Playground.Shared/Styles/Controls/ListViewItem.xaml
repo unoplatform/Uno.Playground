@@ -70,7 +70,7 @@
 					<Grid x:Name="RootGrid"
 						  Margin="8"
 						  CornerRadius="13"
-						  MaxWidth="500"
+						  MaxWidth="450"
 						  toolkit:UIElementExtensions.Elevation="3"
 						  win:BorderBrush="{StaticResource Color09Brush}"
 						  win:BorderThickness="1"
