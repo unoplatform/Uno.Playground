@@ -33,6 +33,8 @@ namespace Uno.UI.Demo
 
 			Initialize();
 
+			versionText.Text = $"Build: {this.GetType().GetTypeInfo().Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "Unknown"}";
+
 			samplesFrame.NavigationFailed += SamplesFrame_NavigationFailed;
 			Loaded += SamplesPage_Loaded;
 			UpdateCollapsibleCommandBar(0);

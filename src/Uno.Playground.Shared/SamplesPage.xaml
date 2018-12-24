@@ -11,6 +11,7 @@
 	  xmlns:toolkit="using:Uno.UI.Toolkit"
 	  xmlns:ios="http://uno.ui/ios"
 	  xmlns:android="http://uno.ui/android"
+	  xmlns:wasm="http://uno.ui/wasm"
 	  xmlns:xamarin="http://uno.ui/xamarin"
 	  NavigationCacheMode="Required"
 	  mc:Ignorable="d ios android xamarin">
@@ -121,13 +122,20 @@
 					  Padding="0,16"
 					  BorderBrush="{StaticResource Color17Brush}"
 					  BorderThickness="0,1,0,0">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="*" />
+						<RowDefinition Height="auto"/>
+					</Grid.RowDefinitions>
 
-					<TextBlock Margin="0,0,16,4"
-							   Text="Version: 0.0.0.1"
-							   HorizontalAlignment="Left"
-							   VerticalAlignment="Center"
-							   Style="{StaticResource Typo09}"
-							   Foreground="{StaticResource Color10Brush}" />
+					<StackPanel>
+						<TextBlock Margin="0,0,16,4"
+								   Foreground="{StaticResource Color10Brush}"
+								   Style="{StaticResource Typo09}">
+							<Hyperlink NavigateUri="http://github.com/nventive/uno">Uno Platform Gallery</Hyperlink>
+							<LineBreak/>
+							<wasm:Run Text=" for WebAssembly"/>
+						</TextBlock>
+					</StackPanel>
 
 					<HyperlinkButton NavigateUri="http://nventive.com/en/"
 									 HorizontalAlignment="Right">
@@ -159,6 +167,16 @@
 								  Stretch="Uniform" />
 						</StackPanel>
 					</HyperlinkButton>
+					<TextBlock Margin="4"
+							   Grid.Row="1"
+								   x:Name="versionText"
+								   Text="Version: 0.0.0.1"
+								   HorizontalAlignment="Left"
+								   VerticalAlignment="Center"
+									FontSize="8"
+								   Style="{StaticResource Typo09}"
+								   Foreground="{StaticResource Color10Brush}" />
+
 				</Grid>
 			</NavigationView.PaneFooter>
 
