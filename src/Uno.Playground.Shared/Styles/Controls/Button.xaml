@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:local="using:Uno.UI.Demo.Styles.Controls">
+					xmlns:wasm="http://uno.ui/wasm"
+					xmlns:local="using:Uno.UI.Demo.Styles.Controls"
+					mc:Ignorable="wasm">
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="../StyleGuide/Colors.xaml" />
@@ -122,5 +125,7 @@
 			</Setter.Value>
 		</Setter>
 	</Style>
+
+	<wasm:Style x:Key="NativeDefaultButton" TargetType="Button" BasedOn="{StaticResource XamlDefaultButton}"/>
 
 </ResourceDictionary>
