@@ -5,6 +5,7 @@ continuous-delivery-fallback-tag: ""
 branches:
   master:
     tag: dev
+    increment: minor
   stable:
     regex: (stable)
     tag: 
