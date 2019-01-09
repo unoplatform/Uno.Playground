@@ -60,7 +60,7 @@ jobs:
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: /p:AndroidSigningKeyStore=$(DownloadSecureFile.SecureFilePath)
+      msbuildArguments: /p:AndroidSigningKeyStore=$(DownloadSecureFile.SecureFilePath) /p:AndroidSigningKeyPass=$(AndroidSigningKeyPass) /p:AndroidSigningStorePass=$(AndroidSigningStorePass)
       configuration: Release
       platform: 'Any CPU'
       clean: false
