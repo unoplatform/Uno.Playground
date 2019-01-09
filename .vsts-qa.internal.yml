@@ -56,7 +56,7 @@ jobs:
   - task: MSBuild@1
     displayName: 'Build solution'
     inputs:
-      solution: src\Uno.Playground.sln /p:AndroidSigningKeyStore=$env:DOWNLOADSECUREFILE_SECUREFILEPATH
+      solution: src\Uno.Playground.sln /p:AndroidSigningKeyStore=$(DownloadSecureFile.SecureFilePath)
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
