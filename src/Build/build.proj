@@ -14,7 +14,7 @@
 
 	<PropertyGroup>
 		<!-- Adjusting the build number for the AppStore -->
-		<_BuildNumber>$([MSBuild]::Add($(_BuildNumber), 424))</_BuildNumber>
+		<_BuildNumber>$([MSBuild]::Add($(_BuildNumber), 442))</_BuildNumber>
 	</PropertyGroup>
 
 	<Message Text="Calculated version: $(GITVERSION_INFORMATIONALVERSION)" />
