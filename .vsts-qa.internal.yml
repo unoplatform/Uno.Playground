@@ -9,6 +9,7 @@ jobs:
     name: Default
     demands:
     - VS15.7.2
+
   workspace:
     clean: all
 
@@ -16,7 +17,11 @@ jobs:
   - checkout: self
     clean: true
     lfs: true
-    
+
+  - task: DownloadSecureFile@1
+    inputs:
+      secureFile: 'b6a5d0ed-c041-44c7-8db9-9c127d0ae8a9'
+
   - task: gittools.gitversion.gitversion-task.GitVersion@4
     displayName: 'Generate version'
 
@@ -51,7 +56,7 @@ jobs:
   - task: MSBuild@1
     displayName: 'Build solution'
     inputs:
-      solution: src\Uno.Playground.sln
+      solution: src\Uno.Playground.sln /p:AndroidSigningKeyStore=$env:DOWNLOADSECUREFILE_SECUREFILEPATH
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
@@ -77,8 +82,10 @@ jobs:
     demands:
     - Agent.OS -equals Darwin
     - Xamarin.iOS -equals Latest
+
   workspace:
     clean: all
+
   variables:
     TargetProject: $(Build.SourcesDirectory)/src/Uno.Playground.iOS/Uno.Playground.iOS.csproj
 
