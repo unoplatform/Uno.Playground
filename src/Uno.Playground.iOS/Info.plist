@@ -64,5 +64,7 @@
 	<string>Default-568h</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To attach a photo to your feedback, we need access to your Photo Library.</string>
 </dict>
 </plist>
