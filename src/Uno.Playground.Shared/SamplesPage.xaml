@@ -3,7 +3,7 @@
 	  xmlns:not_wasm="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	  xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	  xmlns:local="using:Uno.UI.Demo"
+	  xmlns:local="using:Uno.Playground"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	  xmlns:converters="using:Uno.UI.Demo.Converters"
@@ -16,154 +16,227 @@
 	  mc:Ignorable="d ios android xamarin">
 
 	<Page.Resources>
-		<converters:SampleGroupTypeToColorBrushConverter x:Key="SampleGroupTypeToForegroundColorBrush"
-														 FeaturedTypeColorBrush="{StaticResource Color11Brush}"
-														 ComponentTypeColorBrush="{StaticResource Color03Brush}" />
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="UnoPlatformShell.xaml" />
+			</ResourceDictionary.MergedDictionaries>
 
-		<converters:SampleGroupTypeToColorBrushConverter x:Key="SampleGroupTypeToBorderColorBrush"
-														 FeaturedTypeColorBrush="{StaticResource Color01Brush}"
-														 ComponentTypeColorBrush="{StaticResource Color17Brush}" />
+			<!-- SampleGroupType to ForegroundColorBrush -->
+			<converters:SampleGroupTypeToColorBrushConverter x:Key="SampleGroupTypeToForegroundColorBrush"
+															 FeaturedTypeColorBrush="{StaticResource Color11Brush}"
+															 ComponentTypeColorBrush="{StaticResource Color03Brush}" />
 
-		<DataTemplate x:Key="SamplesFooter">
-			<Grid Margin="16,0"
-				  Padding="0,16"
-				  BorderThickness="0,1,0,0"
-				  BorderBrush="{StaticResource Color17Brush}">
+			<!-- SampleGroupType to BorderColorBrush -->
+			<converters:SampleGroupTypeToColorBrushConverter x:Key="SampleGroupTypeToBorderColorBrush"
+															 FeaturedTypeColorBrush="{StaticResource TransparentColorBrush}"
+															 ComponentTypeColorBrush="{StaticResource Color17Brush}" />
 
-				<TextBlock Margin="0,0,16,4"
-						   Text="Version: 0.0.0.1"
-						   Style="{StaticResource Typo09}"
-						   VerticalAlignment="Center"
-						   HorizontalAlignment="Left" />
+			<!-- Samples Footer -->
+			<DataTemplate x:Key="SamplesFooter">
+				<Grid Margin="16,0"
+					  Padding="0,16"
+					  BorderThickness="0,1,0,0"
+					  BorderBrush="{StaticResource Color17Brush}">
 
-				<HyperlinkButton NavigateUri="http://nventive.com/en/"
-								 HorizontalAlignment="Right">
-					<StackPanel Orientation="Vertical">
-						<StackPanel	Orientation="Horizontal">
-							<TextBlock Text="Made with"
-									   Style="{StaticResource Typo09}" />
-
-							<Path Data="M11 2.682c.085-.128.302-.4.65-.815A6 6 0 0 1 22 6c0 5.313-10.216 13-11.027 13C10.162 19 0 11.313 0 6a6 6 0 0 1 10.35-4.133c.348.415.565.687.65.815"
-								  VerticalAlignment="Bottom"
-								  Fill="{StaticResource Color11Brush}"
-								  Stretch="Uniform"
-								  Margin="4,0,4,6"
-								  Width="9"
-								  Height="8" />
-
-							<TextBlock Text="at"
-									   Style="{StaticResource Typo09}" />
-						</StackPanel>
-
-						<Path  Data="M19.84 15.926h-1.566c-.447 0-.813-.142-1.099-.433-.279-.284-.424-.657-.424-1.112V8.214c0-.726-.217-1.258-.65-1.591a2.33 2.33 0 0 0-1.453-.5c-.537 0-1.017.168-1.435.5-.414.333-.626.865-.626 1.59v7.728H9.452V8.85c0-2.061.53-3.44 1.592-4.137a6.868 6.868 0 0 1 3.513-1.139 6.688 6.688 0 0 1 3.626 1.047c1.104.698 1.657 2.105 1.657 4.23v7.074zm19.929-3.712h2.238c-.329 1.274-.955 2.244-1.878 2.907-.927.699-2.09 1.045-3.494 1.045-1.704 0-3.029-.559-3.987-1.678-.954-1.093-1.43-2.653-1.43-4.686 0-1.938.461-3.451 1.385-4.542.957-1.122 2.287-1.685 3.987-1.685 1.791 0 3.179.547 4.163 1.64.955 1.12 1.434 2.679 1.434 4.68v.501c0 .153-.014.255-.045.318h-7.746c.025.94.253 1.636.672 2.091.387.484.964.727 1.746.727.508 0 .94-.105 1.299-.318a.67.67 0 0 0 .246-.158c.073-.075.156-.161.245-.25.03-.094.141-.215.337-.367.194-.148.471-.225.828-.225zm-5.373-3.547h4.57c-.064-.819-.27-1.423-.63-1.817-.39-.424-.94-.636-1.66-.636-.652 0-1.19.212-1.608.636-.419.424-.646 1.032-.672 1.817zm26.727-4.818h1.612c.418 0 .776.155 1.075.454.296.304.448.67.448 1.093V15.94h-3.133l-.002-12.092zm23.235 8.365h2.239c-.332 1.274-.955 2.244-1.882 2.907-.926.699-2.09 1.045-3.493 1.045-1.7.002-3.028-.559-3.986-1.678-.956-1.093-1.434-2.653-1.435-4.686 0-1.938.464-3.451 1.39-4.544.957-1.12 2.286-1.683 3.988-1.683 1.79 0 3.179.547 4.164 1.64.954 1.12 1.432 2.679 1.432 4.68v.501a.827.827 0 0 1-.044.318h-7.746c.027.94.25 1.636.673 2.091.383.484.965.727 1.743.727.51 0 .943-.105 1.297-.318a.602.602 0 0 0 .247-.158c.077-.077.156-.161.246-.25.03-.094.144-.215.34-.367.19-.148.468-.225.827-.225zm-5.373-3.547h4.569c-.066-.819-.27-1.423-.632-1.817-.387-.424-.94-.635-1.654-.636-.658 0-1.194.212-1.61.636-.424.424-.644 1.032-.673 1.817zm-20.72 7.226h-1.361c-1.152-.09-1.727-.832-1.727-2.224V.306h1.614c.389 0 .731.15 1.03.453.295.305.445.667.445 1.092v2.046l1.837-.003.002.636v1.627h-1.84v9.736zm-4.517.033h-1.566c-.445 0-.812-.142-1.098-.431-.282-.286-.423-.659-.423-1.114V8.212c0-.724-.217-1.256-.65-1.59-.43-.331-.918-.5-1.457-.5-.534 0-1.014.169-1.431.5-.42.334-.628.866-.628 1.59v7.729H43.36V8.85c0-2.061.532-3.44 1.59-4.137a6.855 6.855 0 0 1 3.516-1.139 6.66 6.66 0 0 1 3.625 1.047c1.106.698 1.66 2.105 1.657 4.229v7.075zm18.815-1.075c-.07.19-.21.499-.364.63-.29.25-.86.464-1.575.464-.719-.003-1.297-.207-1.576-.464-.15-.138-.299-.45-.37-.639L64.895 3.847h2.909l2.749 8.503 2.63-7.417c.237-.724.71-1.084 1.42-1.086l1.814.002-3.854 11.002zm-44.9.001c-.07.188-.21.498-.365.63-.29.249-.856.463-1.575.463-.716 0-1.296-.207-1.575-.463-.147-.14-.3-.45-.368-.64L19.994 3.847h2.91l2.748 8.502 2.632-7.416c.235-.724.709-1.086 1.42-1.084h1.813l-3.854 11.003zM0 21.78v-1.998h7.773v1.998H0z"
-							   Fill="{StaticResource Color09Brush}"
-							   HorizontalAlignment="Center"
-							   Margin="0,4,0,0"
-							   Stretch="Uniform"
-							   Width="88"
-							   Height="22" />
-					</StackPanel>
-				</HyperlinkButton>
-			</Grid>
-		</DataTemplate>
-
-		<DataTemplate x:Key="SampleGroupHeaderTemplate">
-			<Border Margin="16,0"
-					BorderThickness="0,1,0,0"
-					BorderBrush="{Binding Key, Converter={StaticResource SampleGroupTypeToBorderColorBrush}}">
-				<TextBlock Text="{Binding Key}"
-						   Margin="0,16"
-						   Style="{StaticResource Typo08}"
-						   Foreground="{Binding Key, Converter={StaticResource SampleGroupTypeToForegroundColorBrush}}" />
-			</Border>
-		</DataTemplate>
-
-		<DataTemplate x:Key="ComponentItemTemplate">
-			<Grid Height="48"
-				  Margin="28,0">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="33" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-				<ContentControl Height="24"
-								Width="33"
-								VerticalAlignment="Center"
-								Content="{Binding Title}"
-								ContentTemplateSelector="{StaticResource IconTemplateSelector}" />
-				<TextBlock Grid.Column="1"
-						   Margin="16,0,0,0"
-						   VerticalAlignment="Center"
-						   Text="{Binding Title}"
-						   Style="{StaticResource Typo11}" />
-			</Grid>
-		</DataTemplate>
-
-		<DataTemplate x:Key="DemoItemTemplate">
-			<Grid Margin="16">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="50" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
-				<ContentControl Height="50"
-								Width="50"
-								VerticalAlignment="Top"
-								Content="{Binding Title}"
-								ContentTemplateSelector="{StaticResource IconTemplateSelector}" />
-				<StackPanel Grid.Column="1"
-							Margin="30,2,0,0"
-							VerticalAlignment="Top">
-					<TextBlock Text="{Binding Title}"
-							   Style="{StaticResource Typo12}" />
-					<TextBlock Text="{Binding Description}"
+					<!-- Version TextBlock -->
+					<TextBlock Margin="0,0,16,4"
+							   Text="Version: 0.0.0.1"
+							   Style="{StaticResource Typo09}"
 							   VerticalAlignment="Center"
-							   TextWrapping="Wrap"
-							   Style="{StaticResource Typo11}"
-							   Opacity="0.6" />
-				</StackPanel>
-			</Grid>
-		</DataTemplate>
+							   HorizontalAlignment="Left" />
 
-		<templateSelectors:SampleItemTemplateSelector x:Key="SampleTypeTemplateSelector"
-													  DemoSampleItemTemplate="{StaticResource DemoItemTemplate}"
-													  ComponentSampleItemTemplate="{StaticResource ComponentItemTemplate}" />
+					<!-- Nventive Link -->
+					<HyperlinkButton NavigateUri="http://nventive.com/en/"
+									 HorizontalAlignment="Right">
+						<StackPanel Orientation="Vertical">
 
-		<templateSelectors:IconTemplateSelector x:Key="IconTemplateSelector" />
+							<StackPanel	Orientation="Horizontal">
+								<TextBlock Text="Made with"
+										   Style="{StaticResource Typo09}" />
+
+								<!-- Heart icon -->
+								<Path Data="M11 2.682c.085-.128.302-.4.65-.815A6 6 0 0 1 22 6c0 5.313-10.216 13-11.027 13C10.162 19 0 11.313 0 6a6 6 0 0 1 10.35-4.133c.348.415.565.687.65.815"
+									  VerticalAlignment="Bottom"
+									  Fill="{StaticResource Color11Brush}"
+									  Stretch="Uniform"
+									  Margin="4,0,4,6"
+									  Width="9"
+									  Height="8" />
+
+								<TextBlock Text="at"
+										   Style="{StaticResource Typo09}" />
+							</StackPanel>
+
+							<!-- Nventive logo -->
+							<Path  Data="M19.84 15.926h-1.566c-.447 0-.813-.142-1.099-.433-.279-.284-.424-.657-.424-1.112V8.214c0-.726-.217-1.258-.65-1.591a2.33 2.33 0 0 0-1.453-.5c-.537 0-1.017.168-1.435.5-.414.333-.626.865-.626 1.59v7.728H9.452V8.85c0-2.061.53-3.44 1.592-4.137a6.868 6.868 0 0 1 3.513-1.139 6.688 6.688 0 0 1 3.626 1.047c1.104.698 1.657 2.105 1.657 4.23v7.074zm19.929-3.712h2.238c-.329 1.274-.955 2.244-1.878 2.907-.927.699-2.09 1.045-3.494 1.045-1.704 0-3.029-.559-3.987-1.678-.954-1.093-1.43-2.653-1.43-4.686 0-1.938.461-3.451 1.385-4.542.957-1.122 2.287-1.685 3.987-1.685 1.791 0 3.179.547 4.163 1.64.955 1.12 1.434 2.679 1.434 4.68v.501c0 .153-.014.255-.045.318h-7.746c.025.94.253 1.636.672 2.091.387.484.964.727 1.746.727.508 0 .94-.105 1.299-.318a.67.67 0 0 0 .246-.158c.073-.075.156-.161.245-.25.03-.094.141-.215.337-.367.194-.148.471-.225.828-.225zm-5.373-3.547h4.57c-.064-.819-.27-1.423-.63-1.817-.39-.424-.94-.636-1.66-.636-.652 0-1.19.212-1.608.636-.419.424-.646 1.032-.672 1.817zm26.727-4.818h1.612c.418 0 .776.155 1.075.454.296.304.448.67.448 1.093V15.94h-3.133l-.002-12.092zm23.235 8.365h2.239c-.332 1.274-.955 2.244-1.882 2.907-.926.699-2.09 1.045-3.493 1.045-1.7.002-3.028-.559-3.986-1.678-.956-1.093-1.434-2.653-1.435-4.686 0-1.938.464-3.451 1.39-4.544.957-1.12 2.286-1.683 3.988-1.683 1.79 0 3.179.547 4.164 1.64.954 1.12 1.432 2.679 1.432 4.68v.501a.827.827 0 0 1-.044.318h-7.746c.027.94.25 1.636.673 2.091.383.484.965.727 1.743.727.51 0 .943-.105 1.297-.318a.602.602 0 0 0 .247-.158c.077-.077.156-.161.246-.25.03-.094.144-.215.34-.367.19-.148.468-.225.827-.225zm-5.373-3.547h4.569c-.066-.819-.27-1.423-.632-1.817-.387-.424-.94-.635-1.654-.636-.658 0-1.194.212-1.61.636-.424.424-.644 1.032-.673 1.817zm-20.72 7.226h-1.361c-1.152-.09-1.727-.832-1.727-2.224V.306h1.614c.389 0 .731.15 1.03.453.295.305.445.667.445 1.092v2.046l1.837-.003.002.636v1.627h-1.84v9.736zm-4.517.033h-1.566c-.445 0-.812-.142-1.098-.431-.282-.286-.423-.659-.423-1.114V8.212c0-.724-.217-1.256-.65-1.59-.43-.331-.918-.5-1.457-.5-.534 0-1.014.169-1.431.5-.42.334-.628.866-.628 1.59v7.729H43.36V8.85c0-2.061.532-3.44 1.59-4.137a6.855 6.855 0 0 1 3.516-1.139 6.66 6.66 0 0 1 3.625 1.047c1.106.698 1.66 2.105 1.657 4.229v7.075zm18.815-1.075c-.07.19-.21.499-.364.63-.29.25-.86.464-1.575.464-.719-.003-1.297-.207-1.576-.464-.15-.138-.299-.45-.37-.639L64.895 3.847h2.909l2.749 8.503 2.63-7.417c.237-.724.71-1.084 1.42-1.086l1.814.002-3.854 11.002zm-44.9.001c-.07.188-.21.498-.365.63-.29.249-.856.463-1.575.463-.716 0-1.296-.207-1.575-.463-.147-.14-.3-.45-.368-.64L19.994 3.847h2.91l2.748 8.502 2.632-7.416c.235-.724.709-1.086 1.42-1.084h1.813l-3.854 11.003zM0 21.78v-1.998h7.773v1.998H0z"
+								   Fill="{StaticResource Color09Brush}"
+								   HorizontalAlignment="Center"
+								   Margin="0,4,0,0"
+								   Stretch="Uniform"
+								   Width="88"
+								   Height="22" />
+						</StackPanel>
+					</HyperlinkButton>
+				</Grid>
+			</DataTemplate>
+
+			<!-- SampleGroup HeaderTemplate -->
+			<DataTemplate x:Key="SampleGroupHeaderTemplate">
+				<Border Margin="16,0"
+						BorderThickness="0,1,0,0"
+						BorderBrush="{Binding Key, Converter={StaticResource SampleGroupTypeToBorderColorBrush}}">
+
+					<!-- Label -->
+					<TextBlock Text="{Binding Key}"
+							   Margin="0,16"
+							   Style="{StaticResource Typo08}"
+							   Foreground="{Binding Key, Converter={StaticResource SampleGroupTypeToForegroundColorBrush}}" />
+				</Border>
+			</DataTemplate>
+
+			<!-- Component ItemTemplate -->
+			<DataTemplate x:Key="ComponentItemTemplate">
+				<Grid Height="48"
+					  Margin="28,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="33" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+
+					<!-- Icon -->
+					<ContentControl Height="24"
+									Width="33"
+									VerticalAlignment="Center"
+									Content="{Binding Title}"
+									ContentTemplateSelector="{StaticResource IconTemplateSelector}" />
+
+					<!-- Label -->
+					<TextBlock Grid.Column="1"
+							   Margin="16,0,0,0"
+							   VerticalAlignment="Center"
+							   Text="{Binding Title}"
+							   Style="{StaticResource Typo11}" />
+				</Grid>
+			</DataTemplate>
+
+			<!-- Demo ItemTemplate -->
+			<DataTemplate x:Key="DemoItemTemplate">
+				<Grid Margin="16">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="50" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+
+					<!-- Icon -->
+					<ContentControl Height="50"
+									Width="50"
+									VerticalAlignment="Top"
+									Content="{Binding Title}"
+									ContentTemplateSelector="{StaticResource IconTemplateSelector}" />
+
+					<StackPanel Grid.Column="1"
+								Margin="30,2,0,0"
+								VerticalAlignment="Top">
+
+						<!-- Title -->
+						<TextBlock Text="{Binding Title}"
+								   Style="{StaticResource Typo12}" />
+
+						<!-- Description -->
+						<TextBlock Text="{Binding Description}"
+								   VerticalAlignment="Center"
+								   TextWrapping="Wrap"
+								   Style="{StaticResource Typo11}"
+								   Opacity="0.6" />
+					</StackPanel>
+				</Grid>
+			</DataTemplate>
+
+			<!-- SampleType TemplateSelector -->
+			<templateSelectors:SampleItemTemplateSelector x:Key="SampleTypeTemplateSelector"
+														  DemoSampleItemTemplate="{StaticResource DemoItemTemplate}"
+														  ComponentSampleItemTemplate="{StaticResource ComponentItemTemplate}" />
+
+			<!-- Icon TemplateSelector -->
+			<templateSelectors:IconTemplateSelector x:Key="IconTemplateSelector" />
+
+		</ResourceDictionary>
 	</Page.Resources>
 
-	<Grid Background="{StaticResource Color01Brush}">
-		<ListView x:Name="SamplesList"
-				  toolkit:VisibleBoundsPadding.PaddingMask="All"
-				  FooterTemplate="{StaticResource SamplesFooter}"
-				  ItemTemplateSelector="{StaticResource SampleTypeTemplateSelector}"
-				  ItemContainerStyle="{StaticResource SampleListViewItem}"
-				  ItemsSource="{Binding}"
-				  SelectionMode="None"
-				  IsItemClickEnabled="True"
-				  ItemClick="SamplesList_ItemClick">
-			<ListView.Header>
-				<StackPanel Padding="16,48,16,16"
-							Orientation="Horizontal"
-							BorderBrush="{StaticResource Color17Brush}">
-					<Image Source="ms-appx:///Assets/UnoLogo.png"
-						   Margin="0,0,24,0"
-						   Height="40"
-						   Width="40"
-						   Stretch="Uniform" />
+	<!-- UnoPlatformShell -->
+	<local:UnoPlatformShell AppName="Gallery"
+							AppAuthor="Uno"
+							LinkToOriginalApp="https://github.com/nventive/Uno.Samples"
+							LinkToAppAuthor="https://github.com/nventive"
+							LinkToUnoPlatformApp="https://github.com/nventive/Uno.Samples"
+							LinkToTwitter="https://twitter.com/?status=@UWPEverywhere:%20Uno%20Gallery%20App%20on%20WASM%20https://github.com/nventive/Uno.Samples"
+							VersionNumber="0.0.0.1">
 
-					<TextBlock Text="Uno Gallery"
-							   Style="{StaticResource Typo07}" />
-				</StackPanel>
-			</ListView.Header>
-			<ListView.GroupStyle>
-				<GroupStyle HeaderTemplate="{StaticResource SampleGroupHeaderTemplate}" />
-			</ListView.GroupStyle>
-			<ListView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<ItemsStackPanel AreStickyGroupHeadersEnabled="False" />
-				</ItemsPanelTemplate>
-			</ListView.ItemsPanel>
-		</ListView>
-		<CommandBar x:Name="CollapsibleCommandBar"
-					Content="Gallery" />
-	</Grid>
+		<!-- About Content -->
+		<local:UnoPlatformShell.AboutContent>
+			<StackPanel>
+
+				<!-- About Content Line 1 -->
+				<TextBlock TextWrapping="Wrap"
+						   Foreground="{StaticResource Color02Brush}"
+						   FontStyle="Italic"
+						   FontSize="14">
+						
+						This application is running 
+						<Bold>
+							entirely locally
+						</Bold> 
+						on your machine, no code is being sent out to the wire.
+				</TextBlock>
+
+				<!-- About Content Line 2 -->
+				<TextBlock TextWrapping="Wrap"
+						   Foreground="{StaticResource Color02Brush}"
+						   FontStyle="Italic"
+						   FontSize="12"
+						   Margin="0,16,0,0">
+					
+						The Mono runtime is using the interpreted mode (which is currently about 
+					
+						<!-- Link to WASM Benchmark -->
+						<Hyperlink NavigateUri="https://github.com/stefan-schweiger/dotWasmBenchmark"
+								   Foreground="{StaticResource Color02Brush}">
+							<Bold>
+								<Underline>
+									50x slower than it should be
+								</Underline>
+							</Bold>
+						</Hyperlink>
+						). For a better experience run it in Microsoft Edge or Mozilla Firefox.
+				</TextBlock>
+			</StackPanel>
+
+		</local:UnoPlatformShell.AboutContent>
+
+		<!-- App Content -->
+		<local:UnoPlatformShell.AppContent>
+
+			<!-- SamplesList -->
+			<ListView x:Name="SamplesList"
+					  toolkit:VisibleBoundsPadding.PaddingMask="All"
+					  FooterTemplate="{StaticResource SamplesFooter}"
+					  ItemTemplateSelector="{StaticResource SampleTypeTemplateSelector}"
+					  ItemContainerStyle="{StaticResource SampleListViewItem}"
+					  ItemsSource="{Binding}"
+					  SelectionMode="None"
+					  IsItemClickEnabled="True"
+					  ItemClick="SamplesList_ItemClick">
+
+				<ListView.GroupStyle>
+					<GroupStyle HeaderTemplate="{StaticResource SampleGroupHeaderTemplate}" />
+				</ListView.GroupStyle>
+
+				<ListView.ItemsPanel>
+					<ItemsPanelTemplate>
+						<ItemsStackPanel AreStickyGroupHeadersEnabled="False" />
+					</ItemsPanelTemplate>
+				</ListView.ItemsPanel>
+			</ListView>
+		</local:UnoPlatformShell.AppContent>
+	</local:UnoPlatformShell>
 </Page>
