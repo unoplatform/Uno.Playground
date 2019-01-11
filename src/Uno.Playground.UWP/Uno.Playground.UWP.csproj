@@ -23,7 +23,7 @@
       <Version>1.26.0-dev.58</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.43.0-dev.551</Version>
+      <Version>1.43.0-dev.619</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
