@@ -127,7 +127,7 @@
 													  DemoSampleItemTemplate="{StaticResource DemoItemTemplate}"
 													  ComponentSampleItemTemplate="{StaticResource ComponentItemTemplate}" />
 
-		<templateSelectors:IconTemplateSelector x:Key="IconTemplateSelector" />
+		<templateSelectors:IconTemplateSelector x:Key="IconTemplateSelector" Default="{StaticResource DefaultIcon}" />
 	</Page.Resources>
 
 	<Grid Background="{StaticResource Color01Brush}">
