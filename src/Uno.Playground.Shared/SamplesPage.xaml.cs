@@ -233,6 +233,7 @@ namespace Uno.UI.Demo
 #region CollapsibleCommandBar
 
 		private const double CollapsibleCommandBarScrollThreshold = 48;
+		private bool _isExpanded = true; // true to force first update UpdateCollapsibleCommandBar(0) in ctor.
 
 		private void SamplesPage_Loaded(object sender, RoutedEventArgs e)
 		{
@@ -255,7 +256,13 @@ namespace Uno.UI.Demo
 			// We can't simply use Visibility.Collapsed on the CommandBar 
 			// because it would break the navigation transition on iOS.
 
-			if (verticalOffset > CollapsibleCommandBarScrollThreshold)
+			var shouldExpand = verticalOffset > CollapsibleCommandBarScrollThreshold;
+			if (shouldExpand == _isExpanded)
+			{
+				return;
+			}
+
+			if (shouldExpand)
 			{
 				CollapsibleCommandBar.IsHitTestVisible = true;
 				CollapsibleCommandBar.Opacity = 1;
@@ -269,6 +276,8 @@ namespace Uno.UI.Demo
 				CollapsibleCommandBar.Foreground = new SolidColorBrush(Colors.Transparent);
 				CollapsibleCommandBar.Background = new SolidColorBrush(Colors.Transparent);
 			}
+
+			_isExpanded = shouldExpand;
 		}
 
 		private static IEnumerable<DependencyObject> GetChildren(DependencyObject reference)
