@@ -10,8 +10,7 @@ namespace Uno.UI.Demo
 		{
 			// Uno.UI.FeatureConfiguration.Interop.ForceJavascriptInterop = true;
 
-			Console.WriteLine("go");
-			_app = new App();
+			Windows.UI.Xaml.Application.Start(_ => _app = new App());
 
 			return 0;
 		}

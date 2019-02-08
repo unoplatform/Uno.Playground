@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -32,7 +32,6 @@
 	<ItemGroup>
 		<Content Include="Fonts\winjs-symbols.woff2" />
 		<Content Include="ts\GoogleAnalytics.ts" />
-		<Content Include="web.config" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -62,21 +61,14 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Json" Version="4.5.0" />
-		<PackageReference Include="Uno.UI" Version="1.43.0-dev.581" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.131" />
+		<PackageReference Include="Uno.UI" Version="1.43.0-dev.794" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.183" />
 		<PackageReference Include="Uno.CodeGen" Version="1.30.0-dev.102" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
-		<PackageReference Include="Uno.Wasm.MonoRuntime" Version="1.0.0-dev0000" />
+
+		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.183" />
 	</ItemGroup>
-
-	<Target Name="CopyPlaygroundFiles" AfterTargets="BuildDist">
-		<ItemGroup>
-			<PlaygroundFiles Include="bin\$(Configuration)\netstandard2.0\dist\**\*.*" />
-		</ItemGroup>
-
-		<Copy SourceFiles="@(PlaygroundFiles)" DestinationFolder="..\Uno.Playground.AspnetShell\wwwroot\%(RecursiveDir)" />
-	</Target>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
 	<Import Project="..\Package.targets" />
