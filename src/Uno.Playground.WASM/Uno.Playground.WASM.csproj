@@ -71,6 +71,12 @@
 		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.183" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<WasmShellMonoEnvironment Include="MONO_GC_PARAMS" Value="soft-heap-limit=512m,nursery-size=64m,evacuation-threshold=66,major=marksweep" />
+		<WasmShellMonoEnvironment Include="MONO_LOG_LEVEL" Value="debug" />
+		<WasmShellMonoEnvironment Include="MONO_LOG_MASK" Value="gc" />
+	</ItemGroup>
+
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
 	<Import Project="..\Package.targets" />
 </Project>
