@@ -12,9 +12,9 @@
 		<NoWarn>NU1701</NoWarn>
 		
 		<WasmShellEnableAOT Condition="$([MSBuild]::IsOsUnixLike())">true</WasmShellEnableAOT>
-		
-		<MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/1677/label=ubuntu-1804-amd64/Azure/processDownloadRequest/1677/ubuntu-1804-amd64/sdks/wasm/mono-wasm-c11a3cdd535.zip</MonoWasmSDKUri>
-		<MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/1677/label=ubuntu-1804-amd64/Azure/processDownloadRequest/1677/ubuntu-1804-amd64/wasm-release-Linux-c11a3cdd535670e9f7e0282431a608081f5316e9.zip</MonoWasmAOTSDKUri>
+
+		<MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2063/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2063/ubuntu-1804-amd64/sdks/wasm/mono-wasm-5f65ce9f7df.zip</MonoWasmSDKUri>
+		<MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2063/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2063/ubuntu-1804-amd64/wasm-release-Linux-5f65ce9f7dfa6404219c90b6b82ba586fabb2e1c.zip</MonoWasmAOTSDKUri>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
