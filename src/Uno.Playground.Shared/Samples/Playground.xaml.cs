@@ -118,8 +118,9 @@ namespace Uno.UI.Demo.Samples
 				samples.SelectionChanged += Samples_SelectionChanged;
 				samples.IsEnabled = true;
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				Console.WriteLine(e);
 				samples.ItemsSource = new[] {new SampleForDisplay(new SampleCategory(), new Sample {Title = "[Error loading samples]"})};
 			}
 		}
@@ -508,12 +509,7 @@ namespace Uno.UI.Demo.Samples
 		}
 		private static HttpClient CreateHttp()
 		{
-#if __WASM__
-			var handler = new Wasm.WasmHttpHandler();
-			var httpClient = new HttpClient(handler);
-#else
 			var httpClient = new HttpClient();
-#endif
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/json"));
 			return httpClient;
