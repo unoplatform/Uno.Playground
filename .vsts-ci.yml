@@ -60,15 +60,6 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: src\Uno.Playground.AspnetShell\Uno.Playground.AspnetShell.csproj
-      arguments: --configuration Release --output $(Build.ArtifactStagingDirectory)/web
-      zipAfterPublish: true
-      modifyOutputPath: true
-
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: publish
-      publishWebProjects: false
       projects: src\Uno.Playground.Api\Uno.Playground.Api.csproj
       arguments: --configuration Release --output $(Build.ArtifactStagingDirectory)/api
       zipAfterPublish: true
