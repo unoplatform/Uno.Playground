@@ -50,7 +50,7 @@
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AotAssemblies>true</AotAssemblies>
+    <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
@@ -84,10 +84,10 @@
       <Version>1.30.0-dev.102</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.26.0-dev.58</Version>
+      <Version>1.28.0-dev.86</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.43.0-dev.619</Version>
+      <Version>1.45.0-dev.1327</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
