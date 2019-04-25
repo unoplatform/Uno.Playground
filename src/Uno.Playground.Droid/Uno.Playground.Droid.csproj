@@ -87,7 +87,7 @@
       <Version>1.28.0-dev.86</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>1.45.0-dev.1327</Version>
+      <Version>1.45.0-dev.1338</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
