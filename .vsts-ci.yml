@@ -1,3 +1,9 @@
+
+resources:
+  containers:
+  - container: nv-bionic-wasm
+    image: nventive/wasm-build:1.2
+
 jobs:
 - job: Desktop
   variables:
