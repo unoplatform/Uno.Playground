@@ -6,9 +6,7 @@ jobs:
     AndroidNdkDirectory: C:\Microsoft\AndroidNDK64\android-ndk-r15c
 
   pool:
-    name: Default
-    demands:
-    - VisualStudio_Version -equals 15.9.6
+    name: Hosted VS2017
 
   workspace:
     clean: all
