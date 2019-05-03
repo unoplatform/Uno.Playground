@@ -74,7 +74,7 @@ namespace Uno.UI.Demo.Samples
 			DynamicAnimation.SetStoryboard(this, null);
 
 			SizeChanged += (snd, e) => RestoreCodePaneSize(e.PreviousSize, e.NewSize);
-#if __WASM__
+#if false // __WASM__
 			Uno.Foundation.WebAssemblyRuntime.InvokeJS("Uno.UI.WindowManager.current.setStyle(\"" + splitter.HtmlId + "\", {\"cursor\": \"col-resize\"});");
 #endif
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
@@ -570,6 +570,7 @@ namespace Uno.UI.Demo.Samples
 
 		private void BeginResizeCodePane(object sender, PointerRoutedEventArgs e)
 		{
+#if !__WASM__ // Disable for pointer capture issues
 			var splitter = (UIElement)sender;
 			if (!splitter.CapturePointer(e.Pointer))
 			{
@@ -619,6 +620,7 @@ namespace Uno.UI.Demo.Samples
 				transform.X = 0;
 				splitter.Opacity = 1;
 			}
+#endif
 		}
 
 #if __WASM__
