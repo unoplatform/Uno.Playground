@@ -248,6 +248,7 @@
 				<ControlTemplate TargetType="NavigationViewItem">
 					<Grid x:Name="LayoutRoot"
 						  Background="{TemplateBinding Background}"
+						  Height="100"
 						  Control.IsTemplateFocusTarget="True">
 						<Rectangle x:Name="SelectionIndicator"
 								   HorizontalAlignment="Stretch"
