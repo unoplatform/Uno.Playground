@@ -8,19 +8,19 @@
 
 	<StackPanel>
 		<Button x:Name="showDialog1"
-				Click="OnMyButtonClick1"
+				Click="ShowSignInDialog"
 				Content="Show Sign In Dialog"
 				VerticalAlignment="Top"
 				Margin="10"/>
 
 		<Button x:Name="showDialog2"
-				Click="OnMyButtonClick2"
+				Click="ShowRateAppDialog"
 				Content="Show Rate App Dialog"
 				VerticalAlignment="Top"
 				Margin="10" />
 
 		<Button x:Name="showDialog3"
-				Click="OnMyButtonClick3"
+				Click="ShowTermsDialog"
 				Content="Terms and conditions"
 				VerticalAlignment="Top"
 				Margin="10" />

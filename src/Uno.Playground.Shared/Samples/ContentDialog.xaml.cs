@@ -13,17 +13,17 @@ namespace Uno.UI.Demo.Samples
 			this.InitializeComponent();
 		}
 
-		private async void OnMyButtonClick1(object sender, object args)
+		private async void ShowSignInDialog(object sender, object args)
 		{
 			var result = await new Uno.Playground.Styles.Controls.ContentDialog_SignIn().ShowAsync();
 		}
 
-		private async void OnMyButtonClick2(object sender, object args)
+		private async void ShowRateAppDialog(object sender, object args)
 		{
 			var result = await new Uno.Playground.Styles.Controls.ContentDialogRateApp().ShowAsync();
 		}
 
-		private async void OnMyButtonClick3(object sender, object args)
+		private async void ShowTermsDialog(object sender, object args)
 		{
 			var result = await new Uno.Playground.Styles.Controls.ContentDialog_TermsAndConditions().ShowAsync();
 		}
