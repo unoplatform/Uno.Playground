@@ -123,4 +123,12 @@
 		</Setter>
 	</Style>
 
+	<Style x:Key="ContentDialogCloseButtonStyle"
+		   TargetType="Button">
+		<Setter Property="Foreground"
+				Value="DarkBlue" />
+		<Setter Property="Background"
+				Value="LightBlue" />
+	</Style>
+
 </ResourceDictionary>

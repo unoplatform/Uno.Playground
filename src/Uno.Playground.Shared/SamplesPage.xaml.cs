@@ -81,6 +81,10 @@ namespace Uno.UI.Demo
 				},
 				new Sample
 				{
+					Title = "ContentDialog",
+				},
+				new Sample
+				{
 					Title = "FlipView",
 				},
 				new Sample

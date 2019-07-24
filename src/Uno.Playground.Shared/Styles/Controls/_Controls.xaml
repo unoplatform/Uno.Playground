@@ -4,6 +4,7 @@
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Button.xaml" />
 		<ResourceDictionary Source="CommandBar.xaml" />
+		<ResourceDictionary Source="ContentDialog.xaml" />
 		<ResourceDictionary Source="Frame.xaml" />
 		<ResourceDictionary Source="ListView.xaml" />
 		<ResourceDictionary Source="ListViewItem.xaml" />
