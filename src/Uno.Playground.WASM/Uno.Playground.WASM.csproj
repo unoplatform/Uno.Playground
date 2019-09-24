@@ -53,12 +53,12 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="1.45.0-dev.1359" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.263" />
-		<PackageReference Include="Uno.CodeGen" Version="1.32.0-dev.134" />
+		<PackageReference Include="Uno.UI" Version="1.46.228-dev.2685" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.1.0-dev.319" />
+		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.139" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
-		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.263" />
+		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.1.0-dev.319" />
 	</ItemGroup>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
