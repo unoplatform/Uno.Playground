@@ -1,0 +1,208 @@
+# These settings are synced to GitHub by https://probot.github.io/apps/settings/
+
+repository:
+  # See https://developer.github.com/v3/repos/#edit for all available settings.
+
+  # The name of the repository. Changing this will rename the repository
+  #name: template
+
+  description: Source code for the Uno Gallery apps and Uno Playground (made in Wasm)
+  homepage: https://playground.platform.uno/
+  topics: uno, uno-platform, webassembly, wasm, uwp, mono, xamarin, csharp, first-timers-friendly
+
+  # Either `true` to make the repository private, or `false` to make it public.
+  private: false
+
+  has_issues: true
+  has_projects: false
+  has_wiki: false
+
+  has_downloads: true
+
+  default_branch: master
+
+  allow_squash_merge: false
+  allow_merge_commit: true
+  allow_rebase_merge: false
+
+# Labels: define labels for Issues and Pull Requests
+labels:
+  - name: area/automation
+    color: 5DADE2
+    description: Categorizes an issue or PR as relevant to project automation
+
+  - name: area/build
+    color: 5DADE2
+    description: Categorizes an issue or PR as relevant to build infrastructure
+
+  - name: area/community
+    color: 5DADE2
+    description: Categorizes an issue or PR as relevant to community or interactions
+
+  - name: do-not-merge/breaking-change
+    color: E74C3C
+    description: Categorizes issue or PR as related to breaking change to an existing API
+
+  - name: do-not-merge/work-in-progress
+    color: E74C3C
+    description: Indicates that a PR should not merge because it is a work in progress.
+
+  - name: epic
+    color: f9cdb3
+
+  - name: good first issue
+    color: 7057ff
+    description: Denotes an issue ready for a new contributor, according to the "help wanted" guidelines.
+
+  - name: hacktoberfest
+    color: F59B00
+    description: Complete the Hacktoberfest challenge and earn a limited edition T-shirt.
+
+  - name: help wanted
+    color: 008672
+    description: Denotes an issue that needs help from a contributor. Must meet "help wanted" guidelines.
+
+  - name: invalid
+    color: F59B00
+    description: Ineligible for the Hacktoberfest challenge
+
+  - name: kind/api-change-breaking
+    color: E74C3C
+    description: Categorizes issue or PR as related to breaking change to an existing API
+
+  - name: kind/bug
+    color: d73a4a
+    description: Something isn't working
+
+  - name: kind/cleanup
+    color: 336699
+    description: Categorizes issue or PR as related to cleaning up code, process, or technical debt.
+
+  - name: kind/consumer-experience
+    color: 336699
+    description: Categorizes issue or PR as related to improving the experience of consumers
+
+  - name: kind/contributor-experience
+    color: 336699
+    description: Categorizes issue or PR as related to improving the experience of contributors
+
+  - name:  kind/dependency
+    color: 336699
+    description: Categorizes an issue or PR as relevant to 3rd party dependencies that are consumed by this project
+
+  - name: kind/discussion
+    color: fcbb3a
+
+  - name:  kind/documentation
+    color: 336699
+    description: Categorizes an issue or PR as relevant to 3rd party dependencies that are consumed by this project
+
+  - name: kind/enhancement
+    color: 28B463
+    description:  New feature or request.
+
+  - name: kind/feedback
+    color: f9f486
+    description: Categorizes issue as related to feedback from people are using the project or are considering adoption
+
+  - name: kind/maintainer-experience
+    color: D6EAF8
+    description:  Categorizes issue or PR as related to improving the experience of maintainers
+
+  - name: kind/performance
+    color: F4D03F
+    description: Categorizes issue or PR as related to improving performance (allocations/memory/init/etc)
+
+  - name: kind/regression
+    color: E74C3C
+    description: Something was working, now it isn't
+
+  - name: kind/security
+    color: fafc7b
+    description: Categorizes issue or PR as related to security incident or defect
+
+  - name: priority/awaiting-more-evidence
+    color: FDEBD0
+    description:  Lowest priority. Possibly useful, but not yet enough support to actually get it done.
+
+  - name: priority/backlog
+    color: F5B041
+    description: Higher priority than priority/awaiting-more-evidence.
+
+  - name: priority/critical-urgent
+    color: E74C3C
+    description: Highest priority. Must be actively worked on as someone's top priority right now.
+
+  - name: priority/important-longterm
+    color: D35400
+    description: Important over the long term, but may not be staffed and/or may need multiple releases to complete.
+
+  - name: priority/important-soon
+    color: D35400
+    description: Must be staffed and worked on either currently, or very soon, ideally in time for the next release.
+
+  - name: triage/duplicate
+    color: BB8FCE
+    description: Indicates an issue is a duplicate of other open issue.
+
+  - name: thank-you
+    color: E45E9D
+    description: Sometimes all a maintainer needs is a “thank you” 🙌.
+
+  - name: triage/most-wanted
+    color: ededed
+    description: Indicates an issue needs more information in order to work on it.
+
+  - name: triage/needs-information
+    color: BB8FCE
+    description: Indicates an issue needs more information in order to work on it.
+
+  - name: triage/not-reproducible
+    color: BB8FCE
+    description:  Indicates an issue can not be reproduced as described.
+
+  - name: triage/support
+    color: BB8FCE
+    description: Indicates an issue that is a support question.
+
+  - name: triage/unresolved-or-working-as-intended
+    color: BB8FCE
+    description: Indicates an issue that can not or will not be resolved.
+
+  - name: triage/untriaged
+    color: BB8FCE
+    description: Indicates an issue requires triaging or verification.
+
+  #- name: first-timers-only
+  # include the old name to rename an existing label
+  #  oldname: Help Wanted
+
+branches:
+  - name: master
+    # https://developer.github.com/v3/repos/branches/#update-branch-protection
+    # Branch Protection settings. Set to null to disable
+    protection:
+      # Required. Require at least one approving review on a pull request, before merging. Set to null to disable.
+      required_pull_request_reviews:
+        # The number of approvals required. (1-6)
+        required_approving_review_count: 1
+        # Dismiss approved reviews automatically when a new commit is pushed.
+        dismiss_stale_reviews: true
+        # Blocks merge until code owners have reviewed.
+        require_code_owner_reviews: true
+        # Specify which users and teams can dismiss pull request reviews. Pass an empty dismissal_restrictions object to disable. User and team dismissal_restrictions are only available for organization-owned repositories. Omit this parameter for personal repositories.
+        dismissal_restrictions:
+          users: []
+          teams: []
+      # Required. Require status checks to pass before merging. Set to null to disable
+      required_status_checks:
+        # Required. Require branches to be up to date before merging.
+        strict: true
+        # Required. The list of status checks to require in order to merge into this branch
+        contexts: []
+      # Required. Enforce all configured restrictions for administrators. Set to true to enforce required status checks for repository administrators. Set to null to disable.
+      enforce_admins: null
+      # Required. Restrict who can push to this branch. Team and user restrictions are only available for organization-owned repositories. Set to null to disable.
+      restrictions:
+        users: []
+        teams: []
