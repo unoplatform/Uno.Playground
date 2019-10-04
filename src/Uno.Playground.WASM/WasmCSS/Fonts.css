@@ -27,3 +27,7 @@ body::after {
     pointer-events: none;
     position: absolute;
 }
+
+.uno-checkbox .uno-panel > .uno-textblock {
+    font-family: 'Segoe MDL2 Assets' !important;
+}
