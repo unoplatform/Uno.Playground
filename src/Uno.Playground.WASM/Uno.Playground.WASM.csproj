@@ -52,7 +52,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
 		<PackageReference Include="Uno.UI" Version="2.0.512-dev.3728" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0" />
 		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.143" />
