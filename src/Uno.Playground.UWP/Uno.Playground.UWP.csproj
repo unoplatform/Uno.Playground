@@ -42,7 +42,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Uno.Playground.UWP_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>2AF5CE62C7028979E619E803649FAAE40FCAD7DD</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>19FE80D81382FA0D54149CEFB9E8514B9E3FA309</PackageCertificateThumbprint>
     <UapAppxPackageBuildMode>StoreUpload</UapAppxPackageBuildMode>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
