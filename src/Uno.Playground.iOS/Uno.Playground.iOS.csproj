@@ -190,7 +190,7 @@
     <PackageReference Include="Uno.UI">
       <Version>2.0.512-dev.3728</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>

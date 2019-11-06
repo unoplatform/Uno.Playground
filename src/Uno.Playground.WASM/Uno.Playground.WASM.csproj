@@ -56,7 +56,7 @@
 		<PackageReference Include="Uno.UI" Version="2.0.512-dev.3728" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0" />
 		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.143" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0" />
 	</ItemGroup>
