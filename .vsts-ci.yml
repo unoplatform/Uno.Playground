@@ -27,7 +27,7 @@ jobs:
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries')
     inputs:
       solution: src/Uno.Playground.sln
-      branchToMerge: uno
+      branchToMerge: master
       summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
       resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
       nugetUpdaterVersion: 2.0.2
