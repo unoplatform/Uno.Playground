@@ -42,6 +42,8 @@
 		<UpToDateCheckInput Include="ts\**\*" />
 		<UpToDateCheckInput Include="WasmCSS\**\*" />
 		<UpToDateCheckInput Include="WasmScripts\**\*" />
+		
+		<Content Include="Fonts\*.woff2" />
 	</ItemGroup>
 
 	<ItemGroup>
