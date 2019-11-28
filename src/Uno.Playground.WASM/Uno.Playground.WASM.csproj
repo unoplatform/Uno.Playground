@@ -20,7 +20,7 @@
 		Force enable the debugger until v1.1 of the uno bootstrapper can be used.
 		Avoids a stackoverflow in safari.
 		-->
-		<MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
+		<MonoRuntimeDebuggerEnabled Condition="'$(Configuration)'=='Debug' or '$(WasmShellMonoRuntimeExecutionMode)'==''">true</MonoRuntimeDebuggerEnabled>
 	</PropertyGroup>
 	
 	<ItemGroup>
