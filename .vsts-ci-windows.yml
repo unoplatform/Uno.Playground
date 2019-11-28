@@ -1,0 +1,196 @@
+jobs:
+- job: Desktop
+  variables:
+    ANDROID_NDK_HOME: C:\Microsoft\AndroidNDK64\android-ndk-r15c
+    ANDROID_NDK_PATH: C:\Microsoft\AndroidNDK64\android-ndk-r15c
+    AndroidNdkDirectory: C:\Microsoft\AndroidNDK64\android-ndk-r15c
+
+  pool:
+    name: "Hosted VS2017"
+
+  workspace:
+    clean: all
+    
+  steps:
+  - checkout: self
+    clean: true
+    lfs: true
+
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core runtime 2.2.0'
+    inputs:
+      packageType: runtime
+      version: 2.2.0
+
+  - task: nventiveCanaryUpdater@5
+    displayName: 'Canary Update'
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries')
+    inputs:
+      solution: src/Uno.Playground.sln
+      branchToMerge: uno
+      summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
+      resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
+      nugetUpdaterVersion: 2.0.2
+      packageAuthor: nventive
+
+  - task: gittools.gitversion.gitversion-task.GitVersion@4
+    inputs:
+      updateAssemblyInfo: false
+
+  - task: NuGetToolInstaller@0
+    inputs:
+      versionSpec: 4.7.0
+      checkLatest: false
+
+  - task: NuGetCommand@2
+    inputs:
+      command: restore
+      solution: src\Uno.Playground.sln
+
+  - task: MSBuild@1
+    inputs:
+      solution: src\Build\Build.proj
+      msbuildLocationMethod: version
+      msbuildVersion: latest
+      msbuildArchitecture: x86
+      msbuildArguments: 
+      clean: false
+      maximumCpuCount: true
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+
+  - task: MSBuild@1
+    inputs:
+      solution: src\Uno.Playground.sln
+      msbuildLocationMethod: version
+      msbuildVersion: latest
+      msbuildArchitecture: x86
+      msbuildArguments: /p:CheckExclusions=True /p:Configuration=Release /bl:$(build.artifactstagingdirectory)\build.binlog /p:AndroidSigningKeyPass=$(KeystorePassword) /p:AndroidSigningStorePass=$(KeystorePassword) 
+      clean: false
+      maximumCpuCount: true
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: src\Uno.Playground.Api\Uno.Playground.Api.csproj
+      arguments: --configuration Release --output $(Build.ArtifactStagingDirectory)/api
+      zipAfterPublish: true
+      modifyOutputPath: true
+ 
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
+      Contents: "**/*.*"
+      TargetFolder: $(build.artifactstagingdirectory)\wasm
+      CleanTargetFolder: false
+      OverWrite: false
+      flattenFolders: false
+ 
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.Droid/bin/Release
+      Contents: "**/*.apk"
+      TargetFolder: $(build.artifactstagingdirectory)\android
+      CleanTargetFolder: false
+      OverWrite: false
+      flattenFolders: false
+       
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: $(build.sourcesdirectory)/src/Build/
+      Contents: ReleaseNotes.txt
+      TargetFolder: $(build.artifactstagingdirectory)
+      CleanTargetFolder: false
+      OverWrite: false
+      flattenFolders: false
+
+  - task: PublishBuildArtifacts@1
+    condition: always()
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
+      ArtifactName: drop
+      ArtifactType: Container
+
+ # UWP BUILD
+- job: UWP
+  pool:
+    name: "Hosted VS2017"
+
+  workspace:
+    clean: all
+
+  steps:
+  - checkout: self
+    clean: true
+    lfs: true
+
+  #Fixes gitversion task
+  - bash: |
+     shopt -s nullglob
+     function join_by { local IFS="$1"; shift; echo "$*"; }
+     lib_path=$(join_by ';' $(Agent.WorkFolder)/_tasks/GitVersion*/4.0.*/lib/osx)
+     echo LD_LIBRARY_PATH: $lib_path
+     echo "##vso[task.setvariable variable=LD_LIBRARY_PATH]$lib_path"
+
+  - task: gittools.gitversion.gitversion-task.GitVersion@4
+    inputs:
+      updateAssemblyInfo: false
+
+  - task: NuGetToolInstaller@0
+    inputs:
+      versionSpec: 4.7.0
+      checkLatest: false
+
+  - task: NuGetCommand@2
+    inputs:
+      command: restore
+      solution: src\Uno.Playground.Uwp\Uno.Playground.Uwp.csproj
+      selectOrConfig: select
+      includeNuGetOrg: true
+      verbosityRestore: Normal
+
+  - task: NuGetCommand@2
+    inputs:
+      command: restore
+      solution: src\Build\Build.csproj
+      selectOrConfig: select
+      includeNuGetOrg: true
+      verbosityRestore: Normal
+
+  - task: MSBuild@1
+    inputs:
+      solution: src\Build\Build.proj
+      msbuildLocationMethod: version
+      msbuildVersion: latest
+      msbuildArchitecture: x86
+      msbuildArguments: 
+      clean: false
+      maximumCpuCount: true
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+
+  - task: MSBuild@1
+    inputs:
+      solution: src\Uno.Playground.Uwp\Uno.Playground.Uwp.csproj
+      msbuildLocationMethod: version
+      msbuildVersion: latest
+      msbuildArchitecture: x86
+      msbuildArguments: /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\uwp" /t:Publish "/p:Configuration=Release;Platform=x86" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundlePlatforms="x86|x64|arm" /p:AppxBundle=Always
+      clean: false
+      maximumCpuCount: true
+      restoreNugetPackages: false
+      logProjectEvents: false
+      createLogFile: false
+
+  - task: PublishBuildArtifacts@1
+    condition: always()
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
+      ArtifactName: drop
+      ArtifactType: Container
