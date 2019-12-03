@@ -14,9 +14,10 @@
 
 		<!--
 		Force enable the debugger until v1.1 of the uno bootstrapper can be used.
-		Avoids a stackoverflow in safari.
+		Avoids a stackoverflow in safari, manual activation of compression is required.
 		-->
 		<MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
+    <WasmShellGenerateCompressedFiles>true</WasmShellGenerateCompressedFiles>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
