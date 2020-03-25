@@ -19,6 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Build", "Build\Build.csproj
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{25da869c-40cb-4c9a-a1e8-a685b7d4ea90}*SharedItemsImports = 5
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{5077c264-ad1a-4ffa-899c-a564f624f161}*SharedItemsImports = 4
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{6279c845-92f8-4333-ab99-3d213163593c}*SharedItemsImports = 13
 		Uno.Playground.Shared\Uno.Playground.Shared.projitems*{85473adf-7c3b-415b-b68d-0b90483ceb26}*SharedItemsImports = 4

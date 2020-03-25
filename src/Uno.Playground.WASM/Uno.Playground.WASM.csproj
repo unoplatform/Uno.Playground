@@ -60,9 +60,9 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="2.1.0-dev.54" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.10" />
-		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.143" />
+		<PackageReference Include="Uno.UI" Version="2.2.0-dev.256" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.1.0-dev.438" />
+		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.169" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0" />
