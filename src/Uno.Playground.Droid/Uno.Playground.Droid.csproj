@@ -16,7 +16,7 @@
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <AndroidUseIntermediateDesignerFile>True</AndroidUseIntermediateDesignerFile>
     <DefaultLanguage>en</DefaultLanguage>
@@ -95,15 +95,19 @@
       <Version>1.9.32</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v4">
-      <Version>26.1.0.1</Version>
+      <Version>28.0.0.1</Version>
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat">
-      <Version>26.1.0.1</Version>
+      <Version>28.0.0.1</Version>
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView">
-      <Version>26.1.0.1</Version>
+      <Version>28.0.0.1</Version>
+      <PrivateAssets>none</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.ViewPager">
+      <Version>28.0.0.1</Version>
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Nito.Collections.Deque">
