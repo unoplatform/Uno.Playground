@@ -11,12 +11,9 @@
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
 		<WasmHead>true</WasmHead>
-
-		<!--
-		Force enable the debugger until v1.1 of the uno bootstrapper can be used.
-		Avoids a stackoverflow in safari.
-		-->
-		<MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
+		
+		<!-- Woraround for https://github.com/unoplatform/Uno.Wasm.Bootstrap/issues/186 -->
+		<DotnetCliToolTargetFramework>netcoreapp3.1</DotnetCliToolTargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -52,12 +49,12 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.9.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.0.0">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
 		<PackageReference Include="Uno.UI" Version="2.2.0-dev.256" />
