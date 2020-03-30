@@ -11,12 +11,9 @@
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
 		<WasmHead>true</WasmHead>
-
-		<!--
-		Force enable the debugger until v1.1 of the uno bootstrapper can be used.
-		Avoids a stackoverflow in safari.
-		-->
-		<MonoRuntimeDebuggerEnabled>true</MonoRuntimeDebuggerEnabled>
+		
+		<!-- Woraround for https://github.com/unoplatform/Uno.Wasm.Bootstrap/issues/186 -->
+		<DotnetCliToolTargetFramework>netcoreapp3.1</DotnetCliToolTargetFramework>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -45,6 +42,10 @@
 		
 		<Content Include="Fonts\*.woff2" />
 	</ItemGroup>
+	
+	<ItemGroup>
+		<WasmShellMonoEnvironment Include="MONO_GC_PARAMS" Value="soft-heap-limit=512m,nursery-size=64m,evacuation-threshold=66,major=marksweep" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<LinkerDescriptor Include="LinkerConfig.xml" />
@@ -60,12 +61,12 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="2.2.0-dev.256" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.1.0-dev.438" />
+		<PackageReference Include="Uno.UI" Version="2.2.0-dev.292" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.1.0-dev.445" />
 		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.169" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
-		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0" />
+		<DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.1.0-dev.445" />
 	</ItemGroup>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
