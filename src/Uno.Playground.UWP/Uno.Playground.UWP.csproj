@@ -20,10 +20,10 @@
       <Version>1.33.0-dev.169</Version>
     </PackageReference>
     <PackageReference Include="Uno.Core">
-      <Version>1.29.0</Version>
+      <Version>2.0.0-dev.7</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>2.2.0-dev.292</Version>
+      <Version>2.2.0-dev.333</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup>
