@@ -38,23 +38,13 @@ jobs:
       useConfigFile: true
       configFilePath: gitversion.yml
 
-  - task: NuGetToolInstaller@0
-    inputs:
-      versionSpec: 4.7.0
-      checkLatest: false
-
-  - task: NuGetCommand@2
-    inputs:
-      command: restore
-      solution: src\Uno.Playground.sln
-
   - task: MSBuild@1
     inputs:
-      solution: src\Build\Build.proj
+      solution: src\Build\Build.csproj
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: 
+      msbuildArguments: /r /t:UpdateVersion
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
@@ -67,7 +57,7 @@ jobs:
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: /p:CheckExclusions=True /p:Configuration=Release /bl:$(build.artifactstagingdirectory)\build.binlog /p:AndroidSigningKeyPass=$(KeystorePassword) /p:AndroidSigningStorePass=$(KeystorePassword) 
+      msbuildArguments: /r /p:CheckExclusions=True /p:Configuration=Release /bl:$(build.artifactstagingdirectory)\build.binlog /p:AndroidSigningKeyPass=$(KeystorePassword) /p:AndroidSigningStorePass=$(KeystorePassword) 
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
@@ -144,34 +134,13 @@ jobs:
       useConfigFile: true
       configFilePath: gitversion.yml
 
-  - task: NuGetToolInstaller@0
-    inputs:
-      versionSpec: 4.7.0
-      checkLatest: false
-
-  - task: NuGetCommand@2
-    inputs:
-      command: restore
-      solution: src\Uno.Playground.Uwp\Uno.Playground.Uwp.csproj
-      selectOrConfig: select
-      includeNuGetOrg: true
-      verbosityRestore: Normal
-
-  - task: NuGetCommand@2
-    inputs:
-      command: restore
-      solution: src\Build\Build.csproj
-      selectOrConfig: select
-      includeNuGetOrg: true
-      verbosityRestore: Normal
-
   - task: MSBuild@1
     inputs:
-      solution: src\Build\Build.proj
+      solution: src\Build\Build.csproj
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: 
+      msbuildArguments: /r /t:UpdateVersion
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
@@ -184,7 +153,7 @@ jobs:
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\uwp" /t:Publish "/p:Configuration=Release;Platform=x86" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundlePlatforms="x86|x64|arm" /p:AppxBundle=Always
+      msbuildArguments: /r /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\uwp" /t:Publish "/p:Configuration=Release;Platform=x86" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundlePlatforms="x86|x64|arm" /p:AppxBundle=Always
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false
