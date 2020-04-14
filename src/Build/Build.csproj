@@ -1,18 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
 		<GetVersion>false</GetVersion>
 		<UpdateAssemblyInfo>false</UpdateAssemblyInfo>
 	</PropertyGroup>
 
-  <ItemGroup>
-    <None Include="..\.vsts-ci.yml" Link=".vsts-ci.yml" />
-    <None Include="build.proj" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\.vsts-ci.yml" Link=".vsts-ci.yml" />
+		<None Include="build.proj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MSBuildTasks" Version="1.5.0.235" />
+	</ItemGroup>
+
+	<Target Name="UpdateVersion">
+
+		<Message Text="Updating versions" />
+
+		<Exec Command="git rev-list --count HEAD"
+					ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput"
+							PropertyName="_BuildNumber" />
+		</Exec>
+
+		<PropertyGroup>
+			<!-- Adjusting the build number for the AppStore -->
+			<_BuildNumber>$([MSBuild]::Add($(_BuildNumber), 442))</_BuildNumber>
+		</PropertyGroup>
+
+		<Message Text="Calculated version: $(GITVERSION_INFORMATIONALVERSION)" />
+
+		<XmlUpdate XmlFileName="..\Uno.Playground.iOS\Info.plist"
+								 XPath="//plist/dict/key[text() = 'CFBundleShortVersionString']/following-sibling::string[1]"
+								 Value="$(GITVERSION_MAJOR).$(GITVERSION_MINOR)" />
+
+		<XmlUpdate XmlFileName="..\Uno.Playground.iOS\Info.plist"
+								 XPath="//plist/dict/key[text() = 'CFBundleVersion']/following-sibling::string[1]"
+								 Value="$(_BuildNumber)" />
+
+		<XmlUpdate
+			XmlFileName="..\Uno.Playground.Droid\Properties\AndroidManifest.xml"
+			XPath="/manifest/@android:versionCode"
+			Value="$(_BuildNumber)"
+			Namespace="http://schemas.android.com/apk/res/android"
+			Prefix="android" />
+
+		<XmlUpdate
+			XmlFileName="..\Uno.Playground.UWP\package.appxmanifest"
+			XPath="/x:Package/x:Identity/@Version"
+			Value="$(GITVERSION_MAJOR).$(GITVERSION_MINOR).$(_BuildNumber).0"
+			Namespace="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+			Prefix="x"/>
+
+		<Message Text="Assm: Ver $(GITVERSION_MAJOR).$(GITVERSION_MINOR).$(_BuildNumber)" />
+	</Target>
+
 
 </Project>
