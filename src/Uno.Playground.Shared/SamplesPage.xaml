@@ -94,6 +94,7 @@
 						   Margin="16,0,0,0"
 						   VerticalAlignment="Center"
 						   Text="{Binding Title}"
+						   AutomationProperties.AutomationId="{Binding Title}"
 						   Style="{StaticResource Typo11}" />
 			</Grid>
 		</DataTemplate>
