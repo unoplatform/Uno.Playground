@@ -70,6 +70,7 @@
 						Text="Animations using VisualStates, DoubleAnimations, EasingFunctions and RenderTransforms" />
 
 			<Button Content="Click me!"
+					x:Name="Button"
 					Click="Button_Click" />
 
 			<Rectangle Fill="{StaticResource Color13Brush}"

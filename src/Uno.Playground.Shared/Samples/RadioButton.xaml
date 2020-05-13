@@ -13,13 +13,16 @@
 			
 			<RadioButton GroupName="Enabled"
 						 Content="RadioButton 1"
-						 IsChecked="True" />
+						 IsChecked="True"
+						 x:Name="RadioButton1"/>
 			
 			<RadioButton GroupName="Enabled"
-						 Content="RadioButton 2" />
+						 Content="RadioButton 2"
+						 x:Name="RadioButton2"/>
 			
 			<RadioButton GroupName="Enabled"
-						 Content="RadioButton 3" />
+						 Content="RadioButton 3"
+						 x:Name="RadioButton3"/>
 
 			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
 					   Text="Disabled" />
@@ -28,17 +31,20 @@
 						 IsEnabled="False"
 						 IsHitTestVisible="False"
 						 Content="RadioButton 1"
+						 x:Name="RadioButto4"
 						 IsChecked="True" />
 			
 			<RadioButton GroupName="Disabled"
 						 IsEnabled="False"
 						 IsHitTestVisible="False"
-						 Content="RadioButton 2" />
+						 Content="RadioButton 2"
+						 x:Name="RadioButton5"/>
 			
 			<RadioButton GroupName="Disabled"
 						 IsEnabled="False"
 						 IsHitTestVisible="False"
-						 Content="RadioButton 3" />
+						 Content="RadioButton 3"
+						 x:Name="RadioButton6"/>
 
 		</StackPanel>
 	</ScrollViewer>

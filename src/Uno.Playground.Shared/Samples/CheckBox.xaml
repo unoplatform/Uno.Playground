@@ -9,17 +9,16 @@
 	<ScrollViewer>
 		<StackPanel Style="{StaticResource SamplePanelStyle}">
 
-			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
-					   Text="Normal" />
-			<CheckBox Content="CheckBox" />
+				
 
 			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
-					   Text="Checked" />
+					   Text="Checked"/>
 			<CheckBox Content="CheckBox"
+					  x:Uid="CheckBox2"
 					  IsChecked="True" />
 
 			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
-					   Text="Disabled" />
+					   Text="Disabled"/>
 			<CheckBox Content="CheckBox"
 					  IsEnabled="False"
 					  IsHitTestVisible="False" />

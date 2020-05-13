@@ -4,11 +4,13 @@ using System.Linq;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
+using UITests.Helpers;
+using UITests.Queries;
 
 namespace Uno.Playground.UITest
 {
     [TestFixture(Platform.Android)]
-    [TestFixture(Platform.iOS)]
+    //[TestFixture(Platform.iOS)]
     public class Tests
     {
         IApp app;
@@ -29,6 +31,28 @@ namespace Uno.Playground.UITest
 		public void Smoke()
 		{
 			app.Repl();
+			
 		}
-    }
+
+		[Test]
+		public void CheckBox()
+		{
+			app.WaitForElement("CheckBox");
+			app.Tap("CheckBox");
+
+			app.WaitForElement("CheckBox");
+			app.Tap("CheckBox2");
+
+			var target = app.Marked("CheckBox2");
+			//var result = target?.GetDependencyPropertyValue("IsChecked");
+			/* put a break point on the line after, use debug instead of run to observe this value */
+
+			//app.Wait(30);
+
+
+
+
+
+		}
+	}
 }

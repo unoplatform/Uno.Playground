@@ -28,15 +28,19 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.12.0" />
+		<PackageReference Include="NUnit" Version="3.12.0" />
+		<PackageReference Include="NUnit3TestAdapter" Version="3.16.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Uno.UITest" Version="1.0.0-dev.113" />
+		<PackageReference Include="Uno.UITest.Selenium" Version="1.0.0-dev.113" />
+		<PackageReference Include="Uno.UITest.Xamarin" Version="1.0.0-dev.113" />
+		<PackageReference Include="Uno.UITest.Helpers" Version="1.0.0-dev.113" />
     <PackageReference Include="UITests.Helpers.Uno">
       <Version>3.11.0-dev.95</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.UITest" Version="3.0.7" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
