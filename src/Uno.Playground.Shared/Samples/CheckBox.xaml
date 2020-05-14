@@ -4,24 +4,33 @@
 			 xmlns:local="using:Uno.UI.Demo.Samples"
 			 xmlns:android="http://uno.ui/android"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:converters="using:Uno.UI.Demo.Converters"
 			 mc:Ignorable="android">
+
+	<UserControl.Resources>
+		<converters:BoolToStringConverter x:Key="BoolToString"/>
+	</UserControl.Resources>
 
 	<ScrollViewer>
 		<StackPanel Style="{StaticResource SamplePanelStyle}">
-
-				
+			
+			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
+					   Text="Normal" />
+			<CheckBox Content="CheckBox" />
 
 			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
-					   Text="Checked"/>
-			<CheckBox Content="CheckBox"
-					  x:Uid="CheckBox2"
+					Text="Checked"/>
+			<CheckBox x:Name="CheckBox1"
+					  Content="{Binding ElementName=CheckBox1, Path=IsChecked, Converter={StaticResource BoolToString}}"
 					  IsChecked="True" />
 
 			<TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
 					   Text="Disabled"/>
-			<CheckBox Content="CheckBox"
+			<CheckBox x:Name="CheckBox2"
+					  Content="{Binding ElementName=CheckBox2, Path=IsChecked, Converter={StaticResource BoolToString}}"
 					  IsEnabled="False"
 					  IsHitTestVisible="False" />
+
 
 			<android:TextBlock Style="{StaticResource SampleSectionTextBlockStyle}"
 							   Text="Native" />
@@ -32,3 +41,5 @@
 		</StackPanel>
 	</ScrollViewer>
 </UserControl>
+
+

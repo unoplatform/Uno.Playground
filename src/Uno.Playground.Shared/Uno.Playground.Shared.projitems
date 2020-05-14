@@ -25,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\ItemsWrapGridBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CodeBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToDefaultValueConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\BoolToStringConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\IntToMod4DefaultValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SampleGroupTypeToColorBrushConverter.cs" />
