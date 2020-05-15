@@ -8,13 +8,16 @@
 	<ScrollViewer>
 		<StackPanel Style="{StaticResource SamplePanelStyle}">
 
-			<Button Content="Content only"
+			<Button x:Name="ButtonContent"
+				    Content="Content only"
 					Click="Button_Click" />
 			
-			<Button Content="Content and Title"
+			<Button x:Name="ButtonTitle"
+				    Content="Content and Title"
 					Click="Button_Click2" />
 			
-			<Button Content="Confirmation prompt"
+			<Button x:Name="ButtonPrompt"
+				    Content="Confirmation prompt"
 					Click="Button_Click3" />
 
 		</StackPanel>
