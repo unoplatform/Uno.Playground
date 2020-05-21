@@ -1,4 +1,7 @@
 jobs:
+
+- template: .vsts-ci.Linux.yml
+
 - job: Desktop
   variables:
     ANDROID_NDK_HOME: C:\Microsoft\AndroidNDK64\android-ndk-r15c
@@ -72,15 +75,6 @@ jobs:
       arguments: --configuration Release --output $(Build.ArtifactStagingDirectory)/api
       zipAfterPublish: true
       modifyOutputPath: true
- 
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
-      Contents: "**/*.*"
-      TargetFolder: $(build.artifactstagingdirectory)\wasm
-      CleanTargetFolder: false
-      OverWrite: false
-      flattenFolders: false
  
   - task: CopyFiles@2
     inputs:
