@@ -2,6 +2,7 @@
   <assembly fullname="Uno.Playground.WASM" />
   <assembly fullname="WebAssembly.Bindings" />
   <assembly fullname="Uno.UI" />
+  <assembly fullname="Newtonsoft.Json" />
   <assembly fullname="System.Core">
 		<!-- This is required by JSon.NET and any expression.Compile caller -->
 		<type fullname="System.Linq.Expressions*" />
