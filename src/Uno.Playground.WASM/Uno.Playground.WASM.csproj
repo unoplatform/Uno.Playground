@@ -12,7 +12,8 @@
 		<NoWarn>NU1701</NoWarn>
 		<WasmHead>true</WasmHead>
 		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
-		<WasmShellMonoRuntimeExecutionMode Condition="'$(Configuration)'=='Release' and $([MSBuild]::IsOsPlatform('Linux'))">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
+		<UseAOT Condition="$([MSBuild]::IsOsPlatform('Linux')) or ( $([MSBuild]::IsOsPlatform('Windows')) and '$(BUILD_REPOSITORY_PROVIDER)'=='' )">true</UseAOT>
+		<WasmShellMonoRuntimeExecutionMode Condition="'$(UseAOT)'=='true'">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -50,7 +51,7 @@
 		<LinkerDescriptor Include="LinkerConfig.xml" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(Configuration)'=='Release' and $([MSBuild]::IsOsPlatform('Linux'))">
+	<ItemGroup Condition="'$(UseAOT)'=='true'">
 		<WasmShellEnableAotProfile Include="aot-full.profile" />
 	</ItemGroup>
 	
