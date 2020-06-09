@@ -19,8 +19,11 @@ namespace Uno.Playground.UITest
 
             }
 
-            return ConfigureApp
+			return ConfigureApp
 				.iOS
+				.InstalledApp("com.nventive.uno.ui.demo")
+				.EnableLocalScreenshots()
+				.Debug()
 				.StartApp();
         }
     }

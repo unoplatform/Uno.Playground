@@ -44,9 +44,11 @@
 					<StackPanel Grid.Column="1"
 								Margin="6,0,18,0">
 						<TextBlock Text="{Binding Artist}"
+								   AutomationProperties.AutomationId="{Binding Title}"
 								   Style="{StaticResource Typo01}" />
 
 						<TextBlock Text="{Binding Location}"
+								   AutomationProperties.AutomationId="{Binding Title}"
 								   Style="{StaticResource Typo02}" />
 					</StackPanel>
 

@@ -116,6 +116,7 @@
 					<TextBlock Text="{Binding Title}"
 							   Style="{StaticResource Typo12}" />
 					<TextBlock Text="{Binding Description}"
+							   AutomationProperties.AutomationId="{Binding Title}"
 							   VerticalAlignment="Center"
 							   TextWrapping="Wrap"
 							   Style="{StaticResource Typo11}"

@@ -57,6 +57,13 @@ namespace Uno.Playground.UITest
 
 
 		}
+
+		[Test]
+		public void Playground()
+		{
+
+		}
+
 		[Test]
 		public void MessageDialog()
 		{
