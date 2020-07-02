@@ -471,7 +471,6 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSample(string id)
 		{
-			return;//
 			using (var httpClient = CreateHttp())
 			{
 				var previousAutoUpdate = autoUpdate.IsChecked;
