@@ -61,7 +61,9 @@ namespace Uno.UI.Demo.Samples
 
 			Loaded += Playground_Loaded;
 
-			xamlText.TextChanged += OnTextChanged;
+			xamlText.PropertyChanged += OnPropertyChanged;
+			xamlText.Loaded += OnEditorLoaded;
+
 			jsonDataContext.TextChanged += OnDataContextTextChanged;
 
 			content.SizeChanged += (snd, args) =>
@@ -79,6 +81,8 @@ namespace Uno.UI.Demo.Samples
 #endif
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
 			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding; ;
+
+			
 		}
 		private void OnInputPaneShowing(InputPane sender, InputPaneVisibilityEventArgs args)
 		{
@@ -214,7 +218,7 @@ namespace Uno.UI.Demo.Samples
 
 			LaunchUpdate();
 #endif
-					await LoadSamples();
+					//await LoadSamples();
 		}
 
 		private static readonly Regex CommentStripperRegex = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)");
@@ -258,6 +262,22 @@ namespace Uno.UI.Demo.Samples
 
 			jsonDataContext.Text = data;
 		}
+
+		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
+		{
+			xamlText.CodeLanguage = "xml";
+			await LoadSamples();
+		}
+
+		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e )
+		{
+			Console.WriteLine("Property: " + e.PropertyName);
+			if (e.PropertyName == "Text")
+			{
+				OnTextChanged(sender, null);
+			}
+		}
+
 
 		private void OnTextChanged(object sender, TextChangedEventArgs e)
 		{
@@ -372,6 +392,7 @@ namespace Uno.UI.Demo.Samples
 
 		private string GetXamlInput()
 		{
+			Console.WriteLine("Current text: " + xamlText.Text);
 			return string.Concat(
 				@"<Grid
 					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
@@ -450,6 +471,7 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSample(string id)
 		{
+			return;//
 			using (var httpClient = CreateHttp())
 			{
 				var previousAutoUpdate = autoUpdate.IsChecked;
@@ -536,6 +558,7 @@ namespace Uno.UI.Demo.Samples
 
 		private void Update_OnTapped(object sender, RoutedEventArgs e)
 		{
+			SetCodeDirtyState();
 			LaunchUpdate();
 		}
 

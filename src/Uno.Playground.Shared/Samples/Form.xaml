@@ -9,7 +9,8 @@
 	  mc:Ignorable="">
 
 
-	<ScrollViewer toolkit:VisibleBoundsPadding.PaddingMask="All">
+	<ScrollViewer
+		>
 		<Grid Background="{StaticResource Color01Brush}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />

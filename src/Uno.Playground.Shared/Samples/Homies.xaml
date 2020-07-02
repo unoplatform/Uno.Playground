@@ -289,7 +289,6 @@
 
 		<!-- MY FEED -->
 		<ListView Grid.Row="2"
-				  toolkit:VisibleBoundsPadding.PaddingMask="Bottom"
 				  Padding="0,4"
 				  x:Name="feedListView"
 				  ItemsSource="{Binding FeedPosts}"

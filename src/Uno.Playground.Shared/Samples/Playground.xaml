@@ -8,6 +8,7 @@
 	  xmlns:wasm="http://uno.ui/wasm"
 	  xmlns:ios="http://uno.ui/ios"
 	  xmlns:android="http://uno.ui/android"
+	  xmlns:monaco="using:Monaco"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	  mc:Ignorable="d wasm ios android">
 
@@ -37,7 +38,6 @@
 	</Page.Resources>
 
 	<Grid Background="#242424"
-		  toolkit:VisibleBoundsPadding.PaddingMask="Top"
 		  Name="root">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="72"
@@ -321,10 +321,33 @@
 							</TextBlock>
 
 						</Grid>
-						<local:CodeBox x:Name="xamlText"
+
+						<Grid Grid.Row="1" >
+							<!--<Grid.RowDefinitions>
+								<RowDefinition />
+								<RowDefinition />
+							</Grid.RowDefinitions>-->
+							<monaco:CodeEditor
+								x:Name="xamlText"
+                           Background="Transparent"
+							Margin="4"
+							Grid.Row="0" 
+                           HasGlyphMargin="True"
+                           CodeLanguage="csharp"/>
+                           <!--KeyDown="Editor_KeyDown"
+                           GotFocus="Editor_GotFocus"
+                           LostFocus="Editor_LostFocus"
+                           Text="{x:Bind CodeContent, Mode=TwoWay}"
+                           Options="{x:Bind options, Mode=OneWay}">-->
+
+							<!--<local:CodeBox x:Name="xamlText"
 									   Background="Transparent"
 									   Margin="4"
-									   Grid.Row="1" />
+									   Grid.Row="1" />-->
+						</Grid>
+						 
+						
+						
 					</Grid>
 
 					<Grid Name="dataContextPane"
@@ -347,6 +370,7 @@
 									   VerticalAlignment="Center"
 									   Foreground="#eeeeee" />
 						</Border>
+						 
 						<local:CodeBox x:Name="jsonDataContext"
 									   Background="Transparent"
 									   Margin="4"

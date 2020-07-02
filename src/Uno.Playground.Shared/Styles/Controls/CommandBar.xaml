@@ -35,8 +35,8 @@
 				Value="SemiBold" />
 		<Setter Property="FontSize"
 				Value="17" />
-		<xamarin:Setter Property="(toolkit:VisibleBoundsPadding.PaddingMask)"
-						Value="Top" />
+		<!--<xamarin:Setter Property="(toolkit:VisibleBoundsPadding.PaddingMask)"
+						Value="Top" />-->
 		<ios:Setter Property="(toolkit:CommandBarExtensions.BackButtonForeground)"
 					Value="{StaticResource Color02Brush}" />
 		<android:Setter Property="(toolkit:UIElementExtensions.Elevation)"

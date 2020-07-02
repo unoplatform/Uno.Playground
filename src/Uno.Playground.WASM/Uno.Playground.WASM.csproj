@@ -57,14 +57,39 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-		<PackageReference Include="Uno.UI" Version="2.3.0-dev.170" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="1.2.0-dev.16" />
-		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.2.0-dev.16" />
+		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+		<PackageReference Include="Uno.MonacoEditorComponent" Version="0.0.2">
+		  <ExcludeAssets>contentfiles</ExcludeAssets>
+		</PackageReference>
+			
+		<PackageReference Include="Uno.UI" Version="2.4.4" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="2.4.4" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.3.0-dev.44" />
+    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.3.0-dev.44" />
 		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.169" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 	</ItemGroup>
+
+		<ItemGroup>
+			<EmbeddedResource Include="..\libraries\ts-helpermethods\*.js">
+				<Link>WasmScripts\ts-helpermethods\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			</EmbeddedResource>
+			<EmbeddedResource Include="..\libraries\ts-helpermethods-wasm\*.js">
+				<Link>WasmScripts\ts-helpermethods\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			</EmbeddedResource>
+
+
+			<EmbeddedResource Include="..\libraries\monaco-editor\min\vs\loader.js">
+			<Link>WasmScripts\monaco-editor\min\vs\loader.js</Link>
+		</EmbeddedResource>
+
+			<Content Include="..\libraries\monaco-editor\**\*">
+				<Link>monaco-editor\%(RecursiveDir)%(Filename)%(Extension)</Link>
+			</Content>
+
+	</ItemGroup>
+
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
 	<Import Project="..\Package.targets" />
