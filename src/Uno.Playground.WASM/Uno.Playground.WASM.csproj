@@ -58,9 +58,7 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Uno.MonacoEditorComponent" Version="0.0.2">
-		  <ExcludeAssets>contentfiles</ExcludeAssets>
-		</PackageReference>
+		<PackageReference Include="Uno.Monaco.Editor" Version="0.0.5" />
 			
 		<PackageReference Include="Uno.UI" Version="2.4.4" />
     <PackageReference Include="Uno.UI.RemoteControl" Version="2.4.4" Condition="'$(Configuration)'=='Debug'" />
@@ -71,7 +69,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 	</ItemGroup>
 
-		<ItemGroup>
+		<!--<ItemGroup>
 			<EmbeddedResource Include="..\libraries\ts-helpermethods\*.js">
 				<Link>WasmScripts\ts-helpermethods\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			</EmbeddedResource>
@@ -88,7 +86,7 @@
 				<Link>monaco-editor\%(RecursiveDir)%(Filename)%(Extension)</Link>
 			</Content>
 
-	</ItemGroup>
+	</ItemGroup>-->
 
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
