@@ -3,14 +3,11 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<WasmHead>true</WasmHead>
 		<ApplicationIcon />
 		<StartupObject />
-		<DefineConstants>$(DefineConstants);__WASM__</DefineConstants>
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
-		<WasmHead>true</WasmHead>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -58,13 +55,13 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Uno.Monaco.Editor" Version="0.0.5" />
+		<PackageReference Include="Uno.Monaco.Editor" Version="0.1.0" />
 			
-		<PackageReference Include="Uno.UI" Version="2.4.4" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="2.4.4" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.3.0-dev.44" />
-    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.3.0-dev.44" />
-		<PackageReference Include="Uno.CodeGen" Version="1.33.0-dev.169" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="3.0.0-dev.1504" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="3.0.0-dev.1504" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.4.0-dev.16" />
+    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.4.0-dev.16" />
+		<PackageReference Include="Uno.CodeGen" Version="1.34.0-dev.175" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 	</ItemGroup>
