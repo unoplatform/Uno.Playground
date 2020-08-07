@@ -68,6 +68,7 @@ namespace Uno.UI.Demo.Samples
 			xamlText.PropertyChanged += OnPropertyChanged;
 			xamlText.Loaded += OnEditorLoaded;
 			xamlText.Loading += OnEditorLoading;
+			xamlText.RequestedTheme = ElementTheme.Dark;
 
 			jsonDataContext.TextChanged += OnDataContextTextChanged;
 
