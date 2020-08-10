@@ -9,7 +9,7 @@
 	  mc:Ignorable="d ios">
 
 	<Grid Background="{StaticResource Color01Brush}"		  
-		  toolkit:VisibleBoundsPadding.PaddingMask="Bottom">
+		  >
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />

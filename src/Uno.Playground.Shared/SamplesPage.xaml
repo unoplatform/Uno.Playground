@@ -132,7 +132,6 @@
 
 	<Grid Background="{StaticResource Color01Brush}">
 		<ListView x:Name="SamplesList"
-				  toolkit:VisibleBoundsPadding.PaddingMask="All"
 				  FooterTemplate="{StaticResource SamplesFooter}"
 				  ItemTemplateSelector="{StaticResource SampleTypeTemplateSelector}"
 				  ItemContainerStyle="{StaticResource SampleListViewItem}"

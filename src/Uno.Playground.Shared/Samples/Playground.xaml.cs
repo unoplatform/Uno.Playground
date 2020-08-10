@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if __WASM__
+#define MONACO
+#endif
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -34,6 +37,14 @@ using Newtonsoft.Json.Linq;
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Toolkit;
+using System.Threading;
+
+#if __WASM__
+using Monaco.Languages;
+using Monaco.Editor;
+using Monaco;
+using Uno.UI.Runtime.WebAssembly;
+#endif
 
 namespace Uno.UI.Demo.Samples
 {
@@ -61,7 +72,24 @@ namespace Uno.UI.Demo.Samples
 
 			Loaded += Playground_Loaded;
 
+#if MONACO
+			xamlText.PropertyChanged += OnPropertyChanged;
+			xamlText.Loaded += OnEditorLoaded;
+			xamlText.Loading += OnEditorLoading;
+			xamlText.RequestedTheme = ElementTheme.Dark;
+
+			xamlText.SizeChanged += (snd, evt) =>
+			{
+				xamlText.ExecuteJavascript("editor.layout();");
+			};
+#else
 			xamlText.TextChanged += OnTextChanged;
+#endif
+
+#if __WASM__
+			splitter.SetCssClass("resizeHandle");
+#endif
+
 			jsonDataContext.TextChanged += OnDataContextTextChanged;
 
 			content.SizeChanged += (snd, args) =>
@@ -79,7 +107,10 @@ namespace Uno.UI.Demo.Samples
 #endif
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
 			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding; ;
+
+			
 		}
+
 		private void OnInputPaneShowing(InputPane sender, InputPaneVisibilityEventArgs args)
 		{
 			VisibleBoundsPadding.SetPaddingMask(TabsPane, VisibleBoundsPadding.PaddingMask.Top);
@@ -214,7 +245,9 @@ namespace Uno.UI.Demo.Samples
 
 			LaunchUpdate();
 #endif
-					await LoadSamples();
+#if !MONACO
+			await LoadSamples();
+#endif
 		}
 
 		private static readonly Regex CommentStripperRegex = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)");
@@ -233,7 +266,7 @@ namespace Uno.UI.Demo.Samples
 
 				DataContext = data;
 
-				ClearError();
+				_ = ClearError();
 
 				var allSub = data
 					.Flatten(i => (i as IDictionary<string, object>)?.Values.OfType<ExpandoObject>())
@@ -258,6 +291,31 @@ namespace Uno.UI.Demo.Samples
 
 			jsonDataContext.Text = data;
 		}
+
+		private async void OnEditorLoading(object sender, RoutedEventArgs e)
+		{
+#if MONACO
+			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
+#endif
+		}
+
+		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
+		{
+#if MONACO
+			xamlText.CodeLanguage = "xml";
+#endif
+			await LoadSamples();
+		}
+
+		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e )
+		{
+			Console.WriteLine("Property: " + e.PropertyName);
+			if (e.PropertyName == "Text")
+			{
+				OnTextChanged(sender, null);
+			}
+		}
+
 
 		private void OnTextChanged(object sender, TextChangedEventArgs e)
 		{
@@ -356,7 +414,7 @@ namespace Uno.UI.Demo.Samples
 
 				content.Content = r;
 
-				ClearError();
+				await ClearError();
 			}
 			catch (Exception ex)
 			{
@@ -370,16 +428,19 @@ namespace Uno.UI.Demo.Samples
 			}
 		}
 
+		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
+		/// of the XAML, causing any errors to be off by that many lines
+		private int GetXamlPrefixLineCount => 4;
 		private string GetXamlInput()
 		{
-			return string.Concat(
-				@"<Grid
-					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
-					xmlns:x= ""http://schemas.microsoft.com/winfx/2006/xaml""
-					xmlns:behaviors=""using:Uno.UI.Demo.Behaviors"">",
-				xamlText.Text,
-				"\n</Grid>"
-			);
+			Console.WriteLine("Current text: " + xamlText.Text);
+			return 
+$@"<Grid
+	xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+	xmlns:x= ""http://schemas.microsoft.com/winfx/2006/xaml""
+	xmlns:behaviors=""using:Uno.UI.Demo.Behaviors"">
+{xamlText.Text}
+</Grid>";
 		}
 
 		private static readonly string _appName =
@@ -421,7 +482,7 @@ namespace Uno.UI.Demo.Samples
 
 		private void SetLink(string id, bool clipboard = false)
 		{
-			var url = new Uri($"{PlaygroundUrl}#{Uri.EscapeUriString(id)}");
+			var url = new System.Uri($"{PlaygroundUrl}#{System.Uri.EscapeUriString(id)}");
 			if (clipboard)
 			{
 				var clipboardData = new DataPackage();
@@ -459,12 +520,12 @@ namespace Uno.UI.Demo.Samples
 					xamlText.Text = "<!-- loading... -->";
 					jsonDataContext.Text = "/* loading... */";
 
-					var response = await httpClient.GetAsync($"{BaseApiUrl}/{Uri.EscapeUriString(id)}");
+					var response = await httpClient.GetAsync($"{BaseApiUrl}/{System.Uri.EscapeUriString(id)}");
 					var responsePayload = await response.Content.ReadAsStringAsync();
 					var json = JObject.Parse(responsePayload);
 
 					_isLoadingSample = true;
-					ClearError();
+					await ClearError();
 
 					var xaml = ((string) json["Xaml"]) ?? "<!-- empty xaml -->";
 					var data = ((string)json["Data"]) ?? "// empty";
@@ -536,24 +597,56 @@ namespace Uno.UI.Demo.Samples
 
 		private void Update_OnTapped(object sender, RoutedEventArgs e)
 		{
+			SetCodeDirtyState();
 			LaunchUpdate();
 		}
 
-		private void ClearError()
+		private async Task ClearError()
 		{
 			_currentError = null;
-			errorBorder.Visibility = Visibility.Collapsed;
-			errorText.Text = "No error";
+			if (errorBorder.Visibility == Visibility.Visible)
+			{
+				errorBorder.Visibility = Visibility.Collapsed;
+				errorText.Text = "No error";
+#if MONACO
+				await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
+#endif
+			}
 		}
 
-		private void ShowError(Exception error)
+		private async void ShowError(Exception error)
 		{
 			_currentError = error;
 			if (error != null && !_isLoadingSample)
 			{
 				errorText.Text = error.Message;
+#if MONACO
+				if(errorBorder.Visibility == Visibility.Visible)
+				{
+					// Only clear the errors if the error bubble is already showing, in which
+					// case we need to update the errors
+					await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
+				}
 				errorBorder.Visibility = Visibility.Visible;
+
+				if (error is System.Xml.XmlException xamlError)
+				{
+					xamlText.Markers.Add(
+						new MarkerData()
+						{
+							Code = "0000",
+							Message = error.Message,
+							Severity = MarkerSeverity.Error,
+							Source = "Origin",
+							StartLineNumber = (uint)(xamlError.LineNumber- GetXamlPrefixLineCount),
+							StartColumn = (uint)xamlError.LinePosition,
+							EndLineNumber = (uint)(xamlError.LineNumber- GetXamlPrefixLineCount),
+							EndColumn = (uint)xamlError.LinePosition+5
+						});
+				}
+#endif
 			}
+
 		}
 
 		private void CopyError(object sender, RoutedEventArgs e)
@@ -570,7 +663,6 @@ namespace Uno.UI.Demo.Samples
 
 		private void BeginResizeCodePane(object sender, PointerRoutedEventArgs e)
 		{
-#if !__WASM__ // Disable for pointer capture issues
 			var splitter = (UIElement)sender;
 			if (!splitter.CapturePointer(e.Pointer))
 			{
@@ -584,9 +676,7 @@ namespace Uno.UI.Demo.Samples
 
 			splitter.PointerMoved += Move;
 			splitter.PointerReleased += Release;
-#if !__WASM__
 			splitter.PointerCaptureLost += Lost;
-#endif
 
 			splitter.Opacity = .5;
 
@@ -600,9 +690,7 @@ namespace Uno.UI.Demo.Samples
 			{
 				splitter.PointerMoved -= Move;
 				splitter.PointerReleased -= Release;
-#if !__WASM__
 				splitter.PointerCaptureLost -= Lost;
-#endif
 
 				codePaneColumn.Width = new GridLength(capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X);
 				transform.X = 0;
@@ -613,14 +701,11 @@ namespace Uno.UI.Demo.Samples
 			{
 				splitter.PointerMoved -= Move;
 				splitter.PointerReleased -= Release;
-#if !__WASM__
 				splitter.PointerCaptureLost -= Lost;
-#endif
 
 				transform.X = 0;
 				splitter.Opacity = 1;
 			}
-#endif
 		}
 
 #if __WASM__
@@ -654,7 +739,7 @@ namespace Uno.UI.Demo.Samples
 
 		private async void LogoClicked(object sender, RoutedEventArgs e)
 		{
-			await Launcher.LaunchUriAsync(new Uri("http://platform.uno/"));
+			await Launcher.LaunchUriAsync(new System.Uri("http://platform.uno/"));
 		}
 
 		private void ShowXaml(object sender, RoutedEventArgs e) => SelectTab("XAML");
@@ -731,4 +816,63 @@ namespace Uno.UI.Demo.Samples
 			}
 		}
 	}
+
+#if MONACO
+	public class XamlLanguageProvider : CompletionItemProvider
+	{
+		public string[] TriggerCharacters => new string[] { "<" };
+
+		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		{
+			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
+			{
+				var textUntilPosition = await document.GetValueInRangeAsync(new Range(1, 1, position.LineNumber, position.Column));
+
+				if (textUntilPosition.EndsWith("boo"))
+				{
+					return new CompletionList()
+					{
+						Suggestions = new[]
+						{
+							new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
+							new CompletionItem("booboo", "booboo", CompletionItemKind.File),
+						}
+					};
+				}
+				else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+				{
+					return new CompletionList()
+					{
+						Suggestions = new[]
+						{
+							new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
+						{
+							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
+						},
+						}
+					};
+				}
+
+				return new CompletionList()
+				{
+					Suggestions = new[]
+					{
+						new CompletionItem("foreach", "foreach (var ${2:element} in ${1:array}) {\n\t$0\n}", CompletionItemKind.Snippet)
+						{
+							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
+						}
+					}
+				};
+			});
+		}
+
+		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
+		{
+			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
+			{
+				return Task.FromResult(item); // throw new NotImplementedException();
+			});
+		}
+	}
+#endif
 }
