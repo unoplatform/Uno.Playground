@@ -8,6 +8,9 @@
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<NoWarn>NU1701</NoWarn>
+		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
+		<UseAOT Condition="$([MSBuild]::IsOsPlatform('Linux')) or ( $([MSBuild]::IsOsPlatform('Windows')) and '$(BUILD_REPOSITORY_PROVIDER)'=='' )">true</UseAOT>
+		<WasmShellMonoRuntimeExecutionMode Condition="'$(UseAOT)'=='true'">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -45,8 +48,12 @@
 		<LinkerDescriptor Include="LinkerConfig.xml" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(UseAOT)'=='true'">
+		<WasmShellEnableAotProfile Include="aot-full.profile" />
+	</ItemGroup>
+	
 	<ItemGroup>
-		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.0.0">
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.2">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>

@@ -1,0 +1,86 @@
+jobs:
+- job: linux
+  container: unoplatform/wasm-build:2.0
+
+  pool:
+    vmImage: 'ubuntu-latest'
+
+  variables:
+    NUGET_PACKAGES: $(build.sourcesdirectory)/.nuget
+    DotnetRuntimePath: /usr/share/dotnet
+    EMSDK_VERSION: 1.39.18
+
+  steps:
+  - checkout: self
+    clean: true
+
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core runtime 2.2.x'
+    inputs:
+      packageType: runtime
+      version: 2.2.x
+      installationPath: '$(DotnetRuntimePath)'
+
+  - task: nventiveCanaryUpdater@5
+    displayName: 'Canary Update'
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries')
+    inputs:
+      solution: src/Calculator.sln
+      branchToMerge: uno
+      summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
+      resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
+      nugetUpdaterVersion: 2.0.6
+      packageAuthor: nventive
+
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core runtime 2.1.0'
+    inputs:
+      packageType: runtime
+      version: 2.1.0
+      installationPath: '$(DotnetRuntimePath)'
+
+  - task: GitVersion@5
+    inputs:
+      useConfigFile: true
+      configFilePath: gitversion.yml
+  
+  - bash: |
+      cd ~
+      git clone --branch $(EMSDK_VERSION) https://github.com/emscripten-core/emsdk
+      cd emsdk
+      ./emsdk install $(EMSDK_VERSION)
+      ./emsdk activate $(EMSDK_VERSION)
+
+    displayName: 'Setup Emscripten'
+
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: sdk
+      version: 3.1.x
+      installationPath: '$(DotnetRuntimePath)'
+
+  - script: |
+      source ~/emsdk/emsdk_env.sh
+      cd $(build.sourcesdirectory)
+      msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" 
+
+    env:
+      GITVERSION_FullSemVer: $(GITVERSION_FullSemVer)
+    displayName: 'Build Playground'
+
+  - task: CopyFiles@2
+    displayName: 'Publish Wasm Binaries'
+    inputs:
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
+      Contents: '**/*.*'
+      TargetFolder: $(build.artifactstagingdirectory)/wasm
+      CleanTargetFolder: false
+      OverWrite: false
+      flattenFolders: false
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: $(build.artifactstagingdirectory)
+      ArtifactName: drop
+      ArtifactType: Container
