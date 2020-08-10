@@ -1,4 +1,7 @@
-﻿using System;
+﻿#if __WASM__
+#define MONACO
+#endif
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -34,10 +37,14 @@ using Newtonsoft.Json.Linq;
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Toolkit;
+using System.Threading;
+
+#if __WASM__
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
-using System.Threading;
+using Uno.UI.Runtime.WebAssembly;
+#endif
 
 namespace Uno.UI.Demo.Samples
 {
@@ -65,10 +72,23 @@ namespace Uno.UI.Demo.Samples
 
 			Loaded += Playground_Loaded;
 
+#if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
 			xamlText.Loaded += OnEditorLoaded;
 			xamlText.Loading += OnEditorLoading;
 			xamlText.RequestedTheme = ElementTheme.Dark;
+
+			xamlText.SizeChanged += (snd, evt) =>
+			{
+				xamlText.ExecuteJavascript("editor.layout();");
+			};
+#else
+			xamlText.TextChanged += OnTextChanged;
+#endif
+
+#if __WASM__
+			splitter.SetCssClass("resizeHandle");
+#endif
 
 			jsonDataContext.TextChanged += OnDataContextTextChanged;
 
@@ -225,7 +245,9 @@ namespace Uno.UI.Demo.Samples
 
 			LaunchUpdate();
 #endif
-					//await LoadSamples();
+#if !MONACO
+			await LoadSamples();
+#endif
 		}
 
 		private static readonly Regex CommentStripperRegex = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)");
@@ -244,7 +266,7 @@ namespace Uno.UI.Demo.Samples
 
 				DataContext = data;
 
-				ClearError();
+				_ = ClearError();
 
 				var allSub = data
 					.Flatten(i => (i as IDictionary<string, object>)?.Values.OfType<ExpandoObject>())
@@ -272,12 +294,16 @@ namespace Uno.UI.Demo.Samples
 
 		private async void OnEditorLoading(object sender, RoutedEventArgs e)
 		{
+#if MONACO
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
+#endif
 		}
 
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
+#if MONACO
 			xamlText.CodeLanguage = "xml";
+#endif
 			await LoadSamples();
 		}
 
@@ -388,7 +414,7 @@ namespace Uno.UI.Demo.Samples
 
 				content.Content = r;
 
-				ClearError();
+				await ClearError();
 			}
 			catch (Exception ex)
 			{
@@ -499,7 +525,7 @@ $@"<Grid
 					var json = JObject.Parse(responsePayload);
 
 					_isLoadingSample = true;
-					ClearError();
+					await ClearError();
 
 					var xaml = ((string) json["Xaml"]) ?? "<!-- empty xaml -->";
 					var data = ((string)json["Data"]) ?? "// empty";
@@ -575,15 +601,16 @@ $@"<Grid
 			LaunchUpdate();
 		}
 
-		private async void ClearError()
+		private async Task ClearError()
 		{
 			_currentError = null;
 			if (errorBorder.Visibility == Visibility.Visible)
 			{
 				errorBorder.Visibility = Visibility.Collapsed;
 				errorText.Text = "No error";
-				//xamlText.Markers.Clear();
+#if MONACO
 				await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
+#endif
 			}
 		}
 
@@ -593,6 +620,7 @@ $@"<Grid
 			if (error != null && !_isLoadingSample)
 			{
 				errorText.Text = error.Message;
+#if MONACO
 				if(errorBorder.Visibility == Visibility.Visible)
 				{
 					// Only clear the errors if the error bubble is already showing, in which
@@ -616,6 +644,7 @@ $@"<Grid
 							EndColumn = (uint)xamlError.LinePosition+5
 						});
 				}
+#endif
 			}
 
 		}
@@ -634,7 +663,6 @@ $@"<Grid
 
 		private void BeginResizeCodePane(object sender, PointerRoutedEventArgs e)
 		{
-#if !__WASM__ // Disable for pointer capture issues
 			var splitter = (UIElement)sender;
 			if (!splitter.CapturePointer(e.Pointer))
 			{
@@ -648,9 +676,7 @@ $@"<Grid
 
 			splitter.PointerMoved += Move;
 			splitter.PointerReleased += Release;
-#if !__WASM__
 			splitter.PointerCaptureLost += Lost;
-#endif
 
 			splitter.Opacity = .5;
 
@@ -664,9 +690,7 @@ $@"<Grid
 			{
 				splitter.PointerMoved -= Move;
 				splitter.PointerReleased -= Release;
-#if !__WASM__
 				splitter.PointerCaptureLost -= Lost;
-#endif
 
 				codePaneColumn.Width = new GridLength(capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X);
 				transform.X = 0;
@@ -677,14 +701,11 @@ $@"<Grid
 			{
 				splitter.PointerMoved -= Move;
 				splitter.PointerReleased -= Release;
-#if !__WASM__
 				splitter.PointerCaptureLost -= Lost;
-#endif
 
 				transform.X = 0;
 				splitter.Opacity = 1;
 			}
-#endif
 		}
 
 #if __WASM__
@@ -796,7 +817,7 @@ $@"<Grid
 		}
 	}
 
-
+#if MONACO
 	public class XamlLanguageProvider : CompletionItemProvider
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
@@ -853,4 +874,5 @@ $@"<Grid
 			});
 		}
 	}
+#endif
 }

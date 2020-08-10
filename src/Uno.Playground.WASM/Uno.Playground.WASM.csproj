@@ -46,10 +46,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.TypeScript.Compiler" Version="2.9.2">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.0.0">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -57,34 +53,14 @@
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 		<PackageReference Include="Uno.Monaco.Editor" Version="0.1.0" />
 			
-		<PackageReference Include="Uno.UI.WebAssembly" Version="3.0.0-dev.1504" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.0.0-dev.1504" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="3.0.0-dev.1523" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="3.0.0-dev.1523" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.4.0-dev.16" />
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.4.0-dev.16" />
 		<PackageReference Include="Uno.CodeGen" Version="1.34.0-dev.175" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
 	</ItemGroup>
-
-		<!--<ItemGroup>
-			<EmbeddedResource Include="..\libraries\ts-helpermethods\*.js">
-				<Link>WasmScripts\ts-helpermethods\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			</EmbeddedResource>
-			<EmbeddedResource Include="..\libraries\ts-helpermethods-wasm\*.js">
-				<Link>WasmScripts\ts-helpermethods\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			</EmbeddedResource>
-
-
-			<EmbeddedResource Include="..\libraries\monaco-editor\min\vs\loader.js">
-			<Link>WasmScripts\monaco-editor\min\vs\loader.js</Link>
-		</EmbeddedResource>
-
-			<Content Include="..\libraries\monaco-editor\**\*">
-				<Link>monaco-editor\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			</Content>
-
-	</ItemGroup>-->
-
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
 	<Import Project="..\Package.targets" />

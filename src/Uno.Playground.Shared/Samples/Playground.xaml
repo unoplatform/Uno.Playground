@@ -6,6 +6,7 @@
 	  xmlns:toolkit="using:Uno.UI.Toolkit"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:wasm="http://uno.ui/wasm"
+	  xmlns:not_wasm="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	  xmlns:ios="http://uno.ui/ios"
 	  xmlns:android="http://uno.ui/android"
 	  xmlns:monaco="using:Monaco"
@@ -114,7 +115,7 @@
 						Grid.Column="1"
 						Name="runPane">
 				<Button x:Name="updateBtn"
-				        Click="Update_OnTapped"
+						Click="Update_OnTapped"
 						Style="{StaticResource RunButtonStyle}" />
 
 				<ToggleButton x:Name="autoUpdate"
@@ -221,13 +222,13 @@
 
 				<Grid.RowDefinitions>
 					<RowDefinition x:Name="tabsPaneRow"
-					               Height="0" />
+								   Height="0" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 
 				<Grid Background="{StaticResource Color08Brush}"
 					  Height="40"
-				      Name="TabsPane">
+					  Name="TabsPane">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition Width="*" />
@@ -236,41 +237,41 @@
 					</Grid.ColumnDefinitions>
 
 					<Button Height="40"
-					        Width="40"
-					        Padding="0"
-					        Margin="0"
-					        Background="Transparent"
-					        Click="ToggleSplitView"
-					        wasm:Visibility="Collapsed">
+							Width="40"
+							Padding="0"
+							Margin="0"
+							Background="Transparent"
+							Click="ToggleSplitView"
+							wasm:Visibility="Collapsed">
 						<Path Data="M1 7h14M1 1h18M1 13h18"
-						      Stroke="White"
-						      StrokeThickness="2"
-						      HorizontalAlignment="Center"
-						      VerticalAlignment="Center"
-						      Stretch="Uniform"
-						      Width="22" />
+							  Stroke="White"
+							  StrokeThickness="2"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center"
+							  Stretch="Uniform"
+							  Width="22" />
 					</Button>
 					<Button Content="XAML"
-					        Grid.Column="1"
-					        Click="ShowXaml"
-					        Background="Transparent"
-					        Foreground="White"
-					        Height="40"
-					        HorizontalAlignment="Stretch" />
+							Grid.Column="1"
+							Click="ShowXaml"
+							Background="Transparent"
+							Foreground="White"
+							Height="40"
+							HorizontalAlignment="Stretch" />
 					<Button Content="Data"
-					        Grid.Column="2"
-					        Click="ShowData"
-					        Background="Transparent"
-					        Foreground="White"
-					        Height="40"
-					        HorizontalAlignment="Stretch" />
+							Grid.Column="2"
+							Click="ShowData"
+							Background="Transparent"
+							Foreground="White"
+							Height="40"
+							HorizontalAlignment="Stretch" />
 					<Button Content="Output"
-					        Grid.Column="3"
-					        Click="ShowOutput"
-					        Background="Transparent"
-					        Foreground="White"
-					        Height="40"
-					        HorizontalAlignment="Stretch" />
+							Grid.Column="3"
+							Click="ShowOutput"
+							Background="Transparent"
+							Foreground="White"
+							Height="40"
+							HorizontalAlignment="Stretch" />
 				</Grid>
 
 
@@ -322,32 +323,21 @@
 
 						</Grid>
 
-						<Grid Grid.Row="1" >
-							<!--<Grid.RowDefinitions>
-								<RowDefinition />
-								<RowDefinition />
-							</Grid.RowDefinitions>-->
+						<wasm:Border Grid.Row="1">
 							<monaco:CodeEditor
 								x:Name="xamlText"
-                           Background="Transparent"
-							Margin="4"
-							Grid.Row="0" 
-                           HasGlyphMargin="True"
-                           CodeLanguage="csharp"/>
-                           <!--KeyDown="Editor_KeyDown"
-                           GotFocus="Editor_GotFocus"
-                           LostFocus="Editor_LostFocus"
-                           Text="{x:Bind CodeContent, Mode=TwoWay}"
-                           Options="{x:Bind options, Mode=OneWay}">-->
-
-							<!--<local:CodeBox x:Name="xamlText"
-									   Background="Transparent"
-									   Margin="4"
-									   Grid.Row="1" />-->
-						</Grid>
-						 
-						
-						
+								Background="Transparent"
+								Margin="4"
+								RequestedTheme="Dark"
+								HasGlyphMargin="True"
+								CodeLanguage="xml" />
+						</wasm:Border>
+						<not_wasm:Border Grid.Row="1">
+							<local:CodeBox x:Name="xamlText"
+							               Background="Transparent"
+							               Margin="4" />
+						</not_wasm:Border>
+						<!---->
 					</Grid>
 
 					<Grid Name="dataContextPane"
