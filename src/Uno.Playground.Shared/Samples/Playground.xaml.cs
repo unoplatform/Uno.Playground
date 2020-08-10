@@ -126,8 +126,8 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSamples()
 		{
-			samples.ItemsSource = new [] {new SampleForDisplay(new SampleCategory(), new Sample {Title = "Loading Snippets..."})};
-			samples.IsEnabled = false;
+			samplesCombobox.PlaceholderText = "Loading Snippets...";
+			samplesCombobox.IsEnabled = false;
 
 			await Task.Delay(50);
 
@@ -145,14 +145,15 @@ namespace Uno.UI.Demo.Samples
 					.SelectMany(cat => cat.Samples.Select(s => new SampleForDisplay(cat, s)))
 					.ToArray();
 
-				samples.ItemsSource = samplesForDisplay;
-				samples.SelectionChanged += Samples_SelectionChanged;
-				samples.IsEnabled = true;
+				samplesCombobox.ItemsSource = samplesForDisplay;
+				samplesCombobox.SelectionChanged += Samples_SelectionChanged;
+				samplesCombobox.PlaceholderText = "Snippets";
+				samplesCombobox.IsEnabled = true;
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e);
-				samples.ItemsSource = new[] {new SampleForDisplay(new SampleCategory(), new Sample {Title = "[Error loading samples]"})};
+				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
 		}
 
@@ -206,16 +207,9 @@ namespace Uno.UI.Demo.Samples
 
 		private async void Samples_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var sample = samples.SelectedItem as SampleForDisplay;
+			var sample = samplesCombobox.SelectedItem as SampleForDisplay;
 			if (sample != null)
 			{
-#if !__WASM__
-				if (MainSplitView.DisplayMode == SplitViewDisplayMode.Inline
-					|| MainSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
-				{
-					MainSplitView.IsPaneOpen = false;
-				}
-#endif
 				await LoadSample(sample.Id);
 			}
 		}
@@ -576,20 +570,6 @@ $@"<Grid
 			return httpClient;
 		}
 
-		private void ToggleSplitView(object sender, RoutedEventArgs e)
-		{
-			if (MainSplitView.IsPaneOpen)
-			{
-				MainSplitView.IsPaneOpen = false;
-				openPaneButton.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				MainSplitView.IsPaneOpen = true;
-				openPaneButton.Visibility = Visibility.Collapsed;
-			}
-		}
-
 		private void AutoUpdate_OnChecked(object sender, RoutedEventArgs e)
 		{
 			LaunchUpdate();
@@ -758,11 +738,6 @@ $@"<Grid
 			switch (pane)
 			{
 				case "XAML":
-#if !__WASM__
-					MainSplitView.IsPaneOpen = false;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.Overlay; 
-					openPaneButton.Visibility = Visibility.Visible;
-#endif
 					codePaneColumn.Width = new GridLength(1, GridUnitType.Star);
 					splitterColumn.Width = new GridLength(0);
 					previewColumn.Width = new GridLength(0);
@@ -773,11 +748,6 @@ $@"<Grid
 
 
 				case "DATA":
-#if !__WASM__
-					MainSplitView.IsPaneOpen = false;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.Overlay; 
-					openPaneButton.Visibility = Visibility.Visible;
-#endif
 					codePaneColumn.Width = new GridLength(1, GridUnitType.Star);
 					splitterColumn.Width = new GridLength(0);
 					previewColumn.Width = new GridLength(0);
@@ -787,11 +757,6 @@ $@"<Grid
 					break;
 
 				case "OUTPUT":
-#if !__WASM__
-					MainSplitView.IsPaneOpen = false;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.Overlay; 
-					openPaneButton.Visibility = Visibility.Visible;
-#endif
 					codePaneColumn.Width = new GridLength(0);
 					splitterColumn.Width = new GridLength(0);
 					previewColumn.Width = new GridLength(1, GridUnitType.Star);
@@ -801,11 +766,6 @@ $@"<Grid
 					break;
 
 				default:
-#if !__WASM__
-					MainSplitView.IsPaneOpen = true;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
-					openPaneButton.Visibility = Visibility.Collapsed;
-#endif
 					codePaneColumn.Width = new GridLength(1, GridUnitType.Star);
 					splitterColumn.Width = new GridLength(10);
 					previewColumn.Width = new GridLength(1, GridUnitType.Star);
