@@ -3,6 +3,7 @@
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Button.xaml" />
+		<ResourceDictionary Source="CheckBox.xaml" />
 		<ResourceDictionary Source="ComboBox.xaml" />
 		<ResourceDictionary Source="CommandBar.xaml" />
 		<ResourceDictionary Source="Frame.xaml" />

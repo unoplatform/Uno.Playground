@@ -37,8 +37,7 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="local:CodeBox">
-					<Grid Background="{TemplateBinding Background}"
-						  Padding="{TemplateBinding Padding}">
+					<Grid Background="{TemplateBinding Background}">
 						<ScrollViewer x:Name="ContentElement"
 									  HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
 									  HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"

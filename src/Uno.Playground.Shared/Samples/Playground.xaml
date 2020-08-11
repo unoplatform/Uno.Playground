@@ -118,17 +118,18 @@
 						Click="Update_OnTapped"
 						Style="{StaticResource RunButtonStyle}" />
 
-				<ToggleButton x:Name="autoUpdate"
-							  Margin="16,0,0,0"
-							  Style="{StaticResource AutoUpdateToggleButtonStyle}"
-							  IsChecked="True"
-							  Checked="AutoUpdate_OnChecked"
-							  ToolTipService.ToolTip="Update update the preview when you change the code.">
+				<CheckBox x:Name="autoUpdate"
+						  Margin="16,0,0,0"
+						  Style="{StaticResource AutoRunCheckBoxStyle}"
+						  IsChecked="True"
+						  Checked="AutoUpdate_OnChecked"
+						  ToolTipService.ToolTip="Update update the preview when you change the code.">
 					<TextBlock Text="Auto Run"
 							   Foreground="{StaticResource Color01Brush}"
 							   VerticalAlignment="Center"
+							   Margin="0,4,0,0"
 							   FontSize="12" />
-				</ToggleButton>
+				</CheckBox>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal"
@@ -182,6 +183,8 @@
 
 			<Grid x:Name="TabsPane"
 				  Background="Transparent"
+				  BorderThickness="0,0,0,1"
+				  BorderBrush="#313131"
 				  Height="40">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
@@ -235,7 +238,7 @@
 				  Background="#242424"
 				  Grid.Row="1">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="12" />
+					<RowDefinition Height="0" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 
@@ -268,7 +271,6 @@
 				<wasm:Border Grid.Row="1">
 					<monaco:CodeEditor x:Name="xamlText"
 									   Background="Transparent"
-									   Margin="4"
 									   RequestedTheme="Dark"
 									   HasGlyphMargin="True"
 									   CodeLanguage="xml" />
@@ -276,8 +278,7 @@
 
 				<not_wasm:Border Grid.Row="1">
 					<local:CodeBox x:Name="xamlText"
-								   Background="Transparent"
-								   Margin="4" />
+								   Background="Transparent" />
 				</not_wasm:Border>
 			</Grid>
 
@@ -286,7 +287,7 @@
 				  Background="#242424"
 				  Visibility="Collapsed">
 				<Grid.RowDefinitions>
-					<RowDefinition Height="12" />
+					<RowDefinition Height="0" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 
@@ -307,7 +308,6 @@
 
 				<local:CodeBox x:Name="jsonDataContext"
 							   Background="Transparent"
-							   Margin="4"
 							   Grid.Row="1" />
 			</Grid>
 
@@ -343,6 +343,19 @@
 						   FontSize="28"
 						   Foreground="{StaticResource Color08Brush}"
 						   Text="Loading..." />
+
+				<Border Height="4"
+						VerticalAlignment="Top">
+					<Border.Background>
+						<LinearGradientBrush StartPoint="0.5,0"
+											 EndPoint="0.5,1">
+							<GradientStop Color="#000000"
+										  Offset="0.0" />
+							<GradientStop Color="#00000000"
+										  Offset="1.0" />
+						</LinearGradientBrush>
+					</Border.Background>
+				</Border>
 			</Grid>
 
 			<Rectangle Fill="#1a1a1a"
@@ -428,19 +441,7 @@
 					   Foreground="White" />
 		</StackPanel>
 
-		<Border Height="4"
-				Grid.Row="1"
-				VerticalAlignment="Top">
-			<Border.Background>
-				<LinearGradientBrush StartPoint="0.5,0"
-									 EndPoint="0.5,1">
-					<GradientStop Color="#000000"
-								  Offset="0.0" />
-					<GradientStop Color="#00000000"
-								  Offset="1.0" />
-				</LinearGradientBrush>
-			</Border.Background>
-		</Border>
+		
 
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup>
