@@ -1026,16 +1026,13 @@
 						</VisualStateManager.VisualStateGroups>
 
 						<StackPanel x:Name="Content"
-									CornerRadius="5"
 									Background="{TemplateBinding Background}"
 									Height="{TemplateBinding Height}"
 									Width="{TemplateBinding Width}"
 									VerticalAlignment="{TemplateBinding VerticalAlignment}"
 									Orientation="Horizontal">
-							<Grid VerticalAlignment="Center"
-								  Margin="8,0">
-								<Path Data="M12,23 C5.92486775,23 1,18.0751322 1,12 C1,5.92486775 5.92486775,1 12,1 C18.0751322,1 23,5.92486775 23,12 C23,18.0751322 18.0751322,23 12,23 Z M12,21.7058824 C17.3604108,21.7058824 21.7058824,17.3604108 21.7058824,12 C21.7058824,6.63958919 17.3604108,2.29411765 12,2.29411765 C6.63958919,2.29411765 2.29411765,6.63958919 2.29411765,12 C2.29411765,17.3604108 6.63958919,21.7058824 12,21.7058824 Z"
-									  Fill="{TemplateBinding Foreground}" />
+							<Grid VerticalAlignment="Top"
+								  Margin="8,5,8,0">
 								<Path Data="M9.5,6.90716329 L9.5,17.1406585 L18.0279127,12.2932134 L9.5,6.90716329 Z"
 									  Fill="{TemplateBinding Foreground}" />
 							</Grid>

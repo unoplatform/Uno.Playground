@@ -60,6 +60,7 @@ namespace Uno.UI.Demo.Samples
 
 		private readonly List<INotifyPropertyChanged> _registrations = new List<INotifyPropertyChanged>();
 
+		private bool _isMobileFormFactor = false;
 		private bool _isDirty = false;
 		private bool _codeChangePending = false;
 		private DateTimeOffset _lastChange;
@@ -108,7 +109,7 @@ namespace Uno.UI.Demo.Samples
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
 			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding; ;
 
-			
+
 		}
 
 		private void OnInputPaneShowing(InputPane sender, InputPaneVisibilityEventArgs args)
@@ -126,8 +127,8 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSamples()
 		{
-			samples.ItemsSource = new [] {new SampleForDisplay(new SampleCategory(), new Sample {Title = "Loading Snippets..."})};
-			samples.IsEnabled = false;
+			samplesCombobox.PlaceholderText = "Loading Snippets...";
+			samplesCombobox.IsEnabled = false;
 
 			await Task.Delay(50);
 
@@ -145,14 +146,15 @@ namespace Uno.UI.Demo.Samples
 					.SelectMany(cat => cat.Samples.Select(s => new SampleForDisplay(cat, s)))
 					.ToArray();
 
-				samples.ItemsSource = samplesForDisplay;
-				samples.SelectionChanged += Samples_SelectionChanged;
-				samples.IsEnabled = true;
+				samplesCombobox.ItemsSource = samplesForDisplay;
+				samplesCombobox.SelectionChanged += Samples_SelectionChanged;
+				samplesCombobox.PlaceholderText = "Snippets";
+				samplesCombobox.IsEnabled = true;
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e);
-				samples.ItemsSource = new[] {new SampleForDisplay(new SampleCategory(), new Sample {Title = "[Error loading samples]"})};
+				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
 		}
 
@@ -184,38 +186,31 @@ namespace Uno.UI.Demo.Samples
 				await LoadSample("wasm-start");
 			}
 
-//			if (e.Parameter is string args)
-//			{
-//				var parts = args.Split(';');
-//				var keyValues = parts.Select(p => p.Split(new[] { '=' }, 2)).Where(kv => kv.Length == 2);
-//				var sampleId = keyValues
-//					.FirstOrDefault(kv => kv[0].Equals("sample", StringComparison.OrdinalIgnoreCase) || kv[0].Equals("snippet", StringComparison.OrdinalIgnoreCase))
-//					?[1].Trim();
-//				if (!string.IsNullOrEmpty(sampleId))
-//				{
-//					await LoadSample(sampleId);
-//				}
-//#if __WASM__
-//				else
-//				{
-//					await LoadSample("wasm-start");
-//				}
-//#endif
-//			}
+			//			if (e.Parameter is string args)
+			//			{
+			//				var parts = args.Split(';');
+			//				var keyValues = parts.Select(p => p.Split(new[] { '=' }, 2)).Where(kv => kv.Length == 2);
+			//				var sampleId = keyValues
+			//					.FirstOrDefault(kv => kv[0].Equals("sample", StringComparison.OrdinalIgnoreCase) || kv[0].Equals("snippet", StringComparison.OrdinalIgnoreCase))
+			//					?[1].Trim();
+			//				if (!string.IsNullOrEmpty(sampleId))
+			//				{
+			//					await LoadSample(sampleId);
+			//				}
+			//#if __WASM__
+			//				else
+			//				{
+			//					await LoadSample("wasm-start");
+			//				}
+			//#endif
+			//			}
 		}
 
 		private async void Samples_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			var sample = samples.SelectedItem as SampleForDisplay;
+			var sample = samplesCombobox.SelectedItem as SampleForDisplay;
 			if (sample != null)
 			{
-#if !__WASM__
-				if (MainSplitView.DisplayMode == SplitViewDisplayMode.Inline
-					|| MainSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
-				{
-					MainSplitView.IsPaneOpen = false;
-				}
-#endif
 				await LoadSample(sample.Id);
 			}
 		}
@@ -307,7 +302,7 @@ namespace Uno.UI.Demo.Samples
 			await LoadSamples();
 		}
 
-		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e )
+		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			Console.WriteLine("Property: " + e.PropertyName);
 			if (e.PropertyName == "Text")
@@ -434,7 +429,7 @@ namespace Uno.UI.Demo.Samples
 		private string GetXamlInput()
 		{
 			Console.WriteLine("Current text: " + xamlText.Text);
-			return 
+			return
 $@"<Grid
 	xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
 	xmlns:x= ""http://schemas.microsoft.com/winfx/2006/xaml""
@@ -492,7 +487,7 @@ $@"<Grid
 
 			link.NavigateUri = url;
 			link.Inlines.Clear();
-			link.Inlines.Add(new Run{Text = id});
+			link.Inlines.Add(new Run { Text = id });
 			linkBlock.Visibility = Visibility.Visible;
 
 #if __WASM__
@@ -527,7 +522,7 @@ $@"<Grid
 					_isLoadingSample = true;
 					await ClearError();
 
-					var xaml = ((string) json["Xaml"]) ?? "<!-- empty xaml -->";
+					var xaml = ((string)json["Xaml"]) ?? "<!-- empty xaml -->";
 					var data = ((string)json["Data"]) ?? "// empty";
 					xamlText.Text = UniformizeLineEndings(xaml);
 					jsonDataContext.Text = UniformizeLineEndings(data);
@@ -574,20 +569,6 @@ $@"<Grid
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 			httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("text/json"));
 			return httpClient;
-		}
-
-		private void ToggleSplitView(object sender, RoutedEventArgs e)
-		{
-			if (MainSplitView.IsPaneOpen)
-			{
-				MainSplitView.IsPaneOpen = false;
-				openPaneButton.Visibility = Visibility.Visible;
-			}
-			else
-			{
-				MainSplitView.IsPaneOpen = true;
-				openPaneButton.Visibility = Visibility.Collapsed;
-			}
 		}
 
 		private void AutoUpdate_OnChecked(object sender, RoutedEventArgs e)
@@ -671,8 +652,8 @@ $@"<Grid
 
 			var capturedWidth = codePane.ActualWidth;
 			var capturedPoint = e.GetCurrentPoint(this).Position;
-			var transform = splitter.RenderTransform as TranslateTransform 
-				?? (TranslateTransform) (splitter.RenderTransform = new TranslateTransform());
+			var transform = splitter.RenderTransform as TranslateTransform
+				?? (TranslateTransform)(splitter.RenderTransform = new TranslateTransform());
 
 			splitter.PointerMoved += Move;
 			splitter.PointerReleased += Release;
@@ -708,15 +689,13 @@ $@"<Grid
 			}
 		}
 
-#if __WASM__
 		private const int _breakPointWidth = 720;
-#else
-		private const int _breakPointWidth = 550;
-#endif
+
 		private bool? _originalIsChecked = null;
 		private void RestoreCodePaneSize(Size oldSize, Size newSize)
 		{
-			if (newSize.Width < _breakPointWidth)
+			_isMobileFormFactor = newSize.Width < _breakPointWidth;
+			if (_isMobileFormFactor)
 			{
 				if (oldSize.Width >= _breakPointWidth || oldSize.Width == 0)
 				{
@@ -732,8 +711,9 @@ $@"<Grid
 				{
 					runPane.Visibility = Visibility.Visible;
 					autoUpdate.IsChecked = _originalIsChecked ?? true;
+					previewPane.Visibility = Visibility.Visible;
+					SelectTab("XAML"); 
 				}
-				SelectTab(null); // ensure to restore the splitter
 			}
 		}
 
@@ -749,7 +729,7 @@ $@"<Grid
 		{
 			SelectTab("OUTPUT");
 			LaunchUpdate();
-		} 
+		}
 
 		private void SelectTab(string pane)
 		{
@@ -758,60 +738,29 @@ $@"<Grid
 			switch (pane)
 			{
 				case "XAML":
-#if !__WASM__
-					MainSplitView.IsPaneOpen = false;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.Overlay; 
-					openPaneButton.Visibility = Visibility.Visible;
-#endif
-					codePaneColumn.Width = new GridLength(1, GridUnitType.Star);
-					splitterColumn.Width = new GridLength(0);
-					previewColumn.Width = new GridLength(0);
-					tabsPaneRow.Height = new GridLength(1, GridUnitType.Auto);
-					xamlPaneRow.Height = new GridLength(1, GridUnitType.Star);
-					corePaneRow.Height = new GridLength(0);
+					dataContextPane.Visibility = Visibility.Collapsed;
+					xamlRadioButton.IsChecked = true;
+					if (_isMobileFormFactor)
+					{
+						previewPane.Visibility = Visibility.Collapsed;
+					}
 					break;
 
-
 				case "DATA":
-#if !__WASM__
-					MainSplitView.IsPaneOpen = false;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.Overlay; 
-					openPaneButton.Visibility = Visibility.Visible;
-#endif
-					codePaneColumn.Width = new GridLength(1, GridUnitType.Star);
-					splitterColumn.Width = new GridLength(0);
-					previewColumn.Width = new GridLength(0);
-					tabsPaneRow.Height = new GridLength(1, GridUnitType.Auto);
-					xamlPaneRow.Height = new GridLength(0);
-					corePaneRow.Height = new GridLength(1, GridUnitType.Star); 
+					dataContextPane.Visibility = Visibility.Visible;
+					if (_isMobileFormFactor)
+					{
+						previewPane.Visibility = Visibility.Collapsed;
+					}
 					break;
 
 				case "OUTPUT":
-#if !__WASM__
-					MainSplitView.IsPaneOpen = false;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.Overlay; 
-					openPaneButton.Visibility = Visibility.Visible;
-#endif
-					codePaneColumn.Width = new GridLength(0);
-					splitterColumn.Width = new GridLength(0);
-					previewColumn.Width = new GridLength(1, GridUnitType.Star);
-					tabsPaneRow.Height = new GridLength(1, GridUnitType.Auto);
-					xamlPaneRow.Height = new GridLength(1, GridUnitType.Star);
-					corePaneRow.Height = new GridLength(0);
+					dataContextPane.Visibility = Visibility.Collapsed;
+					previewPane.Visibility = Visibility.Visible;
+					outputRadioButton.IsChecked = true;
 					break;
 
 				default:
-#if !__WASM__
-					MainSplitView.IsPaneOpen = true;
-					MainSplitView.DisplayMode = SplitViewDisplayMode.CompactInline;
-					openPaneButton.Visibility = Visibility.Collapsed;
-#endif
-					codePaneColumn.Width = new GridLength(1, GridUnitType.Star);
-					splitterColumn.Width = new GridLength(10);
-					previewColumn.Width = new GridLength(1, GridUnitType.Star);
-					tabsPaneRow.Height = new GridLength(0, GridUnitType.Pixel);
-					xamlPaneRow.Height = new GridLength(1, GridUnitType.Star);
-					corePaneRow.Height = new GridLength(1, GridUnitType.Star);
 					break;
 			}
 		}

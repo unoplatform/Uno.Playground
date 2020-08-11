@@ -48,7 +48,7 @@
 
 
 		<!--ToolBar START-->
-		<Grid>
+		<Grid x:Name="toolBar">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto" />
 				<ColumnDefinition Width="*" />
@@ -118,17 +118,18 @@
 						Click="Update_OnTapped"
 						Style="{StaticResource RunButtonStyle}" />
 
-				<ToggleButton x:Name="autoUpdate"
-							  Margin="16,0,0,0"
-							  Style="{StaticResource AutoUpdateToggleButtonStyle}"
-							  IsChecked="True"
-							  Checked="AutoUpdate_OnChecked"
-							  ToolTipService.ToolTip="Update update the preview when you change the code.">
+				<CheckBox x:Name="autoUpdate"
+						  Margin="16,0,0,0"
+						  Style="{StaticResource AutoRunCheckBoxStyle}"
+						  IsChecked="True"
+						  Checked="AutoUpdate_OnChecked"
+						  ToolTipService.ToolTip="Update update the preview when you change the code.">
 					<TextBlock Text="Auto Run"
 							   Foreground="{StaticResource Color01Brush}"
 							   VerticalAlignment="Center"
+							   Margin="0,4,0,0"
 							   FontSize="12" />
-				</ToggleButton>
+				</CheckBox>
 			</StackPanel>
 
 			<StackPanel Orientation="Horizontal"
@@ -152,305 +153,259 @@
 					</StackPanel>
 				</Button>
 			</StackPanel>
+
+			<ComboBox x:Name="samplesCombobox"
+					  Grid.Column="1"
+					  HorizontalAlignment="Right"
+					  VerticalAlignment="Center"
+					  Style="{StaticResource SampleComboBoxStyle}"
+					  ItemTemplate="{StaticResource SampleItemTemplate}"
+					  ItemContainerStyle="{StaticResource SampleComboboxItemStyle}" />
 		</Grid>
 		<!--ToolBar END-->
 
-		<SplitView x:Name="MainSplitView"
-				   IsPaneOpen="True"
-				   Grid.Row="1"
-				   DisplayMode="CompactInline"
-				   OpenPaneLength="280">
-			<SplitView.Pane>
-				<Grid Background="#1a1a1a">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-					<Button x:Name="openPaneButton"
-							Visibility="Collapsed"
-							Height="40"
-							Width="40"
-							VerticalAlignment="Top"
-							Padding="0"
-							Margin="0"
-							Background="Transparent"
-							Click="ToggleSplitView">
-						<Path Data="M1 7h14M1 1h18M1 13h18"
-							  Stroke="White"
-							  StrokeThickness="2"
-							  HorizontalAlignment="Center"
-							  VerticalAlignment="Center"
-							  Stretch="Uniform"
-							  Width="22" />
-					</Button>
-					<ScrollViewer Grid.Column="1">
-						<StackPanel>
-							<wasm:TextBlock Text="Snippets"
-											VerticalAlignment="Center"
-											FontWeight="Bold"
-											Margin="16,12"
-											Foreground="{StaticResource Color08Brush}" />
-							<ListView x:Name="samples"
-									  Width="280"
-									  VerticalAlignment="Center"
-									  ItemTemplate="{StaticResource SampleItemTemplate}" />
-						</StackPanel>
-					</ScrollViewer>
-					<Button Grid.Column="1"
-							wasm:Visibility="Collapsed"
-							Height="40"
-							Width="40"
-							VerticalAlignment="Top"
-							HorizontalAlignment="Right"
-							Padding="0"
-							Margin="0"
-							Background="Transparent"
-							Click="ToggleSplitView">
-						<Path Data="M1 6h14M1 6l3.748-4.685M1 6l4.243 4.243"
-							  Stroke="White"
-							  StrokeThickness="2"
-							  HorizontalAlignment="Center"
-							  VerticalAlignment="Center"
-							  Stretch="Uniform"
-							  Width="22" />
-					</Button>
-				</Grid>
+		<Grid x:Name="mainContent"
+			  Grid.Row="1">
 
-			</SplitView.Pane>
+			<Grid.RowDefinitions>
+				<RowDefinition x:Name="tabsPaneRow"
+							   Height="Auto" />
+				<RowDefinition Height="*" />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition x:Name="codePaneColumn"
+								  Width="*" />
+				<ColumnDefinition x:Name="splitterColumn"
+								  Width="10" />
+				<ColumnDefinition x:Name="previewColumn"
+								  Width="*" />
+			</Grid.ColumnDefinitions>
 
-			<Grid>
+			<Grid x:Name="TabsPane"
+				  Background="Transparent"
+				  BorderThickness="0,0,0,1"
+				  BorderBrush="#313131"
+				  Height="40">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition x:Name="outputTabColumn"
+									  Width="0" />
+				</Grid.ColumnDefinitions>
 
+				<RadioButton x:Name="xamlRadioButton"
+							 Style="{StaticResource TabRadioButtonStyle}"
+							 Grid.Column="0"
+							 Click="ShowXaml"
+							 Background="Transparent"
+							 Foreground="{StaticResource Color08Brush}"
+							 Height="40"
+							 HorizontalAlignment="Stretch"
+							 IsChecked="True">
+					<TextBlock Text="XAML"
+							   Foreground="{StaticResource Color08Brush}"
+							   FontSize="18" />
+				</RadioButton>
+
+				<RadioButton x:Name="dataRadioButton"
+							 Style="{StaticResource TabRadioButtonStyle}"
+							 Grid.Column="1"
+							 Click="ShowData"
+							 Background="Transparent"
+							 Foreground="{StaticResource Color08Brush}"
+							 Height="40"
+							 HorizontalAlignment="Stretch">
+					<TextBlock Text="Data"
+							   Foreground="{StaticResource Color08Brush}"
+							   FontSize="18" />
+				</RadioButton>
+
+				<RadioButton x:Name="outputRadioButton"
+							 Style="{StaticResource TabRadioButtonStyle}"
+							 Grid.Column="2"
+							 Click="ShowOutput"
+							 Background="Transparent"
+							 Foreground="{StaticResource Color08Brush}"
+							 Height="40"
+							 HorizontalAlignment="Stretch">
+					<TextBlock Text="Output"
+							   Foreground="{StaticResource Color08Brush}"
+							   FontSize="18" />
+				</RadioButton>
+			</Grid>
+
+			<Grid Name="codePane"
+				  Background="#242424"
+				  Grid.Row="1">
 				<Grid.RowDefinitions>
-					<RowDefinition x:Name="tabsPaneRow"
-								   Height="0" />
+					<RowDefinition Height="0" />
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 
-				<Grid Background="{StaticResource Color08Brush}"
-					  Height="40"
-					  Name="TabsPane">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="Auto" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="*" />
-					</Grid.ColumnDefinitions>
-
-					<Button Height="40"
-							Width="40"
-							Padding="0"
-							Margin="0"
-							Background="Transparent"
-							Click="ToggleSplitView"
-							wasm:Visibility="Collapsed">
-						<Path Data="M1 7h14M1 1h18M1 13h18"
-							  Stroke="White"
-							  StrokeThickness="2"
-							  HorizontalAlignment="Center"
-							  VerticalAlignment="Center"
-							  Stretch="Uniform"
-							  Width="22" />
-					</Button>
-					<Button Content="XAML"
-							Grid.Column="1"
-							Click="ShowXaml"
-							Background="Transparent"
-							Foreground="White"
-							Height="40"
-							HorizontalAlignment="Stretch" />
-					<Button Content="Data"
-							Grid.Column="2"
-							Click="ShowData"
-							Background="Transparent"
-							Foreground="White"
-							Height="40"
-							HorizontalAlignment="Stretch" />
-					<Button Content="Output"
-							Grid.Column="3"
-							Click="ShowOutput"
-							Background="Transparent"
-							Foreground="White"
-							Height="40"
-							HorizontalAlignment="Stretch" />
-				</Grid>
-
-
-				<Grid Grid.Row="1">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition x:Name="codePaneColumn"
-										  Width="*" />
-						<ColumnDefinition x:Name="splitterColumn"
-										  Width="10" />
-						<ColumnDefinition x:Name="previewColumn"
-										  Width="*" />
-					</Grid.ColumnDefinitions>
-
-					<Grid.RowDefinitions>
-						<RowDefinition x:Name="xamlPaneRow"
-									   Height="*" />
-						<RowDefinition x:Name="corePaneRow"
-									   Height="*" />
-					</Grid.RowDefinitions>
-
-					<Grid Name="codePane"
-						  Background="#313131">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="38" />
-							<RowDefinition Height="*" />
-						</Grid.RowDefinitions>
-
-						<!--XAML-->
-						<Grid Grid.Row="0"
-							  Background="#242424"
-							  VerticalAlignment="Stretch"
-							  HorizontalAlignment="Stretch">
-							<TextBlock Text="XAML EDITOR"
-									   FontSize="16"
-									   FontWeight="SemiBold"
-									   Margin="16,0"
-									   VerticalAlignment="Center"
-									   Foreground="#eeeeee" />
-							<TextBlock x:Name="linkBlock"
-									   Margin="16,0"
-									   Visibility="Collapsed"
-									   Foreground="{StaticResource Color08Brush}"
-									   FontWeight="Bold"
-									   HorizontalAlignment="Right"
-									   VerticalAlignment="Center">
+				<!--XAML-->
+				<!-- This section is hidden for now. -->
+				<Grid Visibility="Collapsed"
+					  Grid.Row="0"
+					  Background="#242424"
+					  VerticalAlignment="Stretch"
+					  HorizontalAlignment="Stretch">
+					<TextBlock Text="XAML EDITOR"
+							   FontSize="16"
+							   FontWeight="SemiBold"
+							   Margin="16,0"
+							   VerticalAlignment="Center"
+							   Foreground="#eeeeee" />
+					<TextBlock x:Name="linkBlock"
+							   Margin="16,0"
+							   Visibility="Collapsed"
+							   Foreground="{StaticResource Color08Brush}"
+							   FontWeight="Bold"
+							   HorizontalAlignment="Right"
+							   VerticalAlignment="Center">
 								<Hyperlink x:Name="link"
 										   Foreground="{StaticResource Color08Brush}" />
-							</TextBlock>
+					</TextBlock>
 
-						</Grid>
-
-						<wasm:Border Grid.Row="1">
-							<monaco:CodeEditor
-								x:Name="xamlText"
-								Background="Transparent"
-								Margin="4"
-								RequestedTheme="Dark"
-								HasGlyphMargin="True"
-								CodeLanguage="xml" />
-						</wasm:Border>
-						<not_wasm:Border Grid.Row="1">
-							<local:CodeBox x:Name="xamlText"
-							               Background="Transparent"
-							               Margin="4" />
-						</not_wasm:Border>
-						<!---->
-					</Grid>
-
-					<Grid Name="dataContextPane"
-						  Grid.Row="1"
-						  Background="#313131">
-						<Grid.RowDefinitions>
-							<RowDefinition Height="38" />
-							<RowDefinition Height="*" />
-						</Grid.RowDefinitions>
-
-						<!--Context-->
-						<Border Grid.Row="0"
-								Background="#242424"
-								VerticalAlignment="Stretch"
-								HorizontalAlignment="Stretch">
-							<TextBlock Text="Data Context"
-									   FontSize="16"
-									   FontWeight="SemiBold"
-									   Margin="16,0"
-									   VerticalAlignment="Center"
-									   Foreground="#eeeeee" />
-						</Border>
-						 
-						<local:CodeBox x:Name="jsonDataContext"
-									   Background="Transparent"
-									   Margin="4"
-									   Grid.Row="1" />
-					</Grid>
-
-					<!--Preview Pane-->
-					<Grid x:Name="previewPane"
-						  Grid.Column="2"
-						  Grid.RowSpan="2"
-						  Background="White">
-						<Grid.RowDefinitions>
-							<RowDefinition />
-							<RowDefinition Height="Auto" />
-						</Grid.RowDefinitions>
-
-						<ContentControl x:Name="content"
-										Margin="4"
-										HorizontalContentAlignment="Stretch"
-										VerticalContentAlignment="Stretch" />
-
-						<TextBlock x:Name="resolution"
-								   Grid.Row="1"
-								   VerticalAlignment="Bottom"
-								   HorizontalAlignment="Left"
-								   FontSize="9"
-								   Foreground="DarkGray"
-								   IsHitTestVisible="False"
-								   Text="200x200" />
-
-						<TextBlock x:Name="loading"
-								   Visibility="Collapsed"
-								   VerticalAlignment="Center"
-								   HorizontalAlignment="Stretch"
-								   TextAlignment="Center"
-								   FontSize="28"
-								   Foreground="{StaticResource Color08Brush}"
-								   Text="Loading..." />
-					</Grid>
-
-					<Rectangle Fill="#1a1a1a"
-							   x:Name="splitter"
-							   Grid.Column="1"
-							   Grid.RowSpan="3"
-							   PointerPressed="BeginResizeCodePane">
-						<Rectangle.RenderTransform>
-							<TranslateTransform />
-						</Rectangle.RenderTransform>
-					</Rectangle>
-
-					<!--Error Message-->
-					<Border CornerRadius="28"
-							x:Name="errorBorder"
-							Grid.ColumnSpan="3"
-							Grid.RowSpan="3"
-							Visibility="Collapsed"
-							VerticalAlignment="Bottom"
-							MinHeight="56"
-							MaxHeight="150"
-							Margin="28"
-							Background="#f85977">
-						<Grid>
-							<ScrollViewer VerticalScrollBarVisibility="Auto"
-										  Margin="24">
-								<TextBlock x:Name="errorText"
-										   Foreground="White" />
-							</ScrollViewer>
-							<StackPanel Orientation="Horizontal"
-										HorizontalAlignment="Right"
-										VerticalAlignment="Top"
-										Margin="0,0,24,0">
-								<HyperlinkButton Background="Transparent"
-												 Content="[copy]"
-												 FontSize="10"
-												 Foreground="White"
-												 BorderThickness="0"
-												 Tapped="CopyError"
-												 Margin="0,0,8,0" />
-								<HyperlinkButton Background="Transparent"
-												 Content="[close]"
-												 FontSize="10"
-												 Foreground="White"
-												 BorderThickness="0"
-												 Tapped="CloseErrorPane" />
-							</StackPanel>
-						</Grid>
-					</Border>
 				</Grid>
+
+				<wasm:Border Grid.Row="1">
+					<monaco:CodeEditor x:Name="xamlText"
+									   Background="Transparent"
+									   RequestedTheme="Dark"
+									   HasGlyphMargin="True"
+									   CodeLanguage="xml" />
+				</wasm:Border>
+
+				<not_wasm:Border Grid.Row="1">
+					<local:CodeBox x:Name="xamlText"
+								   Background="Transparent" />
+				</not_wasm:Border>
 			</Grid>
-		</SplitView>
+
+			<Grid Name="dataContextPane"
+				  Grid.Row="1"
+				  Background="#242424"
+				  Visibility="Collapsed">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="0" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+
+				<!--Context-->
+				<!-- This section is hidden for now. -->
+				<Border Visibility="Collapsed"
+						Grid.Row="0"
+						Background="#242424"
+						VerticalAlignment="Stretch"
+						HorizontalAlignment="Stretch">
+					<TextBlock Text="Data Context"
+							   FontSize="16"
+							   FontWeight="SemiBold"
+							   Margin="16,0"
+							   VerticalAlignment="Center"
+							   Foreground="#eeeeee" />
+				</Border>
+
+				<local:CodeBox x:Name="jsonDataContext"
+							   Background="Transparent"
+							   Grid.Row="1" />
+			</Grid>
+
+			<!--Preview Pane-->
+			<Grid x:Name="previewPane"
+				  Grid.Column="2"
+				  Grid.RowSpan="2"
+				  Background="White">
+				<Grid.RowDefinitions>
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<ContentControl x:Name="content"
+								Margin="4"
+								HorizontalContentAlignment="Stretch"
+								VerticalContentAlignment="Stretch" />
+
+				<TextBlock x:Name="resolution"
+						   Grid.Row="1"
+						   VerticalAlignment="Bottom"
+						   HorizontalAlignment="Left"
+						   FontSize="9"
+						   Foreground="DarkGray"
+						   IsHitTestVisible="False"
+						   Text="200x200" />
+
+				<TextBlock x:Name="loading"
+						   Visibility="Collapsed"
+						   VerticalAlignment="Center"
+						   HorizontalAlignment="Stretch"
+						   TextAlignment="Center"
+						   FontSize="28"
+						   Foreground="{StaticResource Color08Brush}"
+						   Text="Loading..." />
+
+				<Border Height="4"
+						VerticalAlignment="Top">
+					<Border.Background>
+						<LinearGradientBrush StartPoint="0.5,0"
+											 EndPoint="0.5,1">
+							<GradientStop Color="#000000"
+										  Offset="0.0" />
+							<GradientStop Color="#00000000"
+										  Offset="1.0" />
+						</LinearGradientBrush>
+					</Border.Background>
+				</Border>
+			</Grid>
+
+			<Rectangle Fill="#1a1a1a"
+					   x:Name="splitter"
+					   Grid.Column="1"
+					   Grid.RowSpan="3"
+					   PointerPressed="BeginResizeCodePane">
+				<Rectangle.RenderTransform>
+					<TranslateTransform />
+				</Rectangle.RenderTransform>
+			</Rectangle>
+
+			<!--Error Message-->
+			<Border CornerRadius="28"
+					x:Name="errorBorder"
+					Grid.ColumnSpan="3"
+					Grid.RowSpan="3"
+					Visibility="Collapsed"
+					VerticalAlignment="Bottom"
+					MinHeight="56"
+					MaxHeight="150"
+					Margin="28"
+					Background="#f85977">
+				<Grid>
+					<ScrollViewer VerticalScrollBarVisibility="Auto"
+								  Margin="24">
+						<TextBlock x:Name="errorText"
+								   Foreground="White" />
+					</ScrollViewer>
+					<StackPanel Orientation="Horizontal"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Top"
+								Margin="0,0,24,0">
+						<HyperlinkButton Background="Transparent"
+										 Content="[copy]"
+										 FontSize="10"
+										 Foreground="White"
+										 BorderThickness="0"
+										 Tapped="CopyError"
+										 Margin="0,0,8,0" />
+						<HyperlinkButton Background="Transparent"
+										 Content="[close]"
+										 FontSize="10"
+										 Foreground="White"
+										 BorderThickness="0"
+										 Tapped="CloseErrorPane" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Grid>
 
 		<!--Save message-->
 		<StackPanel x:Name="savedMessage"
@@ -486,18 +441,42 @@
 					   Foreground="White" />
 		</StackPanel>
 
-		<Border Height="4"
-				Grid.Row="1"
-				VerticalAlignment="Top">
-			<Border.Background>
-				<LinearGradientBrush StartPoint="0.5,0"
-									 EndPoint="0.5,1">
-					<GradientStop Color="#000000"
-								  Offset="0.0" />
-					<GradientStop Color="#00000000"
-								  Offset="1.0" />
-				</LinearGradientBrush>
-			</Border.Background>
-		</Border>
+		
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Desktop">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="720" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+					</VisualState.Setters>
+				</VisualState>
+
+				<VisualState x:Name="Mobile">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="outputTabColumn.Width"
+								Value="*" />
+						<Setter Target="TabsPane.(Grid.ColumnSpan)"
+								Value="3" />
+						<Setter Target="previewPane.(Grid.Column)"
+								Value="0" />
+						<Setter Target="previewPane.(Grid.Row)"
+								Value="1" />
+						<Setter Target="previewPane.(Grid.RowSpan)"
+								Value="1" />
+						<Setter Target="splitterColumn.Width"
+								Value="0" />
+						<Setter Target="previewColumn.Width"
+								Value="0" />
+						<Setter Target="codePaneColumn.Width"
+								Value="*" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 	</Grid>
 </Page>

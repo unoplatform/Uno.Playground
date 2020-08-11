@@ -3,11 +3,14 @@
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="Button.xaml" />
+		<ResourceDictionary Source="CheckBox.xaml" />
+		<ResourceDictionary Source="ComboBox.xaml" />
 		<ResourceDictionary Source="CommandBar.xaml" />
 		<ResourceDictionary Source="Frame.xaml" />
 		<ResourceDictionary Source="ListView.xaml" />
 		<ResourceDictionary Source="ListViewItem.xaml" />
 		<ResourceDictionary Source="PasswordBox.xaml" />
+		<ResourceDictionary Source="RadioButton.xaml" />
 		<ResourceDictionary Source="TextBlock.xaml" />
 		<ResourceDictionary Source="TextBox.xaml" />
 	</ResourceDictionary.MergedDictionaries>
