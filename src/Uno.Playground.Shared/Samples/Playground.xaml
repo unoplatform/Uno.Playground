@@ -273,7 +273,7 @@
 									   Background="Transparent"
 									   RequestedTheme="Dark"
 									   HasGlyphMargin="True"
-									   CodeLanguage="xml" />
+									   CodeLanguage="csharp" />
 				</wasm:Border>
 
 				<not_wasm:Border Grid.Row="1">
