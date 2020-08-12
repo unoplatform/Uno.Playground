@@ -1,6 +1,6 @@
 jobs:
 - job: linux
-  container: unoplatform/wasm-build:2.2
+  container: unoplatform/wasm-build:2.0
 
   pool:
     vmImage: 'ubuntu-latest'
