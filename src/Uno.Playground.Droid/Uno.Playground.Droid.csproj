@@ -115,7 +115,7 @@
       <Version>1.0.4</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData">
-      <Version>2.1.0</Version>
+      <Version>2.2.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
