@@ -428,14 +428,14 @@ namespace Uno.UI.Demo.Samples
 		private int GetXamlPrefixLineCount => 4;
 		private string GetXamlInput()
 		{
-			Console.WriteLine("Current text: " + xamlText.Text);
 			return
-$@"<Grid
-	xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
-	xmlns:x= ""http://schemas.microsoft.com/winfx/2006/xaml""
-	xmlns:behaviors=""using:Uno.UI.Demo.Behaviors"">
-{xamlText.Text}
-</Grid>";
+				$@"<Grid
+					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
+					xmlns:x= ""http://schemas.microsoft.com/winfx/2006/xaml""
+					xmlns:behaviors=""using:Uno.UI.Demo.Behaviors""
+					xmlns:muxc=""using:Microsoft.UI.Xaml.Controls"">
+				{xamlText.Text}
+				</Grid>";
 		}
 
 		private static readonly string _appName =

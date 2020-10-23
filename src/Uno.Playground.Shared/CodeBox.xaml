@@ -16,6 +16,8 @@
 				Value="False" />
 		<Setter Property="Padding"
 				Value="0" />
+		<Setter Property="VerticalAlignment"
+				Value="Top" />
 		<Setter Property="AcceptsReturn"
 				Value="True" />
 		<Setter Property="TextWrapping"
@@ -29,9 +31,9 @@
 		<Setter Property="ScrollViewer.VerticalScrollMode"
 				Value="Auto" />
 		<Setter Property="ScrollViewer.HorizontalScrollBarVisibility"
-				Value="Hidden" />
+				Value="Auto" />
 		<Setter Property="ScrollViewer.VerticalScrollBarVisibility"
-				Value="Hidden" />
+				Value="Auto" />
 		<Setter Property="ScrollViewer.IsDeferredScrollingEnabled"
 				Value="False" />
 		<Setter Property="Template">

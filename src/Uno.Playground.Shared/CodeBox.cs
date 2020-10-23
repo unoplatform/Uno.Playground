@@ -10,6 +10,8 @@ namespace Uno.UI.Demo
 	{
 		public CodeBox()
 		{
+			DefaultStyleKey = typeof(CodeBox);
+
 #if __WASM__ // Remove when Uno.UI automatically calls OnKeyDown(KeyRoutedEventArgs)
 			KeyDown += (s, e) => OnKeyDown(e);
 #endif
