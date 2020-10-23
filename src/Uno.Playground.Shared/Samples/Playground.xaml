@@ -308,6 +308,7 @@
 
 				<local:CodeBox x:Name="jsonDataContext"
 							   Background="Transparent"
+							   VerticalAlignment="Top"
 							   Grid.Row="1" />
 			</Grid>
 
