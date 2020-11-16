@@ -1,0 +1,19 @@
+
+steps:
+
+  - task: UseDotNet@2
+    displayName: 'Use .Net Core runtime 2.2.x'
+    inputs:
+      packageType: runtime
+      version: 2.2.x
+
+  - task: nventiveCanaryUpdater@5
+    displayName: 'Canary Update'
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries')
+    inputs:
+      solution: src/Calculator.sln
+      branchToMerge: master
+      summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
+      resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
+      nugetUpdaterVersion: 2.0.6
+      packageAuthor: nventive
