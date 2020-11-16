@@ -14,36 +14,9 @@ jobs:
   - checkout: self
     clean: true
 
-  - task: UseDotNet@2
-    displayName: 'Use .Net Core runtime 2.2.x'
-    inputs:
-      packageType: runtime
-      version: 2.2.x
-      installationPath: '$(DotnetRuntimePath)'
+  - template: build/canary-updater.yml
+  - template: build/gitversion.yml
 
-  - task: nventiveCanaryUpdater@5
-    displayName: 'Canary Update'
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries')
-    inputs:
-      solution: src/Calculator.sln
-      branchToMerge: uno
-      summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
-      resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
-      nugetUpdaterVersion: 2.0.6
-      packageAuthor: nventive
-
-  - task: UseDotNet@2
-    displayName: 'Use .Net Core runtime 2.1.0'
-    inputs:
-      packageType: runtime
-      version: 2.1.0
-      installationPath: '$(DotnetRuntimePath)'
-
-  - task: GitVersion@5
-    inputs:
-      useConfigFile: true
-      configFilePath: gitversion.yml
-  
   - bash: |
       cd ~
       git clone --branch $(EMSDK_VERSION) https://github.com/emscripten-core/emsdk

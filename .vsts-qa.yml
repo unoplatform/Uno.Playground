@@ -9,13 +9,9 @@ jobs:
   - checkout: self
     clean: true
     lfs: true
-    
-  - task: gittools.gitversion.gitversion-task.GitVersion@4
 
-  - task: NuGetToolInstaller@0
-    inputs:
-      versionSpec: 4.7.0
-      checkLatest: false
+  - template: build/canary-updater.yml
+  - template: build/gitversion.yml
 
   - task: NuGetCommand@2
     inputs:
@@ -80,15 +76,8 @@ jobs:
     clean: true
     lfs: true
 
-  #Fixes gitversion task
-  - bash: |
-     shopt -s nullglob
-     function join_by { local IFS="$1"; shift; echo "$*"; }
-     lib_path=$(join_by ';' $(Agent.WorkFolder)/_tasks/GitVersion*/4.0.*/lib/osx)
-     echo LD_LIBRARY_PATH: $lib_path
-     echo "##vso[task.setvariable variable=LD_LIBRARY_PATH]$lib_path"
-
-  - task: gittools.gitversion.gitversion-task.GitVersion@4
+  - template: build/canary-updater.yml
+  - template: build/gitversion.yml
 
   - task: NuGetToolInstaller@0
     inputs:
