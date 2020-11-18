@@ -433,7 +433,7 @@
 					  Stretch="Uniform"
 					  Width="44" />
 			</Grid>
-			<TextBlock Text="Snippet link saved to clipbaord."
+			<TextBlock Text="Snippet link saved to clipboard."
 					   TextAlignment="Center"
 					   TextWrapping="Wrap"
 					   Width="106"
