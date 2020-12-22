@@ -11,7 +11,7 @@ steps:
     displayName: 'Canary Update'
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries')
     inputs:
-      solution: src/Calculator.sln
+      solution: src/Uno.Playground.sln
       branchToMerge: master
       summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
       resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
