@@ -1,6 +1,6 @@
 jobs:
 - job: linux
-  container: unoplatform/wasm-build:2.0
+  container: unoplatform/wasm-build:3.0
 
   pool:
     vmImage: 'ubuntu-latest'
@@ -8,7 +8,6 @@ jobs:
   variables:
     NUGET_PACKAGES: $(build.sourcesdirectory)/.nuget
     DotnetRuntimePath: /usr/share/dotnet
-    EMSDK_VERSION: 1.39.18
 
   steps:
   - checkout: self
@@ -17,26 +16,15 @@ jobs:
   - template: build/canary-updater.yml
   - template: build/gitversion.yml
 
-  - bash: |
-      cd ~
-      git clone --branch $(EMSDK_VERSION) https://github.com/emscripten-core/emsdk
-      cd emsdk
-      ./emsdk install $(EMSDK_VERSION)
-      ./emsdk activate $(EMSDK_VERSION)
-
-    displayName: 'Setup Emscripten'
-
   - task: UseDotNet@2
     displayName: 'Use .NET Core sdk'
     inputs:
       packageType: sdk
-      version: 3.1.201
-      installationPath: '$(DotnetRuntimePath)'
+      version: 5.0.101
 
   - script: |
-      source ~/emsdk/emsdk_env.sh
       cd $(build.sourcesdirectory)
-      msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" 
+      dotnet msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/linux.binlog
 
     env:
       GITVERSION_FullSemVer: $(GITVERSION_FullSemVer)
@@ -45,7 +33,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Publish Wasm Binaries'
     inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/netstandard2.0/dist
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net5.0/dist
       Contents: '**/*.*'
       TargetFolder: $(build.artifactstagingdirectory)/wasm
       CleanTargetFolder: false
