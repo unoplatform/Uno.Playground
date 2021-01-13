@@ -2,15 +2,20 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>netstandard2.0</TargetFramework>
-		<ApplicationIcon />
-		<StartupObject />
+		<TargetFramework>net5.0</TargetFramework>
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
+		<WasmHead>true</WasmHead>
+		<DefineConstants>__WASM__</DefineConstants>
 		<NoWarn>NU1701</NoWarn>
-		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>
+		<UnoUIUseRoslynSourceGenerators>false</UnoUIUseRoslynSourceGenerators>
+
 		<UseAOT Condition="$([MSBuild]::IsOsPlatform('Linux')) or ( $([MSBuild]::IsOsPlatform('Windows')) and '$(BUILD_REPOSITORY_PROVIDER)'=='' )">true</UseAOT>
-		<WasmShellMonoRuntimeExecutionMode Condition="'$(UseAOT)'=='true'">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>-->
+		<WasmShellMonoRuntimeExecutionMode Condition="'$(UseAOT)'=='true'">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
+		<WasmShellEnableEmccProfiling>true</WasmShellEnableEmccProfiling>
+		<!--<WasmShellDisableSDKCheckSumValidation>true</WasmShellDisableSDKCheckSumValidation>-->
+		<!--<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>-->
+		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
@@ -24,6 +29,13 @@
 	<ItemGroup>
 		<UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
 	</ItemGroup>
+
+	<!--
+	<ItemGroup Condition="'$(UseAOT)'=='true'">
+		<WasmShellExtraEmccFlags Include="-fsanitize=address" />
+		<WasmShellExtraEmccFlags Include="-s TOTAL_MEMORY=393216000" />
+	</ItemGroup>
+	-->
 
 	<ItemGroup>
 		<Content Include="..\Uno.Playground.UWP\Assets\*.png" Link="Assets\%(FileName)%(Extension)" />
@@ -39,34 +51,43 @@
 		
 		<Content Include="Fonts\*.woff2" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<WasmShellMonoEnvironment Include="MONO_GC_PARAMS" Value="soft-heap-limit=512m,nursery-size=64m,evacuation-threshold=66,major=marksweep" />
+		<!--<WasmShellMonoEnvironment Include="MONO_LOG_LEVEL" Value="debug" />
+		<WasmShellMonoEnvironment Include="MONO_LOG_MASK" Value="all" />-->
 	</ItemGroup>
 
 	<ItemGroup>
 		<LinkerDescriptor Include="LinkerConfig.xml" />
 	</ItemGroup>
 
+	<PropertyGroup>
+		<WasmShellAOTProfileExcludedMethods>ExecuteCallbackHandlers</WasmShellAOTProfileExcludedMethods>
+	</PropertyGroup>
+
 	<ItemGroup Condition="'$(UseAOT)'=='true'">
-		<WasmShellEnableAotProfile Include="aot-full.profile" />
+		<WasmShellEnableAotProfile Include="aot-full-netstandard2.0.profile" Condition="'$(TargetFramework)'=='netstandard2.0'" />
+		<WasmShellEnableAotProfile Include="aot-full-net5.0.profile" Condition="'$(TargetFramework)'=='net5.0'" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.2">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-		<PackageReference Include="Uno.Monaco.Editor" Version="0.1.0" />
+		<PackageReference Include="System.Security.Permissions" Version="5.0.0" />
+		<PackageReference Include="Uno.Monaco.Editor" Version="1.0.0-uno.96" />
 			
-		<PackageReference Include="Uno.UI.WebAssembly" Version="3.4.0" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.1.6" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.4.0-dev.16" />
-    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="1.4.0-dev.16" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="3.5.0-dev.80" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.0-dev.80" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="2.0.0-dev.137" />
+    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="2.0.0-dev.137" />
 		<PackageReference Include="Uno.CodeGen" Version="1.34.0-dev.175" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.0" />
 	</ItemGroup>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />

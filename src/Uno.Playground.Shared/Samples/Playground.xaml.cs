@@ -775,7 +775,7 @@ namespace Uno.UI.Demo.Samples
 		{
 			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
 			{
-				var textUntilPosition = await document.GetValueInRangeAsync(new Range(1, 1, position.LineNumber, position.Column));
+				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
 				if (textUntilPosition.EndsWith("boo"))
 				{
