@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.Extensions.Logging;
 using Uno.Extensions;
+using Uno.Logging;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -85,6 +86,11 @@ namespace Uno.UI.Demo
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(LaunchActivatedEventArgs e)
 		{
+#if HAS_UNO
+			System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) => typeof(App).Log().Error("UnobservedTaskException", e.Exception);
+			AppDomain.CurrentDomain.UnhandledException += (s, e) => typeof(App).Log().Error("UnhandledException", e.ExceptionObject as Exception);
+#endif
+
 			Console.WriteLine("launched!");
 			SetupAppCenter();
 
