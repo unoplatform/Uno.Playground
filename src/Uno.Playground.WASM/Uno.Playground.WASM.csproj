@@ -87,7 +87,7 @@
 		<PackageReference Include="Uno.CodeGen" Version="1.34.0-dev.175" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.1" />
 	</ItemGroup>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
