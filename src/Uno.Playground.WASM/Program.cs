@@ -9,8 +9,10 @@ namespace Uno.UI.Demo
 
 		public static void Main(string[] args)
 		{
+#if ENABLE_EXCEPTIONS_LOGGING
 			MonoInternals.mono_trace_enable(1);
 			MonoInternals.mono_trace_set_options("E:all");
+#endif
 
 			Windows.UI.Xaml.Application.Start(_ => _app = new App());
 		}
