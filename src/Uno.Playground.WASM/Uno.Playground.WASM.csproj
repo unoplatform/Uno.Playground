@@ -80,10 +80,10 @@
 		<PackageReference Include="System.Security.Permissions" Version="5.0.0" />
 		<PackageReference Include="Uno.Monaco.Editor" Version="1.0.0-uno.96" />
 			
-		<PackageReference Include="Uno.UI.WebAssembly" Version="3.5.0-dev.80" />
-    <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.0-dev.80" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.Wasm.Bootstrap" Version="2.0.0-dev.137" />
-    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="2.0.0-dev.137" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="3.5.0-dev.498" />
+    <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.0-dev.498" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="2.0.0-dev.163" />
+    <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="2.0.0-dev.163" />
 		<PackageReference Include="Uno.CodeGen" Version="1.34.0-dev.175" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
