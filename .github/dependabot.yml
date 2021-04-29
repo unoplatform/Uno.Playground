@@ -1,0 +1,41 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: weekly
+    time: "10:00"
+  open-pull-requests-limit: 10
+  labels:
+  - kind/dependency
+  - do-not-merge/work-in-progress
+  ignore:
+  - dependency-name: Microsoft.Extensions.Logging.Console
+    versions:
+    - "> 1.1.1"
+  - dependency-name: Microsoft.Extensions.Logging.Filter
+    versions:
+    - "> 1.1.1, < 1.2"
+  - dependency-name: Microsoft.TypeScript.MSBuild
+    versions:
+    - 4.1.2
+    - 4.1.4
+    - 4.2.2
+    - 4.2.3
+  - dependency-name: Xamarin.AndroidX.Lifecycle.LiveData
+    versions:
+    - 2.2.0.4
+    - 2.3.0
+    - 2.3.0.1
+  - dependency-name: Uno.UI.RemoteControl
+    versions:
+    - 3.5.1
+  - dependency-name: Microsoft.AppCenter.Analytics
+    versions:
+    - 4.1.0
+  - dependency-name: Microsoft.AppCenter.Crashes
+    versions:
+    - 4.1.0
+  - dependency-name: Microsoft.NETCore.UniversalWindowsPlatform
+    versions:
+    - 6.2.11
