@@ -80,7 +80,7 @@
 		<PackageReference Include="System.Security.Permissions" Version="5.0.0" />
 		<PackageReference Include="Uno.Monaco.Editor" Version="1.0.0-uno.96" />
 			
-		<PackageReference Include="Uno.UI.WebAssembly" Version="3.5.0-dev.498" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="3.7.3" />
     <PackageReference Include="Uno.UI.RemoteControl" Version="3.5.0-dev.498" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="2.0.0-dev.163" />
     <PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="2.0.0-dev.163" />
