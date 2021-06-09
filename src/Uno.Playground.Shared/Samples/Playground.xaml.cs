@@ -81,7 +81,7 @@ namespace Uno.UI.Demo.Samples
 
 			xamlText.SizeChanged += (snd, evt) =>
 			{
-				xamlText.ExecuteJavascript("editor.layout();");
+				xamlText.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
 			};
 #else
 			xamlText.TextChanged += OnTextChanged;

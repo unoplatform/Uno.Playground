@@ -44,7 +44,7 @@ namespace Uno.UI.Demo
 
 		static void ConfigureFilters(ILoggerFactory factory)
 		{
-#if !DEBUG
+#if DEBUG
 			factory
 				.WithFilter(new FilterLoggerSettings
 					{
