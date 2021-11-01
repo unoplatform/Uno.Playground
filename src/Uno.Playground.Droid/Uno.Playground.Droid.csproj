@@ -112,7 +112,7 @@
       <PrivateAssets>none</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Nito.Collections.Deque">
-      <Version>1.0.4</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData">
       <Version>2.1.0</Version>
