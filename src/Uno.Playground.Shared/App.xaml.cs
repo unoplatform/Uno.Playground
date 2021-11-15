@@ -77,6 +77,10 @@ namespace Uno.UI.Demo
 			factory
 				.AddConsole(LogLevel.Error);
 #endif
+
+#if HAS_UNO
+			Uno.UI.Adapter.Microsoft.Extensions.Logging.LoggingAdapter.Initialize();
+#endif
 		}
 
 		/// <summary>
