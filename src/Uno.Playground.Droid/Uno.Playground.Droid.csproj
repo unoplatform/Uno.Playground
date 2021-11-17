@@ -88,13 +88,13 @@
       <Version>4.0.0-dev.7</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI">
-      <Version>4.0.0-dev.5594</Version>
+      <Version>4.0.0-dev.5612</Version>
     </PackageReference>
-		<PackageReference Include="Uno.Core.Extensions" Version="4.0.0-dev.7" />
-		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.0.0-dev.7" />
-		<PackageReference Include="Uno.Core" Version="4.0.0-dev.7" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.0.0-dev.5594" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
+    <PackageReference Include="Uno.Core.Extensions" Version="4.0.0-dev.7" />
+    <PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.0.0-dev.7" />
+    <PackageReference Include="Uno.Core" Version="4.0.0-dev.7" />
+    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.0.0-dev.5612" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
     <PackageReference Include="Uno.UniversalImageLoader">
       <Version>1.9.35</Version>
