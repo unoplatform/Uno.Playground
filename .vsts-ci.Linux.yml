@@ -20,7 +20,7 @@ jobs:
     displayName: 'Use .NET Core sdk'
     inputs:
       packageType: sdk
-      version: 5.0.101
+      version: 6.0.101
 
   - script: |
       cd $(build.sourcesdirectory)
@@ -33,7 +33,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Publish Wasm Binaries'
     inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net5.0/dist
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net6.0/dist
       Contents: '**/*.*'
       TargetFolder: $(build.artifactstagingdirectory)/wasm
       CleanTargetFolder: false

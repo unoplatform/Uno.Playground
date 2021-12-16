@@ -108,8 +108,6 @@ namespace Uno.UI.Demo.Samples
 #endif
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
 			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding; ;
-
-
 		}
 
 		private void OnInputPaneShowing(InputPane sender, InputPaneVisibilityEventArgs args)
@@ -118,6 +116,7 @@ namespace Uno.UI.Demo.Samples
 			VisibleBoundsPadding.SetPaddingMask(root, VisibleBoundsPadding.PaddingMask.None);
 			toolbarRow.Height = new GridLength(0);
 		}
+
 		private void OnInputPaneHiding(InputPane sender, InputPaneVisibilityEventArgs args)
 		{
 			VisibleBoundsPadding.SetPaddingMask(TabsPane, VisibleBoundsPadding.PaddingMask.None);
@@ -426,14 +425,28 @@ namespace Uno.UI.Demo.Samples
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
 		/// of the XAML, causing any errors to be off by that many lines
 		private int GetXamlPrefixLineCount => 4;
+
+
+
 		private string GetXamlInput()
 		{
+			var ns = new[] {
+				("behaviors", "using:Uno.UI.Demo.Behaviors"),
+				("utu", "using:Uno.Toolkit.UI"),
+				("muxc", "using:Microsoft.UI.Xaml.Controls"),
+				("um", "using:Uno.Material.Extensions"),
+				("mtuc", "using:Microsoft.Toolkit.Uwp.UI.Controls"),
+				("x", "http://schemas.microsoft.com/winfx/2006/xaml"),
+				("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006"),
+				("d", "http://schemas.microsoft.com/expression/blend/2008")
+			};
+
+			var nsTags = string.Join(" ", ns.Select(v => $"xmlns:{v.Item1}=\"{v.Item2}\""));
+
 			return
 				$@"<Grid
 					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
-					xmlns:x= ""http://schemas.microsoft.com/winfx/2006/xaml""
-					xmlns:behaviors=""using:Uno.UI.Demo.Behaviors""
-					xmlns:muxc=""using:Microsoft.UI.Xaml.Controls"">
+					{nsTags}>
 				{xamlText.Text}
 				</Grid>";
 		}
