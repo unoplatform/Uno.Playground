@@ -1,13 +1,39 @@
 ﻿<linker>
-  <assembly fullname="MonacoEditorComponent" />
-  <assembly fullname="Uno.Playground.WASM" />
-  <assembly fullname="mscorlib" />
-  <assembly fullname="System.Runtime.InteropServices.WindowsRuntime" />
-  <!--<assembly fullname="WebAssembly.Bindings" />-->
-  <assembly fullname="Uno.UI" />
-  <assembly fullname="Newtonsoft.Json" />
-  <assembly fullname="System.Core">
-	<!-- This is required by JSon.NET and any expression.Compile caller -->
-	<type fullname="System.Linq.Expressions*" />
-  </assembly>
+	<assembly fullname="MonacoEditorComponent" />
+	<assembly fullname="Uno.Playground.WASM" />
+	<assembly fullname="mscorlib" />
+	<assembly fullname="Uno.UI" />
+	<assembly fullname="Newtonsoft.Json" />
+	<assembly fullname="System.Core">
+		<!-- This is required by JSon.NET and any expression.Compile caller -->
+		<type fullname="System.Linq.Expressions*" />
+	</assembly>
+
+	<assembly fullname="Microsoft.Toolkit" />
+	<assembly fullname="Microsoft.Toolkit.Uwp" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Core" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Input" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Layout" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Markdown" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Media" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Primitives" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.UI" />
+	<assembly fullname="Microsoft.Toolkit.Uwp.DeveloperTools" />
+	<assembly fullname="Uno.UI.Toolkit" />
 </linker>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
