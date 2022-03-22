@@ -204,6 +204,7 @@
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="*" />
 					<ColumnDefinition x:Name="outputTabColumn"
 									  Width="0" />
 				</Grid.ColumnDefinitions>
@@ -222,9 +223,23 @@
 							   FontSize="18" />
 				</RadioButton>
 
-				<RadioButton x:Name="dataRadioButton"
+				<RadioButton x:Name="sourceRadioButton"
 							 Style="{StaticResource TabRadioButtonStyle}"
 							 Grid.Column="1"
+							 Click="ShowSource"
+							 Background="Transparent"
+							 Foreground="{StaticResource Color08Brush}"
+							 Height="40"
+							 HorizontalAlignment="Stretch"
+							 IsChecked="False">
+					<TextBlock Text="C#"
+							   Foreground="{StaticResource Color08Brush}"
+							   FontSize="18" />
+				</RadioButton>
+
+				<RadioButton x:Name="dataRadioButton"
+							 Style="{StaticResource TabRadioButtonStyle}"
+							 Grid.Column="2"
 							 Click="ShowData"
 							 Background="Transparent"
 							 Foreground="{StaticResource Color08Brush}"
@@ -250,7 +265,7 @@
 				</RadioButton>
 			</Grid>
 
-			<Grid Name="codePane"
+			<Grid Name="xamlPane"
 				  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 				  Grid.Row="1">
 				<Grid.RowDefinitions>
@@ -284,16 +299,26 @@
 
 				<wasm:Border Grid.Row="1">
 					<monaco:CodeEditor x:Name="xamlText"
+									   Text="XAML PANE"
 									   Background="Transparent"
 									   RequestedTheme="Light"
 									   HasGlyphMargin="True"
 									   CodeLanguage="csharp" />
 				</wasm:Border>
+			</Grid>
 
-				<not_wasm:Border Grid.Row="1">
-					<local:CodeBox x:Name="xamlText"
-								   Background="Transparent" />
-				</not_wasm:Border>
+			<Grid Name="sourcePane"
+				  Background="#242424"
+				  Grid.Row="1">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="0" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+
+				<local:CodeBox x:Name="sourceCodeBox"
+							   Background="Transparent"
+							   VerticalAlignment="Top"
+							   Grid.Row="1" />
 			</Grid>
 
 			<Grid Name="dataContextPane"

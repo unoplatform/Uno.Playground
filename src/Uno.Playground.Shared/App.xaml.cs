@@ -60,9 +60,10 @@ namespace Uno.UI.Demo
 #endif
 
 				// Exclude logs below this level
-				builder.SetMinimumLevel(LogLevel.Information);
+				builder.SetMinimumLevel(LogLevel.Debug);
 
 				// Default filters for Uno Platform namespaces
+				builder.AddFilter("Uno.UI.Demo", LogLevel.Information);
 				builder.AddFilter("Uno", LogLevel.Warning);
 				builder.AddFilter("Windows", LogLevel.Warning);
 				builder.AddFilter("Microsoft", LogLevel.Warning);
@@ -96,13 +97,16 @@ namespace Uno.UI.Demo
 			});
 
 			global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
+#if HAS_UNO
+			global::Uno.UI.Adapter.Microsoft.Extensions.Logging.LoggingAdapter.Initialize();
+#endif
 		}
 
-		/// <summary>
-		/// Invoked when the application is launched normally by the end user.  Other entry points
-		/// will be used such as when the application is launched to open a specific file.
-		/// </summary>
-		/// <param name="e">Details about the launch request and process.</param>
+			/// <summary>
+			/// Invoked when the application is launched normally by the end user.  Other entry points
+			/// will be used such as when the application is launched to open a specific file.
+			/// </summary>
+			/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(LaunchActivatedEventArgs e)
 		{
 #if HAS_UNO

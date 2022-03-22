@@ -147,6 +147,8 @@ namespace Uno.UI.Demo.Samples
 				Console.WriteLine(e);
 				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
+
+			sourceCodeBox.Text = "System.Console.WriteLine(\"Hello\");";
 		}
 
 		private void MeasureStartup()
@@ -411,6 +413,39 @@ namespace Uno.UI.Demo.Samples
 			{
 				var r = XamlReader.Load(GetXamlInput());
 				Console.WriteLine($@"Read Xaml in {sw.Elapsed}");
+
+				var compilationResult = await Compiler.Compile(sourceCodeBox.Text);
+
+				if (compilationResult != null)
+				{
+					if (compilationResult.Diagnostics.Length != 0)
+					{
+						Console.WriteLine($"Compilation diagnostics:");
+						foreach (var item in compilationResult.Diagnostics)
+						{
+							Console.WriteLine($"{item.Severity}: {item.GetMessage()}");
+						}
+					}
+
+					if(compilationResult.EntryPointType is not null)
+					{
+						if (compilationResult.Assembly.GetType(compilationResult.EntryPointType) is { } type)
+						{
+							if (type.GetMethod(compilationResult.EntryPointMethod, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public) is { } method)
+							{
+								method.Invoke(null, new object[] { new string[0] } );
+							}
+							else
+							{
+								throw new InvalidOperationException($"Unable to find method {compilationResult.EntryPointMethod}");
+							}
+						}
+						else
+						{
+							throw new InvalidOperationException($"Unable to find type {compilationResult.EntryPointType}");
+						}
+					}
+				}
 
 				await Task.Yield();
 
@@ -691,7 +726,7 @@ namespace Uno.UI.Demo.Samples
 				return;
 			}
 
-			var capturedWidth = codePane.ActualWidth;
+			var capturedWidth = xamlPane.ActualWidth;
 			var capturedPoint = e.GetCurrentPoint(this).Position;
 			var transform = splitter.RenderTransform as TranslateTransform
 				?? (TranslateTransform)(splitter.RenderTransform = new TranslateTransform());
@@ -764,6 +799,7 @@ namespace Uno.UI.Demo.Samples
 		}
 
 		private void ShowXaml(object sender, RoutedEventArgs e) => SelectTab("XAML");
+		private void ShowSource(object sender, RoutedEventArgs e) => SelectTab("C#");
 		private void ShowData(object sender, RoutedEventArgs e) => SelectTab("DATA");
 
 		private void ShowOutput(object sender, RoutedEventArgs e)
@@ -780,7 +816,20 @@ namespace Uno.UI.Demo.Samples
 			{
 				case "XAML":
 					dataContextPane.Visibility = Visibility.Collapsed;
+					sourcePane.Visibility = Visibility.Collapsed;
+					xamlPane.Visibility = Visibility.Visible;
 					xamlRadioButton.IsChecked = true;
+					if (_isMobileFormFactor)
+					{
+						previewPane.Visibility = Visibility.Collapsed;
+					}
+					break;
+
+				case "C#":
+					dataContextPane.Visibility = Visibility.Collapsed;
+					sourcePane.Visibility = Visibility.Visible;
+					xamlPane.Visibility = Visibility.Collapsed;
+					xamlRadioButton.IsChecked = false;
 					if (_isMobileFormFactor)
 					{
 						previewPane.Visibility = Visibility.Collapsed;
@@ -789,6 +838,7 @@ namespace Uno.UI.Demo.Samples
 
 				case "DATA":
 					dataContextPane.Visibility = Visibility.Visible;
+					sourcePane.Visibility = Visibility.Collapsed;
 					if (_isMobileFormFactor)
 					{
 						previewPane.Visibility = Visibility.Collapsed;
@@ -798,6 +848,8 @@ namespace Uno.UI.Demo.Samples
 				case "OUTPUT":
 					dataContextPane.Visibility = Visibility.Collapsed;
 					previewPane.Visibility = Visibility.Visible;
+					sourcePane.Visibility = Visibility.Collapsed;
+					xamlPane.Visibility = Visibility.Collapsed;
 					outputRadioButton.IsChecked = true;
 					break;
 
