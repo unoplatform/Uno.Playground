@@ -21,6 +21,10 @@
 	<assembly fullname="Microsoft.Toolkit.Uwp.UI" />
 	<assembly fullname="Microsoft.Toolkit.Uwp.DeveloperTools" />
 	<assembly fullname="Uno.UI.Toolkit" />
+
+	<assembly fullname="Uno.Material" />»
+	<assembly fullname="Uno.Toolkit.UI" />
+	<assembly fullname="Uno.Toolkit.UI.Material" />»
 </linker>
 
 
