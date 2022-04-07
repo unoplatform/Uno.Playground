@@ -44,7 +44,7 @@ jobs:
           dotnet-version: '6.0.200'
     
       - run: |
-          cd src/Uno.Playground.Wasm
+          cd src/Uno.Playground.WASM
           dotnet build -c Release "/p:PackageVersion=${{ steps.gitversion.outputs.fullSemVer }}"
         name: Build WebAssembly app
 
