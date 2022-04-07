@@ -18,7 +18,7 @@ jobs:
 
     if: (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    container: 'mcr.microsoft.com/dotnet/sdk:6.0'
+    container: 'unoplatform/wasm-build:3.0'
     name: Build and Deploy Job
     steps:
       - uses: actions/checkout@v2
