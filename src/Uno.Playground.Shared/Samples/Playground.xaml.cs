@@ -437,6 +437,7 @@ namespace Uno.UI.Demo.Samples
 				("um", "using:Uno.Material.Extensions"),
 				("mtuc", "using:Microsoft.Toolkit.Uwp.UI.Controls"),
 				("mtud", "using:Microsoft.Toolkit.Uwp.DeveloperTools"),
+				("mtul", "using:Microsoft.Toolkit.Uwp.UI.Lottie"),
 				("x", "http://schemas.microsoft.com/winfx/2006/xaml"),
 				("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006"),
 				("d", "http://schemas.microsoft.com/expression/blend/2008")
