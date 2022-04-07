@@ -44,8 +44,9 @@ jobs:
           dotnet-version: '6.0.200'
     
       - run: |
-          cd src
+          cd src/Uno.Playground.Wasm
           dotnet build -c Release "/p:PackageVersion=${{ steps.gitversion.outputs.fullSemVer }}"
+        name: Build WebAssembly app
 
       - uses: actions/upload-artifact@v2
         with:
