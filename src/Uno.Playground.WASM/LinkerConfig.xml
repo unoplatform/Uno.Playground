@@ -21,6 +21,7 @@
 	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Primitives" />
 	<assembly fullname="Microsoft.Toolkit.Uwp.UI" />
 	<assembly fullname="Microsoft.Toolkit.Uwp.DeveloperTools" />
+	<assembly fullname="CommunityToolkit.Graph.Uwp.Controls">
 	<assembly fullname="Uno.UI.Toolkit" />
 
 	<assembly fullname="Uno.Material" />»
