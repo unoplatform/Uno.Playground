@@ -84,6 +84,7 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="NuGet.Packaging.Core" Version="6.1.0" />
 		<PackageReference Include="System.Security.Permissions" Version="6.0.0" />
 		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.4.0" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.DeveloperTools" Version="7.1.10" />
@@ -121,12 +122,14 @@
 
 	<ItemGroup>
 		<Content Include="..\Uno.Playground.Shared\dotnet-sdk-source\*.dll" Link="dotnet-sdk\%(Filename).clr" />
+		<Content Include="..\Uno.Playground.Shared\uno-sdk-source\*.dll" Link="dotnet-sdk\%(Filename).clr" />
 	</ItemGroup>
 
 	<Target Name="BuildSDKFilesList" BeforeTargets="BeforeBuild">
 		<ItemGroup>
 			<MyDotnetSDKFiles Include="..\Uno.Playground.Shared\dotnet-sdk-source\*.dll" />
+			<MyDotnetSDKFiles Include="..\Uno.Playground.Shared\uno-sdk-source\*.dll" />
 		</ItemGroup>
-		<WriteLinesToFile File="..\Uno.Playground.Shared\dotnet-sdk\fileslist.txt" Lines="@(MyDotnetSDKFiles->Replace('..\Uno.Playground.Shared\',''))" Overwrite="true" />
+		<WriteLinesToFile File="..\Uno.Playground.Shared\dotnet-sdk\fileslist.txt" Lines="@(MyDotnetSDKFiles-&gt;Replace('..\Uno.Playground.Shared\',''))" Overwrite="true" />
 	</Target>
 </Project>

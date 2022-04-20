@@ -37,6 +37,8 @@ using System.Threading;
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
+using Uno.UI.Runtime.WebAssembly;
+using System.Runtime.Loader;
 #endif
 
 namespace Uno.UI.Demo.Samples
@@ -75,6 +77,8 @@ namespace Uno.UI.Demo.Samples
 			{
 				xamlText.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
 			};
+
+			sourceCodeBox.TextChanged += OnTextChanged;
 #else
 			xamlText.TextChanged += OnTextChanged;
 #endif
@@ -99,7 +103,7 @@ namespace Uno.UI.Demo.Samples
 			Uno.Foundation.WebAssemblyRuntime.InvokeJS("Uno.UI.WindowManager.current.setStyle(\"" + splitter.HtmlId + "\", {\"cursor\": \"col-resize\"});");
 #endif
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
-			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding; ;
+			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding;
 		}
 
 		private void OnInputPaneShowing(InputPane sender, InputPaneVisibilityEventArgs args)
@@ -148,7 +152,19 @@ namespace Uno.UI.Demo.Samples
 				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
 
-			sourceCodeBox.Text = "System.Console.WriteLine(\"Hello\");";
+			sourceCodeBox.Text = @"
+using Windows.UI.Xaml.Controls;
+
+System.Console.WriteLine(""Hello"");
+
+public class MyControl : Grid
+{
+	public MyControl()
+	{
+		Children.Add(new TextBlock() { Text = ""Hello"" });
+	}
+}
+			";
 		}
 
 		private void MeasureStartup()
@@ -411,9 +427,6 @@ namespace Uno.UI.Demo.Samples
 			var sw = Stopwatch.StartNew();
 			try
 			{
-				var r = XamlReader.Load(GetXamlInput());
-				Console.WriteLine($@"Read Xaml in {sw.Elapsed}");
-
 				var compilationResult = await Compiler.Compile(sourceCodeBox.Text);
 
 				if (compilationResult != null)
@@ -447,11 +460,29 @@ namespace Uno.UI.Demo.Samples
 					}
 				}
 
-				await Task.Yield();
+				var xamlInput = GetXamlInput();
 
-				content.Content = r;
+				using (compilationResult.LoadContext.EnterContextualReflection())
+				{
+					var r = XamlReader.Load(GetXamlInput());
+					Console.WriteLine(
+						$"Read Xaml from LoadContext {compilationResult.LoadContext.Name} " +
+						$"Original LoadContext { AssemblyLoadContext.GetLoadContext(r.GetType().Assembly).Name } " +
+						$"in {sw.Elapsed}");
 
-				await ClearError();
+					await Task.Yield();
+
+					content.Content = r;
+
+					await ClearError();
+
+					if (_assemblyLoadContext != null)
+					{
+						_assemblyLoadContext.Unload();
+					}
+
+					_assemblyLoadContext = compilationResult.LoadContext;
+				}
 			}
 			catch (Exception ex)
 			{
@@ -468,8 +499,6 @@ namespace Uno.UI.Demo.Samples
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
 		/// of the XAML, causing any errors to be off by that many lines
 		private int GetXamlPrefixLineCount => 4;
-
-
 
 		private string GetXamlInput()
 		{
@@ -488,12 +517,19 @@ namespace Uno.UI.Demo.Samples
 
 			var nsTags = string.Join(" ", ns.Select(v => $"xmlns:{v.Item1}=\"{v.Item2}\""));
 
-			return
-				$@"<Grid
+			if (string.IsNullOrEmpty(sourceCodeBox.Text))
+			{
+				return
+					$@"<Grid
 					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
 					{nsTags}>
 				{xamlText.Text}
 				</Grid>";
+			}
+			else
+			{
+				return xamlText.Text;
+			}
 		}
 
 		private static readonly string _appName =
@@ -621,6 +657,7 @@ namespace Uno.UI.Demo.Samples
 				}
 			}
 		}
+
 		private static HttpClient CreateHttp()
 		{
 			var httpClient = new HttpClient();
@@ -768,6 +805,8 @@ namespace Uno.UI.Demo.Samples
 		private const int _breakPointWidth = 720;
 
 		private bool? _originalIsChecked = null;
+		private AssemblyLoadContext _assemblyLoadContext;
+
 		private void RestoreCodePaneSize(Size oldSize, Size newSize)
 		{
 			_isMobileFormFactor = newSize.Width < _breakPointWidth;

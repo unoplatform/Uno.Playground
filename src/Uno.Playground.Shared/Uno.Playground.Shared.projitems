@@ -376,5 +376,16 @@
     <None Include="$(MSBuildThisFileDirectory)dotnet-sdk-source\System.Xml.XPath.dll" />
     <None Include="$(MSBuildThisFileDirectory)dotnet-sdk-source\System.Xml.XPath.XDocument.dll" />
     <None Include="$(MSBuildThisFileDirectory)dotnet-sdk-source\WindowsBase.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.Foundation.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.Foundation.Logging.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.Composition.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.Dispatching.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.FluentTheme.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.FluentTheme.v1.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.FluentTheme.v2.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.UI.Toolkit.dll" />
+    <None Include="$(MSBuildThisFileDirectory)uno-sdk-source\Uno.Xaml.dll" />
   </ItemGroup>
 </Project>

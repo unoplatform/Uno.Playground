@@ -13,21 +13,36 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using System.Collections.Immutable;
 using System.Threading;
+using System.Runtime.Loader;
+using System.Text.RegularExpressions;
+using System.Net.Http;
+using System.IO.Compression;
+using NuGet.Frameworks;
 
 namespace Uno.UI.Demo.Samples
 {
 	public class Compiler
 	{
+		private static AssemblyLoadContext _ctx;
+
 		public record CompilationResult 
 		{
 			public Assembly? Assembly;
 			public ImmutableArray<Diagnostic> Diagnostics;
 			public string EntryPointType;
 			public string EntryPointMethod;
+			public AssemblyLoadContext LoadContext;
 		}
+
+		static int _loadCount;
 
 		public static async Task<CompilationResult> Compile(string source)
 		{
+			//var temporaryNamespace = $"_{Guid.NewGuid().ToString().Replace("-", "")}";
+			//var updatedSource = $"namespace {temporaryNamespace} {{ {source} }}";
+
+			var packages = await ResolveNugetPackages(source);
+
 			var cus = SyntaxFactory.ParseCompilationUnit(source);
 
 			var sourceLanguage = CSharpLanguage.Instance;
@@ -36,6 +51,7 @@ namespace Uno.UI.Demo.Samples
 
 			Compilation compilation = sourceLanguage
 			  .CreateLibraryCompilation(assemblyName: "InMemoryAssembly", enableOptimisations: false)
+			  .AddReferences(packages)
 			  .AddSyntaxTrees(new[] { cus.SyntaxTree });
 
 			Console.WriteLine($"Got compilation");
@@ -54,13 +70,38 @@ namespace Uno.UI.Demo.Samples
 
 				if (compilation.GetEntryPoint(CancellationToken.None) is { } entryPoint)
 				{
+					_ctx = new AssemblyLoadContext($"test-{_loadCount++}", isCollectible: true);
+					_ctx.Unloading += (a) =>
+					{
+						Console.WriteLine($"Unloading AssemblyLoadContext={a.Name}");
+					};
+
+					stream.Position = 0;
+
+					foreach (var packageAssembly in packages)
+					{
+						if (packageAssembly.FilePath != null)
+						{
+							_ctx.LoadFromAssemblyPath(packageAssembly.FilePath);
+						}
+					}
+
 					return new CompilationResult()
 					{
-						Assembly = Assembly.Load(stream.ToArray()),
+						Assembly = _ctx.LoadFromStream(stream),
 						Diagnostics = emitResult.Diagnostics,
 						EntryPointType = entryPoint.ContainingType.ToDisplayString(),
-						EntryPointMethod = entryPoint.Name
+						EntryPointMethod = entryPoint.Name,
+						LoadContext = _ctx,
 					};
+
+					//return new CompilationResult()
+					//{
+					//	Assembly = Assembly.Load(stream.ToArray()),
+					//	Diagnostics = emitResult.Diagnostics,
+					//	EntryPointType = entryPoint.ContainingType.ToDisplayString(),
+					//	EntryPointMethod = entryPoint.Name
+					//};
 				}
 				else
 				{
@@ -74,6 +115,134 @@ namespace Uno.UI.Demo.Samples
 					Assembly = null,
 					Diagnostics = emitResult.Diagnostics
 				};
+			}
+		}
+
+		private static async Task<PortableExecutableReference[]> ResolveNugetPackages(string source)
+		{
+			var references = Regex.Match(source, "//ref:(?<packageId>.*?)@(?<version>.*?)\n");
+
+			List<(string packageId, string version)> packages = new();
+
+			if (references.Success)
+			{
+				do
+				{
+					packages.Add(
+						(
+						references.Groups["packageId"].Value.ToLowerInvariant(),
+						references.Groups["version"].Value.ToLowerInvariant()
+						)
+					);
+				}
+				while ((references = references.NextMatch()) is { Success: true });
+			}
+
+			List<string> assemblies = new();
+			foreach (var (packageId, version) in packages)
+			{
+				var basePath = Path.Combine(
+					Windows.Storage.ApplicationData.Current.LocalFolder.Path,
+					".nuget",
+					"packages",
+					packageId,
+					version);
+
+				await DownloadNugetPackage(packageId, version, basePath);
+
+				assemblies.AddRange(GetPackageAssemblies(basePath));
+			}
+
+			foreach (var asm in assemblies)
+			{
+				Console.WriteLine($"Got package assembly: {asm}");
+			}
+
+			return assemblies
+				.Select(a => MetadataReference.CreateFromFile(a))
+				.ToArray();
+		}
+
+		private static async Task DownloadNugetPackage(string? packageId, string? version, string basePath)
+		{
+			var fullPackagePath = Path.Combine(basePath, $"{packageId}.{version}.nupkg");
+
+			if (!File.Exists(fullPackagePath))
+			{
+				var url = $"https://api.nuget.org/v3-flatcontainer/{packageId}/{version}/{packageId}.{version}.nupkg";
+
+				Console.WriteLine($"Downloading {url}");
+				var client = new HttpClient();
+				var inputStream = await client.GetStreamAsync(url);
+
+				Directory.CreateDirectory(basePath);
+
+				using (var outputStream = File.OpenWrite(fullPackagePath))
+				{
+					await inputStream.CopyToAsync(outputStream);
+				}
+
+				ExtractNugetPackage(fullPackagePath);
+			}
+			else
+			{
+				Console.WriteLine($"Package {packageId}@{version} already exists locally");
+			}
+		}
+
+		private static List<string> GetPackageAssemblies(string basePath)
+		{
+			var project = NuGetFramework.Parse("net6.0");
+
+			var libPath = Path.Combine(basePath, "lib");
+
+			var frameworksFolders = Directory
+				.GetDirectories(libPath, "*.*", SearchOption.TopDirectoryOnly)
+				.Select(s => Path.GetFileName(s));
+
+			Console.WriteLine($"Source folders in [{string.Join(',', frameworksFolders)}]");
+
+			var frameworks = frameworksFolders.Select(s => NuGetFramework.Parse(s))
+				.ToList();
+
+			FrameworkReducer reducer = new();
+
+			var nearest = reducer.GetNearest(project, frameworks);
+			List<string> assemblies = new();
+
+			if(nearest != null)
+			{
+				var targetFrameworkPath = Path.Combine(libPath, nearest.GetShortFolderName());
+
+				Console.WriteLine($"Found nearest target framework [{targetFrameworkPath}]");
+
+				assemblies.AddRange(Directory.GetFiles(targetFrameworkPath, "*.dll", SearchOption.TopDirectoryOnly));
+			}
+			else
+			{
+				Console.WriteLine($"Unable to compatible target framework in [{string.Join(',', frameworks)}]");
+			}
+
+			return assemblies;
+		}
+
+		private static void ExtractNugetPackage(string fullPackagePath)
+		{
+			Console.WriteLine($"Extracting {fullPackagePath}");
+
+			if (Path.GetDirectoryName(fullPackagePath) is { Length: > 0 } extractPath)
+			{
+				using (var file = File.OpenRead(fullPackagePath))
+				{
+					using (var archive = new ZipArchive(file, ZipArchiveMode.Read))
+					{
+						archive.ExtractToDirectory(extractPath);
+					}
+				}
+			}
+			else
+			{
+				throw new InvalidOperationException($"Unable to get the directory for {fullPackagePath}");
 			}
 		}
 	}
@@ -107,6 +276,7 @@ namespace Uno.UI.Demo.Samples
 						var targetFile = f
 						.Replace(".dll", ".clr")
 						.Replace("dotnet-sdk-source", "dotnet-sdk")
+						.Replace("uno-sdk-source", "dotnet-sdk")
 						;
 
 						var sdkFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///{targetFile}"));

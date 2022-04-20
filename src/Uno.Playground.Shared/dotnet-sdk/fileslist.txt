@@ -166,3 +166,14 @@ dotnet-sdk-source\System.Xml.XmlSerializer.dll
 dotnet-sdk-source\System.Xml.XPath.dll
 dotnet-sdk-source\System.Xml.XPath.XDocument.dll
 dotnet-sdk-source\WindowsBase.dll
+uno-sdk-source\Uno.dll
+uno-sdk-source\Uno.Foundation.dll
+uno-sdk-source\Uno.Foundation.Logging.dll
+uno-sdk-source\Uno.UI.Composition.dll
+uno-sdk-source\Uno.UI.Dispatching.dll
+uno-sdk-source\Uno.UI.dll
+uno-sdk-source\Uno.UI.FluentTheme.dll
+uno-sdk-source\Uno.UI.FluentTheme.v1.dll
+uno-sdk-source\Uno.UI.FluentTheme.v2.dll
+uno-sdk-source\Uno.UI.Toolkit.dll
+uno-sdk-source\Uno.Xaml.dll
