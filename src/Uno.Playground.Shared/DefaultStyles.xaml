@@ -7,28 +7,7 @@
 					xmlns:xamarin="http://uno.ui/xamarin"
 					xmlns:ios="http://uno.ui/ios"
 					xmlns:android="http://uno.ui/android"
-					mc:Ignorable="xamarin android ios">
-
-
-	<!-- Replace native styles with UWP styles -->
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultButton}"
-				   TargetType="Button" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultToggleButton}"
-				   TargetType="ToggleButton" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultCheckBox}"
-				   TargetType="CheckBox" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultRadioButton}"
-				   TargetType="RadioButton" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultSlider}"
-				   TargetType="Slider" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultProgressBar}"
-				   TargetType="ProgressBar" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultTextBox}"
-				   TargetType="TextBox" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultPasswordBox}"
-				   TargetType="PasswordBox" />
-	<xamarin:Style BasedOn="{StaticResource XamlDefaultToggleSwitch}"
-				   TargetType="ToggleSwitch" />
+					mc:Ignorable="xamarin android ios">	
 
 	<Style x:Key="iOSToggleSwitchStyle"
 		   TargetType="ToggleSwitch">
@@ -1026,6 +1005,7 @@
 						</VisualStateManager.VisualStateGroups>
 
 						<StackPanel x:Name="Content"
+									CornerRadius="2"
 									Background="{TemplateBinding Background}"
 									Height="{TemplateBinding Height}"
 									Width="{TemplateBinding Width}"
