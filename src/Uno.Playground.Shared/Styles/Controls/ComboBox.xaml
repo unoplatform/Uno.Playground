@@ -22,7 +22,8 @@
 
 	<!-- This ComboBoxStyle doesn't display the selected item. It always displays the placeholder text. -->
 	<Style x:Key="SampleComboBoxStyle"
-				   TargetType="ComboBox">
+			BasedOn="{StaticResource DefaultComboBoxStyle}"
+			TargetType="ComboBox">
 		<Setter Property="Padding"
 				Value="12,5,0,7" />
 		<Setter Property="MinWidth"
