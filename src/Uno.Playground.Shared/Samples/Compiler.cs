@@ -54,6 +54,17 @@ namespace Uno.UI.Demo.Samples
 			  .AddReferences(packages)
 			  .AddSyntaxTrees(new[] { cus.SyntaxTree });
 
+			//var driver = CSharpGeneratorDriver
+			//.Create(generator)
+			//.WithUpdatedParseOptions(new CSharpParseOptions(
+			//	preprocessorSymbols: preprocessorSymbols))
+			//.AddAdditionalTexts(ImmutableArray.Create(additionalTexts))
+			//.WithUpdatedAnalyzerConfigOptions(options)
+			//.RunGeneratorsAndUpdateCompilation(
+			//	compilation,
+			//	out compilation,
+			//	out _, cancellationToken);
+
 			Console.WriteLine($"Got compilation");
 
 			// GetDiagnostics seems to keep running in a CPU Bound loop
@@ -139,6 +150,7 @@ namespace Uno.UI.Demo.Samples
 			}
 
 			List<string> assemblies = new();
+			List<string> analyzers = new();
 			foreach (var (packageId, version) in packages)
 			{
 				var basePath = Path.Combine(
@@ -150,7 +162,9 @@ namespace Uno.UI.Demo.Samples
 
 				await DownloadNugetPackage(packageId, version, basePath);
 
-				assemblies.AddRange(GetPackageAssemblies(basePath));
+				var packageAssemblies = GetPackageAssemblies(basePath);
+				assemblies.AddRange(packageAssemblies.Assemblies);
+				analyzers.AddRange(packageAssemblies.Analyzers);
 			}
 
 			foreach (var asm in assemblies)
@@ -190,7 +204,9 @@ namespace Uno.UI.Demo.Samples
 			}
 		}
 
-		private static List<string> GetPackageAssemblies(string basePath)
+		private record class PackageAssemblies(List<string> Assemblies, List<string> Analyzers);
+
+		private static PackageAssemblies GetPackageAssemblies(string basePath)
 		{
 			var project = NuGetFramework.Parse("net6.0");
 
@@ -223,7 +239,20 @@ namespace Uno.UI.Demo.Samples
 				Console.WriteLine($"Unable to compatible target framework in [{string.Join(',', frameworks)}]");
 			}
 
-			return assemblies;
+			List<string> analyzers = new();
+			if(basePath.Contains("/refit/", StringComparison.OrdinalIgnoreCase))
+			{
+				var generator = Directory.GetFiles(Path.Combine(basePath, "analyzers"), "InterfaceStubGeneratorV1.dll").FirstOrDefault();
+
+				Console.WriteLine($"Refit generator [{generator}]");
+
+				if (generator != null)
+				{
+					analyzers.Add(generator);
+				}
+			}
+
+			return new (assemblies, analyzers);
 		}
 
 		private static void ExtractNugetPackage(string fullPackagePath)
