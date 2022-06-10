@@ -78,7 +78,11 @@ namespace Uno.UI.Demo.Samples
 				xamlText.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
 			};
 
-			sourceCodeBox.TextChanged += OnTextChanged;
+			sourceCodeBox.PropertyChanged += OnPropertyChanged;
+			sourceCodeBox.SizeChanged += (snd, evt) =>
+			{
+				sourceCodeBox.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
+			};
 #else
 			xamlText.TextChanged += OnTextChanged;
 #endif
@@ -903,10 +907,8 @@ public class MyControl : Grid
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
 
-		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		public async Task<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
 		{
-			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
-			{
 				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
 				if (textUntilPosition.EndsWith("boo"))
@@ -944,15 +946,11 @@ public class MyControl : Grid
 						}
 					}
 				};
-			});
 		}
 
-		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
+		public async Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
 		{
-			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
-			{
-				return Task.FromResult(item); // throw new NotImplementedException();
-			});
+			return item; // throw new NotImplementedException();
 		}
 	}
 #endif

@@ -299,7 +299,6 @@
 
 				<wasm:Border Grid.Row="1">
 					<monaco:CodeEditor x:Name="xamlText"
-									   Text="XAML PANE"
 									   Background="Transparent"
 									   RequestedTheme="Light"
 									   HasGlyphMargin="True"
@@ -315,10 +314,13 @@
 					<RowDefinition Height="*" />
 				</Grid.RowDefinitions>
 
-				<local:CodeBox x:Name="sourceCodeBox"
-							   Background="Transparent"
-							   VerticalAlignment="Top"
-							   Grid.Row="1" />
+				<monaco:CodeEditor x:Name="sourceCodeBox"
+					Background="Transparent"
+					RequestedTheme="Dark"
+					HasGlyphMargin="True"
+					CodeLanguage="csharp"
+					VerticalAlignment="Top"
+					Grid.Row="1" />
 			</Grid>
 
 			<Grid Name="dataContextPane"
