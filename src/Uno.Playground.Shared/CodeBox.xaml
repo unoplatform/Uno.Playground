@@ -2,10 +2,19 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:local="using:Uno.UI.Demo">
 
+	<ResourceDictionary.ThemeDictionaries>
+		<ResourceDictionary x:Key="Default">
+			<SolidColorBrush x:Key="CodeBoxForeground" Color="#D4D4D4" />
+		</ResourceDictionary>
+		<ResourceDictionary x:Key="Light">
+			<SolidColorBrush x:Key="CodeBoxForeground" Color="#000000" />
+		</ResourceDictionary>
+	</ResourceDictionary.ThemeDictionaries>
+	
 	<Style TargetType="local:CodeBox">
 		<!-- Visual Studio Code (dark) -->
 		<Setter Property="Foreground"
-				Value="#D4D4D4" />
+				Value="{ThemeResource CodeBoxForeground}" />
 		<Setter Property="Background"
 				Value="#1E1E1E" />
 		<Setter Property="FontFamily"

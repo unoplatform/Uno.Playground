@@ -227,7 +227,7 @@
 		</Setter>
 	</win:Style>
 
-	<Style TargetType="AppBarButton"
-		   BasedOn="{StaticResource NativeDefaultAppBarButton}" />
+	<!--<Style TargetType="AppBarButton"
+		   BasedOn="{StaticResource NativeDefaultAppBarButton}" />-->
 
 </ResourceDictionary>

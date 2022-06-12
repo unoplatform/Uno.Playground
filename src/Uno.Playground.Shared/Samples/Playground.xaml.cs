@@ -3,11 +3,9 @@
 #endif
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Dynamic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,16 +16,12 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Newtonsoft.Json;
-using Uno.Disposables;
 using Uno.Extensions;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Markup;
@@ -43,7 +37,6 @@ using System.Threading;
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
-using Uno.UI.Runtime.WebAssembly;
 #endif
 
 namespace Uno.UI.Demo.Samples
@@ -77,7 +70,6 @@ namespace Uno.UI.Demo.Samples
 			xamlText.PropertyChanged += OnPropertyChanged;
 			xamlText.Loaded += OnEditorLoaded;
 			xamlText.Loading += OnEditorLoading;
-			xamlText.RequestedTheme = ElementTheme.Dark;
 
 			xamlText.SizeChanged += (snd, evt) =>
 			{
@@ -242,7 +234,23 @@ namespace Uno.UI.Demo.Samples
 #if !MONACO
 			await LoadSamples();
 #endif
+
+			SetDarkLightToggleInitialState();
 		}
+
+		private void SetDarkLightToggleInitialState()
+		{
+			// Initialize the toggle to the current theme.
+			var root = global::Windows.UI.Xaml.Window.Current.Content as FrameworkElement;
+
+			var settings = new UISettings();
+			var systemBackground = settings.GetColorValue(UIColorType.Background);
+			darkThemeCheckBox.IsChecked =
+				systemBackground.R < 100 &&
+				systemBackground.G < 100 &&
+				systemBackground.B < 100;
+		}
+
 
 		private static readonly Regex CommentStripperRegex = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)");
 
@@ -591,6 +599,24 @@ namespace Uno.UI.Demo.Samples
 			LaunchUpdate();
 		}
 
+		private void DarkThemeChanged(object sender, RoutedEventArgs e)
+		{
+			var isChecked = darkThemeCheckBox.IsChecked;
+			if (Window.Current.Content is FrameworkElement windowRoot)
+			{
+				if (isChecked == true)
+				{
+					windowRoot.RequestedTheme = ElementTheme.Dark;
+					xamlText.RequestedTheme = ElementTheme.Dark;
+				}
+				else
+				{
+					windowRoot.RequestedTheme = ElementTheme.Light;
+					xamlText.RequestedTheme = ElementTheme.Light;					
+				}
+			}
+		}
+
 		private void Update_OnTapped(object sender, RoutedEventArgs e)
 		{
 			SetCodeDirtyState();
@@ -617,7 +643,7 @@ namespace Uno.UI.Demo.Samples
 			{
 				errorText.Text = error.Message;
 #if MONACO
-				if(errorBorder.Visibility == Visibility.Visible)
+				if (errorBorder.Visibility == Visibility.Visible)
 				{
 					// Only clear the errors if the error bubble is already showing, in which
 					// case we need to update the errors
@@ -634,10 +660,10 @@ namespace Uno.UI.Demo.Samples
 							Message = error.Message,
 							Severity = MarkerSeverity.Error,
 							Source = "Origin",
-							StartLineNumber = (uint)(xamlError.LineNumber- GetXamlPrefixLineCount),
+							StartLineNumber = (uint)(xamlError.LineNumber - GetXamlPrefixLineCount),
 							StartColumn = (uint)xamlError.LinePosition,
-							EndLineNumber = (uint)(xamlError.LineNumber- GetXamlPrefixLineCount),
-							EndColumn = (uint)xamlError.LinePosition+5
+							EndLineNumber = (uint)(xamlError.LineNumber - GetXamlPrefixLineCount),
+							EndColumn = (uint)xamlError.LinePosition + 5
 						});
 				}
 #endif
@@ -727,7 +753,7 @@ namespace Uno.UI.Demo.Samples
 					runPane.Visibility = Visibility.Visible;
 					autoUpdate.IsChecked = _originalIsChecked ?? true;
 					previewPane.Visibility = Visibility.Visible;
-					SelectTab("XAML"); 
+					SelectTab("XAML");
 				}
 			}
 		}

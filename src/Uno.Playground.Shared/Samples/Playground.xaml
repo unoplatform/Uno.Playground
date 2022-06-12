@@ -124,7 +124,20 @@
 						  IsChecked="True"
 						  Checked="AutoUpdate_OnChecked"
 						  ToolTipService.ToolTip="Update update the preview when you change the code.">
-					<TextBlock Text="Auto Run"
+					<TextBlock Text="Auto Refresh"
+							   Foreground="{StaticResource Color01Brush}"
+							   VerticalAlignment="Center"
+							   Margin="0,4,0,0"
+							   FontSize="12" />
+				</CheckBox>
+				<CheckBox
+					x:Name="darkThemeCheckBox"
+					Margin="16,0,0,0"
+					Style="{StaticResource AutoRunCheckBoxStyle}"
+					IsChecked="False"
+					Unchecked="DarkThemeChanged"
+					Checked="DarkThemeChanged">
+					<TextBlock Text="Dark theme"
 							   Foreground="{StaticResource Color01Brush}"
 							   VerticalAlignment="Center"
 							   Margin="0,4,0,0"
@@ -227,6 +240,7 @@
 							 Background="Transparent"
 							 Foreground="{StaticResource Color08Brush}"
 							 Height="40"
+							 Visibility="Collapsed"
 							 HorizontalAlignment="Stretch">
 					<TextBlock Text="Output"
 							   Foreground="{StaticResource Color08Brush}"
@@ -235,7 +249,7 @@
 			</Grid>
 
 			<Grid Name="codePane"
-				  Background="#242424"
+				  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 				  Grid.Row="1">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="0" />
@@ -243,10 +257,8 @@
 				</Grid.RowDefinitions>
 
 				<!--XAML-->
-				<!-- This section is hidden for now. -->
 				<Grid Visibility="Collapsed"
 					  Grid.Row="0"
-					  Background="#242424"
 					  VerticalAlignment="Stretch"
 					  HorizontalAlignment="Stretch">
 					<TextBlock Text="XAML EDITOR"
@@ -271,7 +283,7 @@
 				<wasm:Border Grid.Row="1">
 					<monaco:CodeEditor x:Name="xamlText"
 									   Background="Transparent"
-									   RequestedTheme="Dark"
+									   RequestedTheme="Light"
 									   HasGlyphMargin="True"
 									   CodeLanguage="csharp" />
 				</wasm:Border>
@@ -284,7 +296,7 @@
 
 			<Grid Name="dataContextPane"
 				  Grid.Row="1"
-				  Background="#242424"
+				  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 				  Visibility="Collapsed">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="0" />
@@ -316,7 +328,7 @@
 			<Grid x:Name="previewPane"
 				  Grid.Column="2"
 				  Grid.RowSpan="2"
-				  Background="White">
+				  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 				<Grid.RowDefinitions>
 					<RowDefinition />
 					<RowDefinition Height="Auto" />
@@ -461,6 +473,8 @@
 					<VisualState.Setters>
 						<Setter Target="outputTabColumn.Width"
 								Value="*" />
+						<Setter Target="outputRadioButton.Visibility"
+								Value="Visible" />
 						<Setter Target="TabsPane.(Grid.ColumnSpan)"
 								Value="3" />
 						<Setter Target="previewPane.(Grid.Column)"
