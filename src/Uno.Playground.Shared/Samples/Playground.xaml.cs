@@ -68,28 +68,16 @@ namespace Uno.UI.Demo.Samples
 
 			Loaded += Playground_Loaded;
 
-#if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
-			xamlText.Loaded += OnEditorLoaded;
-			xamlText.Loading += OnEditorLoading;
-
-			xamlText.SizeChanged += (snd, evt) =>
-			{
-				xamlText.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
-			};
+			xamlText.Loaded += OnXamlEditorLoaded;
+			xamlText.Loading += OnXamlEditorLoading;
 
 			sourceCodeBox.PropertyChanged += OnPropertyChanged;
-			sourceCodeBox.SizeChanged += (snd, evt) =>
-			{
-				sourceCodeBox.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
-			};
-#else
-			xamlText.TextChanged += OnTextChanged;
-#endif
+			sourceCodeBox.Loaded += OnCSharpEditorLoaded;
+			sourceCodeBox.Loading += OnCSharpEditorLoading;
+			sourceCodeBox.RequestedTheme = ElementTheme.Dark;
 
-#if __WASM__
 			splitter.SetCssClass("resizeHandle");
-#endif
 
 			jsonDataContext.TextChanged += OnDataContextTextChanged;
 
@@ -126,6 +114,11 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSamples()
 		{
+			if(!sourceCodeBox.IsLoaded || !xamlText.IsLoaded)
+			{
+				return;
+			}
+
 			samplesCombobox.PlaceholderText = "Loading Snippets...";
 			samplesCombobox.IsEnabled = false;
 
@@ -316,24 +309,30 @@ public class MyControl : Grid
 			jsonDataContext.Text = data;
 		}
 
-		private async void OnEditorLoading(object sender, RoutedEventArgs e)
+		private async void OnXamlEditorLoading(object sender, RoutedEventArgs e)
 		{
-#if MONACO
-			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
-#endif
+			// await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
 		}
 
-		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
+		private async void OnXamlEditorLoaded(object sender, RoutedEventArgs e)
 		{
-#if MONACO
 			xamlText.CodeLanguage = "xml";
-#endif
+			await LoadSamples();
+		}
+
+		private async void OnCSharpEditorLoading(object sender, RoutedEventArgs e)
+		{
+			// await sourceCodeBox.Languages.RegisterCompletionItemProviderAsync("csharp", new XamlLanguageProvider());
+		}
+
+		private async void OnCSharpEditorLoaded(object sender, RoutedEventArgs e)
+		{
+			sourceCodeBox.CodeLanguage = "csharp";
 			await LoadSamples();
 		}
 
 		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			Console.WriteLine("Property: " + e.PropertyName);
 			if (e.PropertyName == "Text")
 			{
 				OnTextChanged(sender, null);

@@ -90,7 +90,7 @@
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.DeveloperTools" Version="7.1.10" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.1.10" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" Version="7.1.10" />
-		<PackageReference Include="Uno.Monaco.Editor" Version="1.2.0-PullRequest0014.9" />
+		<PackageReference Include="Uno.Monaco.Editor" Version="1.2.0-PullRequest0014.11" />
 		<PackageReference Include="Uno.Toolkit.UI" Version="2.5.0-dev.17" />
 		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.5.0-dev.17" />
 
