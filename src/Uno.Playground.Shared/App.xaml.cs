@@ -60,7 +60,7 @@ namespace Uno.UI.Demo
 #endif
 
 				// Exclude logs below this level
-				builder.SetMinimumLevel(LogLevel.Debug);
+				builder.SetMinimumLevel(LogLevel.Information);
 
 				// Default filters for Uno Platform namespaces
 				builder.AddFilter("Uno.UI.Demo", LogLevel.Information);
