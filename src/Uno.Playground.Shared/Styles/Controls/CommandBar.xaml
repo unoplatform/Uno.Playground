@@ -177,8 +177,4 @@
 		</Setter>
 	</android:Style>
 
-	<!--Default CommandBar Style--><!--
-	<Style TargetType="CommandBar"
-		   BasedOn="{StaticResource DefaultCommandBarStyle}" />-->
-
 </ResourceDictionary>
