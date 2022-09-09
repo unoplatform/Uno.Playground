@@ -136,8 +136,4 @@
 				Value="{StaticResource FontFamily01Semibold}" />
 	</Style>
 
-	<!-- Default TextBlock Style -->
-	<Style TargetType="TextBlock"
-		   BasedOn="{StaticResource DefaultTypo}" />
-
 </ResourceDictionary>
