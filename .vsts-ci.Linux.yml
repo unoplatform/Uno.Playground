@@ -17,7 +17,7 @@ jobs:
   - template: build/gitversion.yml
 
   - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk'
+    displayName: 'Use .NET SDK'
     inputs:
       packageType: sdk
       version: 7.0.100-rc.1.22431.12

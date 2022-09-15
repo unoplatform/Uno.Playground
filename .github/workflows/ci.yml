@@ -38,10 +38,11 @@ jobs:
           useConfigFile: true
           configFilePath: gitversion.yml
           
-      - name: Setup dotnet 6.0.200
+      - name: Setup dotnet 7.0.100-rc.1.22431.12
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: '6.0.200'
+          dotnet-version: '7.0.100-rc.1.22431.12'
+          include-prerelease: true
     
       - run: |
           cd src/Uno.Playground.WASM
