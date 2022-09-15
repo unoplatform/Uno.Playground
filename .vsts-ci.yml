@@ -24,23 +24,30 @@ jobs:
     inputs:
       packageType: sdk
       version: 2.1.x
-
+      
   - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk'
+    displayName: 'Use .NET SDK'
     inputs:
       packageType: sdk
-      version: 6.0.x
+      version: 7.0.100-rc.1.22431.12
+      includePreviewVersions: true
 
   - template: build/canary-updater.yml
   - template: build/gitversion.yml
 
+  - script: |
+      cd $(build.sourcesdirectory)
+      dotnet msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground-playground-only.slnf  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/playground.binlog
+
+    displayName: 'Build Playground'
+
   - task: MSBuild@1
     inputs:
-      solution: src\Uno.Playground.sln
+      solution: src\Uno.Playground-api-only.slnf
       msbuildLocationMethod: version
       msbuildVersion: latest
       msbuildArchitecture: x86
-      msbuildArguments: /r /p:CheckExclusions=True /p:Configuration=Release /bl:$(build.artifactstagingdirectory)\build.binlog /p:AndroidSigningKeyPass=$(KeystorePassword) /p:AndroidSigningStorePass=$(KeystorePassword) 
+      msbuildArguments: /r /p:CheckExclusions=True /p:Configuration=Release /bl:$(build.artifactstagingdirectory)\build.binlog
       clean: false
       maximumCpuCount: true
       restoreNugetPackages: false

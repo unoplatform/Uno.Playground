@@ -1,0 +1,9 @@
+{
+  "solution": {
+    "path": "Uno.Playground.sln",
+    "projects": [
+      "Uno.Playground.Api\\Uno.Playground.Api.csproj",
+      "Uno.Playground.Shared\\Uno.Playground.Shared.shproj"
+    ]
+  }
+}
