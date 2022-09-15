@@ -34,7 +34,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Publish Wasm Binaries'
     inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net6.0/dist
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net7.0/dist
       Contents: '**/*.*'
       TargetFolder: $(build.artifactstagingdirectory)/wasm
       CleanTargetFolder: false
