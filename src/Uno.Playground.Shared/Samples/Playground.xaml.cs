@@ -251,8 +251,8 @@ namespace Uno.UI.Demo.Samples
 				systemBackground.B < 100;
 		}
 
-
-		private static readonly Regex CommentStripperRegex = new Regex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)");
+		[GeneratedRegex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)")]
+		private static partial Regex CommentStripperRegex();
 
 		private void OnDataContextTextChanged(object sender, TextChangedEventArgs e)
 		{
@@ -263,7 +263,7 @@ namespace Uno.UI.Demo.Samples
 				_currentError = null;
 
 				var jsonData = jsonDataContext.Text;
-				var uncommentedJsonData = CommentStripperRegex.Replace(jsonData, "");
+				var uncommentedJsonData = CommentStripperRegex().Replace(jsonData, "");
 				var data = JsonConvert.DeserializeObject<ExpandoObject>(uncommentedJsonData);
 
 				DataContext = data;
