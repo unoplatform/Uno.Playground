@@ -97,7 +97,7 @@
 		<PackageReference Include="Uno.Core" Version="4.0.1" />
 		<PackageReference Include="Uno.UI.RemoteControl" Version="4.6.0-dev.352" Condition="'$(Configuration)'=='Debug'" />
 		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.6.0-dev.352" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="7.0.0-dev.165" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="7.0.0-dev.175" />
 		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="7.0.0-dev.165" />
 		<PackageReference Include="Uno.CodeGen" Version="2.0.0-dev.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
