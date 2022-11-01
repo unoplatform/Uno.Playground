@@ -8,7 +8,6 @@
 		<WasmHead>true</WasmHead>
 		<DefineConstants>__WASM__</DefineConstants>
 		<NoWarn>NU1701;Uno0001</NoWarn>
-		<UnoUIUseRoslynSourceGenerators>false</UnoUIUseRoslynSourceGenerators>
 
 		<!--<UseAOT Condition="$([MSBuild]::IsOsPlatform('Linux')) or ( $([MSBuild]::IsOsPlatform('Windows')) and '$(BUILD_REPOSITORY_PROVIDER)'=='' )">true</UseAOT>-->
 		<WasmShellMonoRuntimeExecutionMode Condition="'$(UseAOT)'=='true'">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
@@ -90,15 +89,15 @@
 		<PackageReference Include="Uno.Toolkit.UI" Version="2.4.0-dev.14" />
 		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.4.0-dev.14" />
 
-		<PackageReference Include="Uno.UI.WebAssembly" Version="4.6.0-dev.352" />
-		<PackageReference Include="Uno.UI.Lottie" Version="4.6.0-dev.352" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="4.6.18" />
+		<PackageReference Include="Uno.UI.Lottie" Version="4.6.18" />
 		<PackageReference Include="Uno.Core.Extensions" Version="4.0.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.0.1" />
 		<PackageReference Include="Uno.Core" Version="4.0.1" />
-		<PackageReference Include="Uno.UI.RemoteControl" Version="4.6.0-dev.352" Condition="'$(Configuration)'=='Debug'" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.6.0-dev.352" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="7.0.0-dev.165" />
-		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="7.0.0-dev.165" />
+		<PackageReference Include="Uno.UI.RemoteControl" Version="4.6.18" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.6.18" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="7.0.3" />
+		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="7.0.3" />
 		<PackageReference Include="Uno.CodeGen" Version="2.0.0-dev.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
