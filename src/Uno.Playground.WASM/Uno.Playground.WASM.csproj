@@ -101,7 +101,7 @@
 		<PackageReference Include="Uno.CodeGen" Version="2.0.0-dev.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
