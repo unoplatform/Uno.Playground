@@ -79,7 +79,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
 		<PackageReference Include="System.Security.Permissions" Version="6.0.0" />
 		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.4.0" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.DeveloperTools" Version="7.1.10" />
