@@ -87,7 +87,7 @@
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" Version="7.1.10" />
 		<PackageReference Include="Uno.Monaco.Editor" Version="1.1.0" />
 		<PackageReference Include="Uno.Toolkit.UI" Version="2.4.0-dev.135" />
-		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.4.0-dev.14" />
+		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.4.2" />
 
 		<PackageReference Include="Uno.UI.WebAssembly" Version="4.6.18" />
 		<PackageReference Include="Uno.UI.Lottie" Version="4.6.18" />
