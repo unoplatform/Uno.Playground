@@ -3,39 +3,59 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
 using Uno.UI.Demo.Api.Helpers;
 using Uno.UI.Demo.Api.Models;
+using Azure;
+using Azure.Data.Tables;
+using Microsoft.Extensions.Logging;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Text.Json;
+using Microsoft.Azure.WebJobs;
+using System;
 
-namespace Uno.UI.Demo.Api
+namespace Uno.UI.Demo.Api;
+
+public class SampleGet
 {
-	public static class SampleGet
+	private readonly ILogger _logger;
+
+	public SampleGet(ILoggerFactory loggerFactory)
 	{
-		[FunctionName("SampleGet")]
-		public static async Task<HttpResponseMessage> Run(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id}")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
-			TraceWriter log,
-			string id,
-			CancellationToken ct)
+		_logger = loggerFactory.CreateLogger<SampleGet>();
+	}
+
+	[Function("SampleGet")]
+	public async Task<HttpResponseData> Run(
+		[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id}")] HttpRequestData req,
+		string id
+	)
+	{
+		var tableClient = new TableClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), Constants.SamplesTableName);
+
+		var sampleQuery = tableClient.QueryAsync<Sample>(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id));
+
+		var sample = await sampleQuery
+			.Select(s => new SampleDetailViewModel(s))
+			.FirstOrDefaultAsync();
+
+		if (sample == null)
 		{
-			var sampleQuery = table
-				.CreateQuery<Sample>()
-				.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id))
-				.AsTableQuery();
+			var response = req.CreateResponse(HttpStatusCode.NotFound);
+			response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-			var queryResult = await table.ExecuteQuery(sampleQuery, ct);
+			response.WriteString("Sample not found");
 
-			var sample = queryResult.Select(s => new SampleDetailViewModel(s)).FirstOrDefault();
+			return response;
+		}
+		else
+		{
+			var response = req.CreateResponse(HttpStatusCode.OK);
+			response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-			return sample == null
-				? req.CreateErrorResponse(HttpStatusCode.NotFound, "Sample not found")
-				: req.CreateResponse(HttpStatusCode.OK, sample);
+			response.WriteString(JsonSerializer.Serialize(sample));
+
+			return response;
 		}
 	}
 }

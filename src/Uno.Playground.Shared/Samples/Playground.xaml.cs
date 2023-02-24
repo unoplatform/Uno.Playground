@@ -48,7 +48,7 @@ namespace Uno.UI.Demo.Samples
 	/// </summary>
 	public sealed partial class Playground : Page
 	{
-		private const string BaseApiUrl = "https://uno-ui-api.azurewebsites.net/api/samples";
+		private const string BaseApiUrl = "http://localhost:7175/api/samples"; // https://uno-ui-api.azurewebsites.net/api/samples";
 		private const string PlaygroundUrl = "http://playground.platform.uno/";
 		private const int CodeUpdateThrottleDelayMs = 550;
 		private const int HintDisplayTime = 5000;
@@ -148,20 +148,6 @@ namespace Uno.UI.Demo.Samples
 				Console.WriteLine(e);
 				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
-
-			sourceCodeBox.Text = @"
-using Windows.UI.Xaml.Controls;
-
-System.Console.WriteLine(""Hello"");
-
-public class MyControl : Grid
-{
-	public MyControl()
-	{
-		Children.Add(new TextBlock() { Text = ""Hello"" });
-	}
-}
-			";
 		}
 
 		private void MeasureStartup()
@@ -333,6 +319,7 @@ public class MyControl : Grid
 
 		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			Console.WriteLine($"OnPropertyChanged {e.PropertyName}");
 			if (e.PropertyName == "Text")
 			{
 				OnTextChanged(sender, null);
@@ -610,6 +597,7 @@ public class MyControl : Grid
 				{
 					autoUpdate.IsChecked = false;
 					xamlText.Text = "<!-- loading... -->";
+					sourceCodeBox.Text = "/* loading... code */";
 					jsonDataContext.Text = "/* loading... */";
 
 					var response = await httpClient.GetAsync($"{BaseApiUrl}/{System.Uri.EscapeUriString(id)}");
@@ -621,6 +609,9 @@ public class MyControl : Grid
 
 					var xaml = ((string)json["Xaml"]) ?? "<!-- empty xaml -->";
 					var data = ((string)json["Data"]) ?? "// empty";
+					var code = ((string)json["Code"]) ?? "";
+
+					sourceCodeBox.Text = UniformizeLineEndings(code);
 					xamlText.Text = UniformizeLineEndings(xaml);
 					jsonDataContext.Text = UniformizeLineEndings(data);
 

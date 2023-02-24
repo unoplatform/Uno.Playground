@@ -20,5 +20,7 @@
 		public string Xaml => _sample.Xaml ?? "";
 
 		public string Data => _sample.Data ?? "";
+
+		public string Code => _sample.Code ?? "";
 	}
 }

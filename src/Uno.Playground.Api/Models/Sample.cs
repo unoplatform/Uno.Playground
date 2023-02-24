@@ -1,8 +1,10 @@
-﻿using Microsoft.WindowsAzure.Storage.Table;
+﻿using Azure;
+using Azure.Data.Tables;
+using System;
 
 namespace Uno.UI.Demo.Api.Models
 {
-	public class Sample : TableEntity
+	public class Sample : ITableEntity
 	{
 		public Sample()
 		{
@@ -12,10 +14,15 @@ namespace Uno.UI.Demo.Api.Models
 		public Sample(string id) : this()
 		{
 			RowKey = id;
-			ETag = "*";
+			ETag = new ETag("*");
 		}
 
-		[IgnoreProperty]
+		public string PartitionKey { get; set; }
+		public string RowKey { get; set; }
+		public ETag ETag { get; set; }
+		public DateTimeOffset? Timestamp { get; set; }
+
+		// [IgnoreProperty]
 		public string Id => RowKey;
 
 		public string Category { get; set; }
@@ -28,7 +35,9 @@ namespace Uno.UI.Demo.Api.Models
 
 		public string Data { get; set; }
 
-		[IgnoreProperty]
+		public string Code { get; set; }
+
+		// [IgnoreProperty]
 		public string[] ParsedKeywords
 		{
 			get => Keywords?.Split(';') ?? new string[] {};

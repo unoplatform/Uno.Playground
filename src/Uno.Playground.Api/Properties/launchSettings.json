@@ -1,0 +1,9 @@
+{
+  "profiles": {
+	"Uno.Playground.Api": {
+	  "commandName": "Project",
+	  "commandLineArgs": "--port 7175 --cors * --verbose",
+	  "launchBrowser": false
+	}
+  }
+}

@@ -5,93 +5,89 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Data.Tables;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
+using Microsoft.Extensions.Logging;
 using Uno.UI.Demo.Api.Helpers;
 using Uno.UI.Demo.Api.Models;
 
-namespace Uno.UI.Demo.Api
+namespace Uno.UI.Demo.Api;
+
+public class SamplesGet
 {
-	public static class SamplesGet
+	private readonly ILogger _logger;
+
+	public SamplesGet(ILoggerFactory loggerFactory)
+		=> _logger = loggerFactory.CreateLogger<SampleGet>();
+
+	[Function("SamplesGet")]
+	public async Task<HttpResponseData> Run(
+		[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")]
+		HttpRequestData req)
 	{
-		[FunctionName("SamplesGet")]
-		public static async Task<HttpResponseMessage> Run(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
-			TraceWriter log,
-			CancellationToken ct)
+		string connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+		var tableClient = new TableClient(connectionString, Constants.SamplesTableName);
+
+		var categories = await tableClient
+			.QueryAsync<SampleCategory>(cat => cat.PartitionKey.Equals(nameof(SampleCategory)) && !cat.RowKey.Equals(Constants.DefaultCategoryIdForSaving))
+			.OrderBy(c => c.ListingOrder)
+			.ThenBy(c=>c.Title)
+			.ThenBy(c => c.Id)
+			.ToArrayAsync();
+
+		var result = new List<SampleCategoryViewModel>(categories.Length);
+
+		var etagSb = new StringBuilder();
+
+		etagSb.Append('"');
+
+		foreach (var category in categories)
 		{
-
-			var categoriesQuery = table
-				.CreateQuery<SampleCategory>()
-				.Where(cat => cat.PartitionKey.Equals(nameof(SampleCategory)) && !cat.RowKey.Equals(Constants.DefaultCategoryIdForSaving))
-				.AsTableQuery()
-				.SelectColumn(nameof(SampleCategory.Title));
-
-			var categories = (await table.ExecuteQuery(categoriesQuery, ct))
+			var samples = await tableClient
+				.QueryAsync<Sample>(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.Category.Equals(category.Id))
 				.OrderBy(cat => cat.ListingOrder)
 				.ThenBy(cat => cat.Title)
 				.ThenBy(cat => cat.Id)
-				.ToArray();
+				.ToArrayAsync();
 
-			var result = new List<SampleCategoryViewModel>(categories.Length);
-
-			var etagSb = new StringBuilder();
-
-			etagSb.Append('"');
-
-			foreach (var category in categories)
-			{
-				var samplesQuery = table
-					.CreateQuery<Sample>()
-					.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.Category.Equals(category.Id))
-					.AsTableQuery()
-					.SelectColumn(nameof(Sample.Category))
-					.SelectColumn(nameof(Sample.Title))
-					.SelectColumn(nameof(Sample.Description))
-					.SelectColumn(nameof(Sample.Keywords));
-
-				var samples = (await table.ExecuteQuery(samplesQuery, ct))
-					.OrderBy(cat => cat.ListingOrder)
-					.ThenBy(cat => cat.Title)
-					.ThenBy(cat => cat.Id)
-					.ToArray();
-
-				var categoryVm = new SampleCategoryViewModel(category, samples);
-				result.Add(categoryVm);
-				etagSb.Append(categoryVm.SamplesHash.ToString("X"));
-			}
-
-			etagSb.Append('"');
-
-			var etag = etagSb.ToString();
-
-			if (req.Headers.IfMatch.Any(im => im.Tag.Equals(etag, StringComparison.OrdinalIgnoreCase)))
-			{
-				return req.CreateResponse(HttpStatusCode.NotModified);
-			}
-
-			var response = req.CreateResponse(HttpStatusCode.OK, result.ToArray());
-			response.Headers.CacheControl =
-				new CacheControlHeaderValue
-				{
-					NoCache = false,
-					Private = false,
-					MaxAge = TimeSpan.FromHours(0.5),
-					MustRevalidate = false,
-					NoStore = false,
-					NoTransform = true,
-					MaxStale = true
-				};
-			response.Headers.ETag = new EntityTagHeaderValue(etag, false);
-
-			return response;
+			var categoryVm = new SampleCategoryViewModel(category, samples);
+			result.Add(categoryVm);
+			etagSb.Append(categoryVm.SamplesHash.ToString("X"));
 		}
+
+		etagSb.Append('"');
+
+		var etag = etagSb.ToString();
+
+		if (req.Headers.TryGetValues("If-Match", out var matches) && matches.Any(im => im.Equals(etag, StringComparison.OrdinalIgnoreCase)))
+		{
+			return req.CreateResponse(HttpStatusCode.NotModified);
+		}
+
+		var response = req.CreateResponse(HttpStatusCode.OK);
+		response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+		response.Headers.Add("ETag", new EntityTagHeaderValue(etag, false).ToString());
+
+		var caceCacheControl = new CacheControlHeaderValue
+		{
+			NoCache = false,
+			Private = false,
+			MaxAge = TimeSpan.FromHours(0.5),
+			MustRevalidate = false,
+			NoStore = false,
+			NoTransform = true,
+			MaxStale = true
+		};
+
+		response.Headers.Add("CacheControl", caceCacheControl.ToString());
+
+		response.WriteString(JsonSerializer.Serialize(result));
+
+		return response;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using Azure;
+using System.Runtime.Serialization;
 
 namespace Uno.UI.Demo.Api.Models
 {
@@ -24,6 +25,6 @@ namespace Uno.UI.Demo.Api.Models
 		public string IconAccentPath => _sample.AccentPathData;
 
 		[IgnoreDataMember]
-		public string Etag => _sample.ETag;
+		public ETag Etag => _sample.ETag;
 	}
 }

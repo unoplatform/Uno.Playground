@@ -37,7 +37,7 @@ namespace Uno.UI.Demo.Api.Models
 				{
 					unchecked
 					{
-						sum += GetEtagHash(s.Etag);
+						sum += GetEtagHash(s.Etag.ToString());
 					}
 				}
 

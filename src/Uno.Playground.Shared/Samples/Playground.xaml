@@ -320,6 +320,7 @@
 						Background="Transparent"
 						RequestedTheme="Dark"
 						HasGlyphMargin="True"
+						Text="// code"
 						CodeLanguage="csharp" />
 				</wasm:Border>
 			</Grid>
