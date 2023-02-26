@@ -13,7 +13,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using Uno.UI.Demo.Api.Helpers;
 using Uno.UI.Demo.Api.Models;
 
 namespace Uno.UI.Demo.Api;

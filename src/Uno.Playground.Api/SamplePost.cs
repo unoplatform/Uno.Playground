@@ -18,7 +18,7 @@ public class SamplePost
 	private readonly ILogger _logger;
 
 	public SamplePost(ILoggerFactory loggerFactory)
-		=> _logger = loggerFactory.CreateLogger<SampleGet>();
+		=> _logger = loggerFactory.CreateLogger<SamplePost>();
 
 	[Function("SamplePost")]
 	public async Task<HttpResponseData> Run(
@@ -27,8 +27,10 @@ public class SamplePost
 	{
 		var tableClient = new TableClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), Constants.SamplesTableName);
 
+		string json = await req.ReadAsStringAsync();
+
 		var saveRequest =
-			JsonSerializer.Deserialize<SampleSaveRequest>(await req.ReadAsStringAsync());
+			JsonSerializer.Deserialize<SampleSaveRequest>(json);
 
 		var id = Guid.NewGuid().ToString("N").Substring(24); // 8 characters is enough
 
@@ -40,6 +42,11 @@ public class SamplePost
 		if (saveRequest.Xaml.Length > 512 * 1024)
 		{
 			return req.CreateResponse(HttpStatusCode.RequestEntityTooLarge, "Xaml too big.");
+		}
+
+		if (saveRequest.Code.Length > 512 * 1024)
+		{
+			return req.CreateResponse(HttpStatusCode.RequestEntityTooLarge, "Code is too big.");
 		}
 
 		if (saveRequest.Data != null && saveRequest.Data.Length > 16 * 1024)
@@ -60,16 +67,18 @@ public class SamplePost
 		var sample = new Sample(id)
 		{
 			Data = saveRequest.Data,
+			Code = saveRequest.Code,
 			Xaml = saveRequest.Xaml,
 			Category = Constants.DefaultCategoryIdForSaving,
 			Title = saveRequest.Title,
 			IpAddress = req.GetClientIp(),
 			UserAgent = req.GetUserAgent(),
-			App = saveRequest.App
+			App = saveRequest.App,
+			Timestamp = DateTimeOffset.UtcNow,
 		};
 
 		await tableClient.AddEntityAsync(sample);
 
-		return req.CreateResponse(HttpStatusCode.OK, id);
+		return req.CreateResponse(HttpStatusCode.OK, JsonSerializer.Serialize(id));
 	}
 }

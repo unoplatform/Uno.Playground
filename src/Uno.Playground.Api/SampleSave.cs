@@ -1,122 +1,128 @@
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Uno.UI.Demo.Api.Helpers;
 using Uno.UI.Demo.Api.Models;
 using Uno.UI.Demo.AspnetShell.Helpers;
+using System.Text.Json;
+using Azure.Data.Tables;
+using System;
 
 namespace Uno.UI.Demo.Api
 {
-	public static class SampleSave
+	public class SampleSave
 	{
-		//[FunctionName("SampleSave")]
-		//public static async Task<HttpResponseMessage> Run(
-		//	[HttpTrigger(AuthorizationLevel.Admin, "put", Route = "samples/{id}")]
-		//	HttpRequestMessage req,
-		//	[Table(Constants.SamplesTableName)] CloudTable table,
-		//	string id,
-		//	TraceWriter log,
-		//	CancellationToken ct)
-		//{
-		//	var clientIp = req.GetClientIp();
+		private readonly ILogger _logger;
 
-		//	var saveRequest =
-		//		JsonConvert.DeserializeObject<SampleSaveRequest>(await req.Content.ReadAsStringAsync());
+		public SampleSave(ILoggerFactory loggerFactory)
+			=> _logger = loggerFactory.CreateLogger<SampleSave>();
 
-		//	var existingQuery = table
-		//		.CreateQuery<Sample>()
-		//		.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id))
-		//		.AsTableQuery();
+		[Function("SampleSave")]
+		public async Task<HttpResponseData> Run(
+			[HttpTrigger(AuthorizationLevel.Admin, "put", Route = "samples/{id}")] HttpRequestData req,
+			string id
+		)
+		{
+			var clientIp = req.GetClientIp();
 
-		//	var existing = (await table.ExecuteQuery(existingQuery, ct)).FirstOrDefault();
-		//	var sample = existing ?? new Sample(id);
+			var saveRequest =
+				JsonSerializer.Deserialize<SampleSaveRequest>(await req.ReadAsStringAsync());
 
-		//	var exists = existing != null;
+			var tableClient = new TableClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), Constants.SamplesTableName);
 
-		//	if (saveRequest == null)
-		//	{
-		//		return req.CreateErrorResponse(HttpStatusCode.BadRequest, "Request payload required.");
-		//	}
+			var sampleQuery = tableClient.QueryAsync<Sample>(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id));
 
-		//	if (!exists && (saveRequest.Xaml == null || saveRequest.Xaml.Length < 5))
-		//	{
-		//		return req.CreateErrorResponse(HttpStatusCode.BadRequest, "Xaml required.");
-		//	}
+			var existing = await sampleQuery
+				.FirstOrDefaultAsync();
 
-		//	if (saveRequest.Xaml != null && saveRequest.Xaml.Length > 512 * 1024)
-		//	{
-		//		return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "Xaml too big.");
-		//	}
+			var sample = existing ?? new Sample(id);
 
-		//	if (saveRequest.Data != null && saveRequest.Data.Length > 16 * 1024)
-		//	{
-		//		return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "Data too big.");
-		//	}
+			var exists = existing != null;
 
-		//	if (saveRequest.Title != null && saveRequest.Title.Length > 255)
-		//	{
-		//		return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "Title too big.");
-		//	}
+			if (saveRequest == null)
+			{
+				return req.CreateResponse(HttpStatusCode.BadRequest, "Request payload required.");
+			}
 
-		//	if (saveRequest.App != null && saveRequest.App.Length > 255)
-		//	{
-		//		return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "App name too big.");
-		//	}
+			if (!exists && (saveRequest.Xaml == null || saveRequest.Xaml.Length < 5))
+			{
+				return req.CreateResponse(HttpStatusCode.BadRequest, "Xaml required.");
+			}
+
+			if (saveRequest.Xaml != null && saveRequest.Xaml.Length > 512 * 1024)
+			{
+				return req.CreateResponse(HttpStatusCode.RequestEntityTooLarge, "Xaml too big.");
+			}
+
+			if (saveRequest.Data != null && saveRequest.Data.Length > 16 * 1024)
+			{
+				return req.CreateResponse(HttpStatusCode.RequestEntityTooLarge, "Data too big.");
+			}
+
+			if (saveRequest.Title != null && saveRequest.Title.Length > 255)
+			{
+				return req.CreateResponse(HttpStatusCode.RequestEntityTooLarge, "Title too big.");
+			}
+
+			if (saveRequest.App != null && saveRequest.App.Length > 255)
+			{
+				return req.CreateResponse(HttpStatusCode.RequestEntityTooLarge, "App name too big.");
+			}
 
 
-		//	if (!string.IsNullOrWhiteSpace(saveRequest.Data))
-		//	{
-		//		sample.Data = saveRequest.Data;
-		//	}
+			if (!string.IsNullOrWhiteSpace(saveRequest.Data))
+			{
+				sample.Data = saveRequest.Data;
+			}
 
-		//	if (!string.IsNullOrWhiteSpace(saveRequest.Xaml))
-		//	{
-		//		sample.Xaml = saveRequest.Xaml;
-		//	}
+			if (!string.IsNullOrWhiteSpace(saveRequest.Xaml))
+			{
+				sample.Xaml = saveRequest.Xaml;
+			}
 
-		//	if (string.IsNullOrWhiteSpace(sample.Category) || !string.IsNullOrWhiteSpace(saveRequest.Category))
-		//	{
-		//		sample.Category = saveRequest.Category ?? Constants.DefaultCategoryIdForSaving;
-		//	}
-		//	if (!string.IsNullOrWhiteSpace(saveRequest.Title))
-		//	{
-		//		sample.Title = saveRequest.Title;
-		//	}
-		//	if (string.IsNullOrWhiteSpace(sample.IpAddress))
-		//	{
-		//		sample.IpAddress = clientIp;
-		//	}
-		//	if (string.IsNullOrWhiteSpace(sample.UserAgent))
-		//	{
-		//		sample.UserAgent = req.Headers.UserAgent.ToString();
-		//	}
-		//	if (!string.IsNullOrWhiteSpace(saveRequest.App))
-		//	{
-		//		sample.App = saveRequest.App;
-		//	}
-		//	if (!string.IsNullOrWhiteSpace(saveRequest.PathData))
-		//	{
-		//		sample.PathData = saveRequest.PathData;
-		//	}
-		//	if (!string.IsNullOrWhiteSpace(saveRequest.AccentPathData))
-		//	{
-		//		sample.AccentPathData = saveRequest.AccentPathData;
-		//	}
+			if (string.IsNullOrWhiteSpace(sample.Category) || !string.IsNullOrWhiteSpace(saveRequest.Category))
+			{
+				sample.Category = saveRequest.Category ?? Constants.DefaultCategoryIdForSaving;
+			}
+			if (!string.IsNullOrWhiteSpace(saveRequest.Title))
+			{
+				sample.Title = saveRequest.Title;
+			}
+			if (string.IsNullOrWhiteSpace(sample.IpAddress))
+			{
+				sample.IpAddress = clientIp;
+			}
+			if (string.IsNullOrWhiteSpace(sample.UserAgent))
+			{
+				sample.UserAgent = req.GetUserAgent();
+			}
+			if (!string.IsNullOrWhiteSpace(saveRequest.App))
+			{
+				sample.App = saveRequest.App;
+			}
+			if (!string.IsNullOrWhiteSpace(saveRequest.PathData))
+			{
+				sample.PathData = saveRequest.PathData;
+			}
+			if (!string.IsNullOrWhiteSpace(saveRequest.AccentPathData))
+			{
+				sample.AccentPathData = saveRequest.AccentPathData;
+			}
 
-		//	var operation = new TableBatchOperation();
-		//	if (existing == null)
-		//	{
-		//		operation.Insert(sample);
-		//	}
-		//	else
-		//	{
-		//		operation.Merge(sample);
-		//	}
-		//	await table.ExecuteBatchAsync(operation, null, null, ct);
+			if (existing == null)
+			{
+				await tableClient.AddEntityAsync(sample);
+			}
+			else
+			{
+				await tableClient.UpdateEntityAsync(sample, sample.ETag);
+			}
 
-		//	return req.CreateResponse(HttpStatusCode.OK, id);
-		//}
+			return req.CreateResponse(HttpStatusCode.OK, id);
+		}
 	}
 }

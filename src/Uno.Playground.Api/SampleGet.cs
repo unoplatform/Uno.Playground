@@ -3,7 +3,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Uno.UI.Demo.Api.Helpers;
 using Uno.UI.Demo.Api.Models;
 using Azure;
 using Azure.Data.Tables;

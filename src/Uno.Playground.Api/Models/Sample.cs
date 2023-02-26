@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 using System;
+using System.Runtime.Serialization;
 
 namespace Uno.UI.Demo.Api.Models
 {
@@ -22,7 +23,7 @@ namespace Uno.UI.Demo.Api.Models
 		public ETag ETag { get; set; }
 		public DateTimeOffset? Timestamp { get; set; }
 
-		// [IgnoreProperty]
+		[IgnoreDataMember]
 		public string Id => RowKey;
 
 		public string Category { get; set; }
@@ -37,7 +38,7 @@ namespace Uno.UI.Demo.Api.Models
 
 		public string Code { get; set; }
 
-		// [IgnoreProperty]
+		[IgnoreDataMember]
 		public string[] ParsedKeywords
 		{
 			get => Keywords?.Split(';') ?? new string[] {};

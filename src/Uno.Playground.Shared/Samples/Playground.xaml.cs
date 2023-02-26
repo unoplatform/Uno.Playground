@@ -39,6 +39,7 @@ using Monaco.Editor;
 using Monaco;
 using Uno.UI.Runtime.WebAssembly;
 using System.Runtime.Loader;
+using Microsoft.CodeAnalysis;
 #endif
 
 namespace Uno.UI.Demo.Samples
@@ -415,63 +416,123 @@ namespace Uno.UI.Demo.Samples
 			await Task.Delay(25); // give time to semi-transaprent to appear
 
 			var sw = Stopwatch.StartNew();
+
 			try
 			{
-				var compilationResult = await Compiler.Compile(sourceCodeBox.Text);
-
-				if (compilationResult != null)
-				{
-					if (compilationResult.Diagnostics.Length != 0)
-					{
-						Console.WriteLine($"Compilation diagnostics:");
-						foreach (var item in compilationResult.Diagnostics)
-						{
-							Console.WriteLine($"{item.Severity}: {item.GetMessage()}");
-						}
-					}
-
-					if(compilationResult.EntryPointType is not null)
-					{
-						if (compilationResult.Assembly.GetType(compilationResult.EntryPointType) is { } type)
-						{
-							if (type.GetMethod(compilationResult.EntryPointMethod, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public) is { } method)
-							{
-								method.Invoke(null, new object[] { new string[0] } );
-							}
-							else
-							{
-								throw new InvalidOperationException($"Unable to find method {compilationResult.EntryPointMethod}");
-							}
-						}
-						else
-						{
-							throw new InvalidOperationException($"Unable to find type {compilationResult.EntryPointType}");
-						}
-					}
-				}
-
-				var xamlInput = GetXamlInput();
-
-				using (compilationResult.LoadContext.EnterContextualReflection())
+				if (string.IsNullOrEmpty(sourceCodeBox.Text))
 				{
 					var r = XamlReader.Load(GetXamlInput());
-					Console.WriteLine(
-						$"Read Xaml from LoadContext {compilationResult.LoadContext.Name} " +
-						$"Original LoadContext { AssemblyLoadContext.GetLoadContext(r.GetType().Assembly).Name } " +
-						$"in {sw.Elapsed}");
 
 					await Task.Yield();
 
 					content.Content = r;
 
 					await ClearError();
+				}
+				else
+				{
+					var compilationResult = await Compiler.Compile(sourceCodeBox.Text);
 
-					if (_assemblyLoadContext != null)
+					if (compilationResult != null)
 					{
-						_assemblyLoadContext.Unload();
+						await ClearError();
+						xamlText.Markers.Clear();
+
+						if (compilationResult.Diagnostics.Length != 0)
+						{
+							Console.WriteLine($"Compilation diagnostics:");
+							foreach (var item in compilationResult.Diagnostics)
+							{
+								Console.WriteLine($"{item.Severity}: {item.GetMessage()}");
+
+								sourceCodeBox.Markers.Add(
+									new MarkerData()
+									{
+										Code = "0000",
+										Message = item.GetMessage(),
+										Severity = item.Severity switch
+										{
+											DiagnosticSeverity.Error => MarkerSeverity.Error,
+											DiagnosticSeverity.Warning => MarkerSeverity.Warning,
+											DiagnosticSeverity.Info => MarkerSeverity.Info,
+											_ => MarkerSeverity.Hint,
+										},
+										Source = "Origin",
+										StartLineNumber = (uint)item.Location.GetLineSpan().StartLinePosition.Line+1,
+										StartColumn = (uint)item.Location.GetLineSpan().StartLinePosition.Character+1,
+										EndLineNumber = (uint)item.Location.GetLineSpan().EndLinePosition.Line+1,
+										EndColumn = (uint)item.Location.GetLineSpan().EndLinePosition.Character+1
+									});
+
+							}
+						}
+
+						if (compilationResult.EntryPointType is not null)
+						{
+							if (compilationResult.Assembly.GetType(compilationResult.EntryPointType) is { } type)
+							{
+								var mainMethod = type.GetMethod(compilationResult.EntryPointMethod, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+								var initializeMethod = type.GetMethods(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).FirstOrDefault(m => m.Name.Contains("__Initialize|"));
+								var registerComponentMethod = typeof(Application).GetMethod("RegisterComponent", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+
+								if(mainMethod is null)
+								{
+									throw new InvalidOperationException($"Unable module entry point");
+								}
+
+								using (compilationResult.LoadContext.EnterContextualReflection())
+								{
+									mainMethod.Invoke(null, new object[] { new string[0] });
+
+									var xamlInput = GetXamlInput();
+
+									if (initializeMethod is null)
+									{
+										var instance = XamlReader.Load(GetXamlInput());
+
+										Console.WriteLine("Initialize method is null");
+
+										await Task.Yield();
+
+										content.Content = instance;
+									}
+									else
+									{
+										Console.WriteLine("Initialize method is NOT null");
+
+										var newContent = initializeMethod.Invoke(null, new object[] { });
+
+										if (GetXamlInput() is { Length: > 0 })
+										{
+											registerComponentMethod.Invoke(null, new object[] { new System.Uri("ms-appx:///local.xaml"), GetXamlInput() });
+											Application.LoadComponent(newContent, new System.Uri("ms-appx:///local.xaml"));
+										}
+
+										content.Content = newContent;
+									}
+
+									Console.WriteLine(
+										$"Read Xaml from LoadContext {compilationResult.LoadContext.Name} " +
+										$"Original LoadContext {AssemblyLoadContext.GetLoadContext(mainMethod.GetType().Assembly).Name} " +
+										$"in {sw.Elapsed}");
+
+									await ClearError();
+
+									if (_assemblyLoadContext != null)
+									{
+										_assemblyLoadContext.Unload();
+									}
+
+									_assemblyLoadContext = compilationResult.LoadContext;
+								}
+							}
+							else
+							{
+								throw new InvalidOperationException($"Unable to find type {compilationResult.EntryPointType}");
+							}
+						}
 					}
 
-					_assemblyLoadContext = compilationResult.LoadContext;
 				}
 			}
 			catch (Exception ex)
@@ -488,7 +549,8 @@ namespace Uno.UI.Demo.Samples
 
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
 		/// of the XAML, causing any errors to be off by that many lines
-		private int GetXamlPrefixLineCount => 4;
+		private int GetXamlPrefixLineCount
+			=> string.IsNullOrEmpty(sourceCodeBox.Text) ? 4 : 0;
 
 		private string GetXamlInput()
 		{
@@ -531,10 +593,12 @@ namespace Uno.UI.Demo.Samples
 		private async void Save_Clicked(object sender, RoutedEventArgs e)
 		{
 			var xaml = UniformizeLineEndings(xamlText.Text);
+			var code = UniformizeLineEndings(sourceCodeBox.Text);
 			var data = UniformizeLineEndings(jsonDataContext.Text);
 
 			var request = new JObject(
 				new JProperty("xaml", xaml),
+				new JProperty("code", code),
 				new JProperty("data", data),
 				new JProperty("app", _appName)
 			).ToString();
@@ -625,14 +689,17 @@ namespace Uno.UI.Demo.Samples
 				}
 				catch (Exception ex)
 				{
-					xamlText.Text = $@"<!-- UNABLE TO LOAD YOUR SNIPPET! -->
-<TextBlock>
-	Error loading snippet {id}:
-	<LineBreak/>
-	<Run FontWeight=""Bold"" Foreground=""Red"">
-		{ex.Message}
-	</Run>
-</TextBlock>";
+					xamlText.Text = $"""
+						<!-- UNABLE TO LOAD YOUR SNIPPET! -->
+						<TextBlock>
+							Error loading snippet {id}:
+							<LineBreak/>
+							<Run FontWeight=""Bold"" Foreground=""Red"">
+								{ex.Message}
+							</Run>
+						</TextBlock>
+						""";
+
 
 					jsonDataContext.Text = "";
 
@@ -696,9 +763,9 @@ namespace Uno.UI.Demo.Samples
 			{
 				errorBorder.Visibility = Visibility.Collapsed;
 				errorText.Text = "No error";
-#if MONACO
+
 				await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
-#endif
+				await sourceCodeBox.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
 			}
 		}
 
