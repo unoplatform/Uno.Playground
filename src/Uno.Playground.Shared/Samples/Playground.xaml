@@ -320,7 +320,7 @@
 						Background="Transparent"
 						RequestedTheme="Dark"
 						HasGlyphMargin="True"
-						Text="// code"
+						Text=""
 						CodeLanguage="csharp" />
 				</wasm:Border>
 			</Grid>
@@ -349,10 +349,11 @@
 							   Foreground="#eeeeee" />
 				</Border>
 
-				<local:CodeBox x:Name="jsonDataContext"
-							   Background="Transparent"
-							   VerticalAlignment="Top"
-							   Grid.Row="1" />
+				<monaco:CodeEditor x:Name="jsonDataContext"
+								   Background="Transparent"
+								   Grid.Row="1"
+								   Text=""
+								   CodeLanguage="json" />
 			</Grid>
 
 			<!--Preview Pane-->

@@ -80,7 +80,7 @@ namespace Uno.UI.Demo.Samples
 
 			splitter.SetCssClass("resizeHandle");
 
-			jsonDataContext.TextChanged += OnDataContextTextChanged;
+			jsonDataContext.PropertyChanged += OnDataContextTextChanged;
 
 			content.SizeChanged += (snd, args) =>
 			{
@@ -256,7 +256,7 @@ namespace Uno.UI.Demo.Samples
 		[GeneratedRegex(@"(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)|(//.*)")]
 		private static partial Regex CommentStripperRegex();
 
-		private void OnDataContextTextChanged(object sender, TextChangedEventArgs e)
+		private void OnDataContextTextChanged(object sender, PropertyChangedEventArgs e)
 		{
 			try
 			{
@@ -436,7 +436,7 @@ namespace Uno.UI.Demo.Samples
 					if (compilationResult != null)
 					{
 						await ClearError();
-						xamlText.Markers.Clear();
+						sourceCodeBox.Markers.Clear();
 
 						if (compilationResult.Diagnostics.Length != 0)
 						{
@@ -448,7 +448,7 @@ namespace Uno.UI.Demo.Samples
 								sourceCodeBox.Markers.Add(
 									new MarkerData()
 									{
-										Code = "0000",
+										Code = item.Id,
 										Message = item.GetMessage(),
 										Severity = item.Severity switch
 										{
@@ -457,11 +457,11 @@ namespace Uno.UI.Demo.Samples
 											DiagnosticSeverity.Info => MarkerSeverity.Info,
 											_ => MarkerSeverity.Hint,
 										},
-										Source = "Origin",
-										StartLineNumber = (uint)item.Location.GetLineSpan().StartLinePosition.Line+1,
-										StartColumn = (uint)item.Location.GetLineSpan().StartLinePosition.Character+1,
-										EndLineNumber = (uint)item.Location.GetLineSpan().EndLinePosition.Line+1,
-										EndColumn = (uint)item.Location.GetLineSpan().EndLinePosition.Character+1
+										// Source = "Origin",
+										StartLineNumber = (uint)item.Location.GetLineSpan().StartLinePosition.Line + 1,
+										StartColumn = (uint)item.Location.GetLineSpan().StartLinePosition.Character + 1,
+										EndLineNumber = (uint)item.Location.GetLineSpan().EndLinePosition.Line + 1,
+										EndColumn = (uint)item.Location.GetLineSpan().EndLinePosition.Character + 1
 									});
 
 							}
