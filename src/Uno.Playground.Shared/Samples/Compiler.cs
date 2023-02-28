@@ -1,4 +1,5 @@
-﻿#nullable enable
+﻿
+#nullable enable
 
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,9 @@ using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.IO.Compression;
 using NuGet.Frameworks;
+using Microsoft.CodeAnalysis.Diagnostics;
+using System.Reflection.Emit;
+using System.Data;
 
 namespace Uno.UI.Demo.Samples
 {
@@ -25,7 +29,7 @@ namespace Uno.UI.Demo.Samples
 	{
 		private static AssemblyLoadContext _ctx;
 
-		public record CompilationResult 
+		public record CompilationResult
 		{
 			public Assembly? Assembly;
 			public ImmutableArray<Diagnostic> Diagnostics;
@@ -51,8 +55,15 @@ namespace Uno.UI.Demo.Samples
 
 			Compilation compilation = sourceLanguage
 			  .CreateLibraryCompilation(assemblyName: "InMemoryAssembly", enableOptimisations: false)
-			  .AddReferences(packages)
+			  .AddReferences(packages.References)
 			  .AddSyntaxTrees(new[] { cus.SyntaxTree });
+
+			var driver = CSharpGeneratorDriver.Create(
+				packages.Generators,
+				parseOptions: null
+			);
+
+			driver.RunGeneratorsAndUpdateCompilation(compilation, out compilation, out var driverDiagnostics);
 
 			//var driver = CSharpGeneratorDriver
 			//.Create(generator)
@@ -69,6 +80,7 @@ namespace Uno.UI.Demo.Samples
 
 			// GetDiagnostics seems to keep running in a CPU Bound loop
 			Console.WriteLine($"Got compilation Diagnostics: {compilation.GetDiagnostics().Length}");
+			Console.WriteLine($"Got compilation Driver Diagnostics: {driverDiagnostics.Length}");
 			Console.WriteLine($"Got compilation DeclarationDiagnostics: {compilation.GetDeclarationDiagnostics().Length}");
 
 			Console.WriteLine($"Emitting assembly...");
@@ -89,7 +101,7 @@ namespace Uno.UI.Demo.Samples
 
 					stream.Position = 0;
 
-					foreach (var packageAssembly in packages)
+					foreach (var packageAssembly in packages.References)
 					{
 						if (packageAssembly.FilePath != null)
 						{
@@ -129,7 +141,7 @@ namespace Uno.UI.Demo.Samples
 			}
 		}
 
-		private static async Task<PortableExecutableReference[]> ResolveNugetPackages(string source)
+		private static async Task<(PortableExecutableReference[] References, ISourceGenerator[] Generators)> ResolveNugetPackages(string source)
 		{
 			var references = Regex.Match(source, "//ref:(?<packageId>.*?)@(?<version>.*?)\n");
 
@@ -172,9 +184,34 @@ namespace Uno.UI.Demo.Samples
 				Console.WriteLine($"Got package assembly: {asm}");
 			}
 
-			return assemblies
+			var sourceGenerators = GetGenerators(analyzers);
+
+			await Console.Out.WriteLineAsync($"Generators: {sourceGenerators.Length}");
+
+			return
+			(
+				assemblies
 				.Select(a => MetadataReference.CreateFromFile(a))
-				.ToArray();
+				.ToArray(),
+				sourceGenerators
+			);
+		}
+
+		private static ISourceGenerator[] GetGenerators(List<string> analyzers)
+		{
+			return analyzers.SelectMany(
+				a => 
+				{
+					Console.WriteLine($"Searching for analyzers in {a}");
+					var assembly = Assembly.LoadFile(a);
+
+					return assembly
+						.GetTypes()
+						.Where(t => t.GetCustomAttribute<GeneratorAttribute>() is object)
+						.Select(t => (ISourceGenerator)Activator.CreateInstance(t)!);
+				}
+			)
+			.ToArray();
 		}
 
 		private static async Task DownloadNugetPackage(string? packageId, string? version, string basePath)
@@ -183,6 +220,8 @@ namespace Uno.UI.Demo.Samples
 
 			if (!File.Exists(fullPackagePath))
 			{
+				version = version?.Replace("\r", "");
+
 				var url = $"https://api.nuget.org/v3-flatcontainer/{packageId}/{version}/{packageId}.{version}.nupkg";
 
 				Console.WriteLine($"Downloading {url}");
@@ -242,7 +281,11 @@ namespace Uno.UI.Demo.Samples
 			List<string> analyzers = new();
 			if(basePath.Contains("/refit/", StringComparison.OrdinalIgnoreCase))
 			{
-				var generator = Directory.GetFiles(Path.Combine(basePath, "analyzers"), "InterfaceStubGeneratorV1.dll").FirstOrDefault();
+				string path = Path.Combine(basePath, "analyzers");
+
+				var generator = Directory
+					.GetFiles(path, "InterfaceStubGeneratorV1.dll", SearchOption.AllDirectories)
+					.FirstOrDefault();
 
 				Console.WriteLine($"Refit generator [{generator}]");
 

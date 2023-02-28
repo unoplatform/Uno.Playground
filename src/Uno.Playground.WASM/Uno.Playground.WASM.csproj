@@ -110,7 +110,7 @@
 
 		<!--<PackageReference Include="Uno.SQLitePCLRaw.provider.wasm" Version="3.0.14" />-->
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.4" />
-		<PackageReference Include="Microsoft.CodeAnalysis" Version="3.8.0" />
+		<PackageReference Include="Microsoft.CodeAnalysis" Version="4.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
