@@ -20,7 +20,7 @@ jobs:
     displayName: 'Use .NET SDK'
     inputs:
       packageType: sdk
-      version: 7.0.100-rc.1.22431.12
+      version: 8.0.100-preview.4.23260.5
       includePreviewVersions: true
 
   - script: |
@@ -34,7 +34,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Publish Wasm Binaries'
     inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net7.0/dist
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net8.0/dist
       Contents: '**/*.*'
       TargetFolder: $(build.artifactstagingdirectory)/wasm
       CleanTargetFolder: false
