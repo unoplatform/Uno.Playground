@@ -37,6 +37,7 @@ using System.Threading;
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
+using System.Drawing.Text;
 #endif
 
 namespace Uno.UI.Demo.Samples
@@ -95,9 +96,7 @@ namespace Uno.UI.Demo.Samples
 			DynamicAnimation.SetStoryboard(this, null);
 
 			SizeChanged += (snd, e) => RestoreCodePaneSize(e.PreviousSize, e.NewSize);
-#if false // __WASM__
-			Uno.Foundation.WebAssemblyRuntime.InvokeJS("Uno.UI.WindowManager.current.setStyle(\"" + splitter.HtmlId + "\", {\"cursor\": \"col-resize\"});");
-#endif
+
 			InputPane.GetForCurrentView().Showing += OnInputPaneShowing;
 			InputPane.GetForCurrentView().Hiding += OnInputPaneHiding; ;
 		}
@@ -303,9 +302,18 @@ namespace Uno.UI.Demo.Samples
 
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
+			if (!xamlText.IsEditorLoaded)
+			{
+				Dispatcher.RunIdleAsync(_ => setLanguage());
+			}
+
+			void setLanguage()
+			{
 #if MONACO
-			xamlText.CodeLanguage = "xml";
+				xamlText.CodeLanguage = "xml";
 #endif
+			}
+
 			await LoadSamples();
 		}
 

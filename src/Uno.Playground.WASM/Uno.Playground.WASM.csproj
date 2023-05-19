@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net7.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<WasmHead>true</WasmHead>
@@ -11,6 +11,7 @@
 
 		<!--<UseAOT Condition="$([MSBuild]::IsOsPlatform('Linux')) or ( $([MSBuild]::IsOsPlatform('Windows')) and '$(BUILD_REPOSITORY_PROVIDER)'=='' )">true</UseAOT>-->
 		<WasmShellMonoRuntimeExecutionMode Condition="'$(UseAOT)'=='true'">InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
+		<WasmShellEnableJiterpreter>true</WasmShellEnableJiterpreter>
 		<WasmShellEnableEmccProfiling>true</WasmShellEnableEmccProfiling>
 		<!--<WasmShellDisableSDKCheckSumValidation>true</WasmShellDisableSDKCheckSumValidation>-->
 		<!--<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>-->
@@ -79,25 +80,25 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Security.Permissions" Version="6.0.0" />
-		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.4.0" />
+		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.6.0-dev.2" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.DeveloperTools" Version="7.1.10" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.1.10" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" Version="7.1.10" />
-		<PackageReference Include="Uno.Monaco.Editor" Version="1.1.0" />
-		<PackageReference Include="Uno.Toolkit.UI" Version="2.5.0-dev.56" />
-		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.5.0-dev.56" />
+		<PackageReference Include="Uno.Monaco.Editor" Version="1.2.0-dev.23" />
+		<PackageReference Include="Uno.Toolkit.UI" Version="2.6.0-dev.58" />
+		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.6.0-dev.58" />
 
-		<PackageReference Include="Uno.UI.WebAssembly" Version="4.9.0-dev.55" />
-		<PackageReference Include="Uno.UI.Lottie" Version="4.9.0-dev.55" />
+		<PackageReference Include="Uno.UI.WebAssembly" Version="4.9.0-dev.1144" />
+		<PackageReference Include="Uno.UI.Lottie" Version="4.9.0-dev.1144" />
 		<PackageReference Include="Uno.Core.Extensions" Version="4.0.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.0.1" />
 		<PackageReference Include="Uno.Core" Version="4.0.1" />
-		<PackageReference Include="Uno.UI.RemoteControl" Version="4.9.0-dev.55" Condition="'$(Configuration)'=='Debug'" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.9.0-dev.55" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="7.0.19" />
-		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="7.0.19" />
+		<PackageReference Include="Uno.UI.RemoteControl" Version="4.9.0-dev.1144" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.9.0-dev.1144" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="8.0.0-dev.192" />
+		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="8.0.0-dev.192" />
 		<PackageReference Include="Uno.CodeGen" Version="2.0.0-dev.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
