@@ -302,19 +302,23 @@ namespace Uno.UI.Demo.Samples
 
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
-			if (!xamlText.IsEditorLoaded)
-			{
-				Dispatcher.RunIdleAsync(_ => setLanguage());
-			}
+			SetCodeLanguage();
 
+			await LoadSamples();
+		}
+
+		private void SetCodeLanguage()
+		{
 			void setLanguage()
 			{
+				Console.WriteLine("setLanguage");
 #if MONACO
+				xamlText.CodeLanguage = "text";
 				xamlText.CodeLanguage = "xml";
 #endif
 			}
 
-			await LoadSamples();
+			Dispatcher.RunIdleAsync(_ => setLanguage());
 		}
 
 		private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -436,6 +440,8 @@ namespace Uno.UI.Demo.Samples
 				loading.Visibility = Visibility.Collapsed;
 				SetCodeDirtyState(isDirty: false);
 			}
+
+			SetCodeLanguage();
 		}
 
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
