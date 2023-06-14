@@ -20,13 +20,13 @@ using Uno.Extensions;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Markup;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 using Newtonsoft.Json.Linq;
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
@@ -240,7 +240,7 @@ namespace Uno.UI.Demo.Samples
 		private void SetDarkLightToggleInitialState()
 		{
 			// Initialize the toggle to the current theme.
-			var root = global::Windows.UI.Xaml.Window.Current.Content as FrameworkElement;
+			var root = global::Microsoft.UI.Xaml.Window.Current.Content as FrameworkElement;
 
 			var settings = new UISettings();
 			var systemBackground = settings.GetColorValue(UIColorType.Background);

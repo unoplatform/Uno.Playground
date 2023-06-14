@@ -14,7 +14,7 @@
 		<ResourceDictionary Source="../StyleGuide/Fonts.xaml" />
 	</ResourceDictionary.MergedDictionaries>
 
-	<!-- Default style for Windows.UI.Xaml.Controls.CheckBox -->
+	<!-- Default style for Microsoft.UI.Xaml.Controls.CheckBox -->
 	<Style x:Key="AutoRunCheckBoxStyle"
 		   TargetType="CheckBox">
 		<Setter Property="Background"

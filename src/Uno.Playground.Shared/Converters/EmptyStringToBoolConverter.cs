@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Uno.Extensions;
-using Windows.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Data;
 
 namespace Uno.UI.Demo.Converters
 {

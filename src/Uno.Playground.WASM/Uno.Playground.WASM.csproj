@@ -14,7 +14,7 @@
 		<!--<WasmShellEnableJiterpreter>true</WasmShellEnableJiterpreter>-->
 		<WasmShellEnableEmccProfiling>true</WasmShellEnableEmccProfiling>
 		<!--<WasmShellDisableSDKCheckSumValidation>true</WasmShellDisableSDKCheckSumValidation>-->
-		<!--<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>-->
+		<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
 		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
 	</PropertyGroup>
 
@@ -30,6 +30,10 @@
 		<UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
 	</ItemGroup>
 
+	<!--<ItemGroup>
+		<WasmShellAdditionalPInvokeLibrary Include="libc" />
+	</ItemGroup>-->
+	
 	<!--
 	<ItemGroup Condition="'$(UseAOT)'=='true'">
 		<WasmShellExtraEmccFlags Include="-fsanitize=address" />
@@ -58,8 +62,8 @@
 
 	<ItemGroup>
 		<WasmShellMonoEnvironment Include="MONO_GC_PARAMS" Value="soft-heap-limit=512m,nursery-size=64m,evacuation-threshold=66,major=marksweep" />
-		<!--<WasmShellMonoEnvironment Include="MONO_LOG_LEVEL" Value="debug" />
-		<WasmShellMonoEnvironment Include="MONO_LOG_MASK" Value="all" />-->
+		<WasmShellMonoEnvironment Include="MONO_LOG_LEVEL" Value="debug" />
+		<WasmShellMonoEnvironment Include="MONO_LOG_MASK" Value="all" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,27 +87,27 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Security.Permissions" Version="6.0.0" />
 		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.6.0-dev.2" />
+		<PackageReference Include="Uno.Monaco.Editor" Version="1.2.0-feature.5x.27" />
+		<!--
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.DeveloperTools" Version="7.1.10" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls" Version="7.1.10" />
 		<PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" Version="7.1.10" />
-		<PackageReference Include="Uno.Monaco.Editor" Version="1.2.0-dev.23" />
-		<PackageReference Include="Uno.Toolkit.UI" Version="2.6.0-dev.58" />
-		<PackageReference Include="Uno.Toolkit.UI.Material" Version="2.6.0-dev.58" />
+		-->
+		<PackageReference Include="Uno.Toolkit.WinUI" Version="2.6.0-dev.58" />
+		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="2.6.0-dev.58" />
 
-		<PackageReference Include="Uno.UI.WebAssembly" Version="4.10.0-dev.180" />
-		<PackageReference Include="Uno.UI.Lottie" Version="4.10.0-dev.180" />
+		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.0.0-feature.breaking-changes.601" />
+		<PackageReference Include="Uno.WinUI.Lottie" Version="5.0.0-feature.breaking-changes.601" />
 		<PackageReference Include="Uno.Core.Extensions" Version="4.0.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.0.1" />
 		<PackageReference Include="Uno.Core" Version="4.0.1" />
-		<PackageReference Include="Uno.UI.RemoteControl" Version="4.10.0-dev.180" Condition="'$(Configuration)'=='Debug'" />
-		<PackageReference Include="Uno.UI.MediaPlayer.WebAssembly" Version="4.10.0-dev.180" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.10.0-dev.180" />
+		<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.0.0-feature.breaking-changes.601" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="5.0.0-feature.breaking-changes.601" />
+		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="5.0.0-feature.breaking-changes.601" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="8.0.0-dev.210" />
 		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="8.0.0-dev.210" />
-		<PackageReference Include="Uno.CodeGen" Version="2.0.0-dev.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="6.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
