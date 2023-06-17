@@ -1,12 +1,6 @@
 
 steps:
 
-  - task: UseDotNet@2
-    displayName: 'Use .NET Runtime'
-    inputs:
-      packageType: runtime
-      version: 7.0.0
-
   - task: nventiveCanaryUpdater@5
     displayName: 'Canary Update'
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries/dev')
