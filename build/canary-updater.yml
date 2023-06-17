@@ -5,7 +5,7 @@ steps:
     displayName: 'Use .NET Runtime'
     inputs:
       packageType: runtime
-      version: 7.0.x
+      version: 7.0.0
 
   - task: nventiveCanaryUpdater@5
     displayName: 'Canary Update'
