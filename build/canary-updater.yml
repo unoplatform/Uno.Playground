@@ -2,10 +2,10 @@
 steps:
 
   - task: UseDotNet@2
-    displayName: 'Use .Net Core runtime 2.2.x'
+    displayName: 'Use .NET Runtime'
     inputs:
       packageType: runtime
-      version: 2.2.x
+      version: 7.0.302
 
   - task: nventiveCanaryUpdater@5
     displayName: 'Canary Update'
