@@ -18,6 +18,7 @@ steps:
     inputs:
       solution: src/Uno.Playground.sln
       branchToMerge: feature/5x
+      nugetVersion: feature.5x,dev
       summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
       resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
       nugetUpdaterVersion: 2.3.0-alpha.46
