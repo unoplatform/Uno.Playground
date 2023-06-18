@@ -14,7 +14,7 @@
 		<!--<WasmShellEnableJiterpreter>true</WasmShellEnableJiterpreter>-->
 		<WasmShellEnableEmccProfiling>true</WasmShellEnableEmccProfiling>
 		<!--<WasmShellDisableSDKCheckSumValidation>true</WasmShellDisableSDKCheckSumValidation>-->
-		<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
+		<!--<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>-->
 		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
 	</PropertyGroup>
 
