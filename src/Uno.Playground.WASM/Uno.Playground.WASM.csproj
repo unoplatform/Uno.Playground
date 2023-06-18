@@ -85,7 +85,6 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="System.Security.Permissions" Version="6.0.0" />
 		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.6.0-dev.2" />
 		<PackageReference Include="Uno.Monaco.Editor" Version="1.2.0-feature.5x.27" />
 		
