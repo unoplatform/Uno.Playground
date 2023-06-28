@@ -13,13 +13,13 @@ using Windows.Foundation.Collections;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace Uno.UI.Demo
 {
@@ -47,6 +47,11 @@ namespace Uno.UI.Demo
 		/// </summary>
 		private static void InitializeLogging()
 		{
+			System.Threading.Tasks.TaskScheduler.UnobservedTaskException
+				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.Exception);
+			AppDomain.CurrentDomain.UnhandledException
+				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.ExceptionObject);
+
 			var factory = LoggerFactory.Create(builder =>
 			{
 #if __WASM__
@@ -68,22 +73,22 @@ namespace Uno.UI.Demo
 				builder.AddFilter("Microsoft", LogLevel.Warning);
 
 				// Generic Xaml events
-				// builder.AddFilter("Windows.UI.Xaml", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.VisualStateGroup", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.StateTriggerBase", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.UIElement", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.FrameworkElement", LogLevel.Trace );
+				// builder.AddFilter("Microsoft.UI.Xaml", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.VisualStateGroup", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.StateTriggerBase", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.UIElement", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.FrameworkElement", LogLevel.Trace );
 
 				// Layouter specific messages
-				// builder.AddFilter("Windows.UI.Xaml.Controls", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.Controls.Layouter", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.Controls.Panel", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.Controls", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.Controls.Layouter", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.Controls.Panel", LogLevel.Debug );
 
 				// builder.AddFilter("Windows.Storage", LogLevel.Debug );
 
 				// Binding related messages
-				// builder.AddFilter("Windows.UI.Xaml.Data", LogLevel.Debug );
-				// builder.AddFilter("Windows.UI.Xaml.Data", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.Data", LogLevel.Debug );
+				// builder.AddFilter("Microsoft.UI.Xaml.Data", LogLevel.Debug );
 
 				// Binder memory references tracking
 				// builder.AddFilter("Uno.UI.DataBinding.BinderReferenceHolder", LogLevel.Debug );
@@ -103,7 +108,7 @@ namespace Uno.UI.Demo
 		/// will be used such as when the application is launched to open a specific file.
 		/// </summary>
 		/// <param name="e">Details about the launch request and process.</param>
-		protected override void OnLaunched(LaunchActivatedEventArgs e)
+		protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs e)
 		{
 #if HAS_UNO
 			System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) => typeof(App).Log().Error("UnobservedTaskException", e.Exception);
@@ -123,7 +128,7 @@ namespace Uno.UI.Demo
 			}
 #endif
 
-			_rootFrame = Windows.UI.Xaml.Window.Current.Content as Frame;
+			_rootFrame = Microsoft.UI.Xaml.Window.Current.Content as Frame;
 
 			// Do not repeat app initialization when the Window already has content,
 			// just ensure that the window is active
@@ -142,16 +147,16 @@ namespace Uno.UI.Demo
 				_rootFrame.Navigated += RootFrame_Navigated;
 				SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
 
-				if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+				if (e.UWPLaunchActivatedEventArgs.PreviousExecutionState == ApplicationExecutionState.Terminated)
 				{
 					//TODO: Load state from previously suspended application
 				}
 
 				// Place the frame in the current Window
-				Windows.UI.Xaml.Window.Current.Content = _rootFrame;
+				Microsoft.UI.Xaml.Window.Current.Content = _rootFrame;
 			}
 
-			if (e.PrelaunchActivated == false)
+			if (e.UWPLaunchActivatedEventArgs.PrelaunchActivated == false)
 			{
 				if (_rootFrame.Content == null)
 				{
@@ -166,7 +171,7 @@ namespace Uno.UI.Demo
 				}
 
 				// Ensure the current window is active
-				Windows.UI.Xaml.Window.Current.Activate();
+				Microsoft.UI.Xaml.Window.Current.Activate();
 			}
 		}
 

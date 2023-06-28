@@ -3,6 +3,7 @@
 	<assembly fullname="Uno.Playground.WASM" />
 	<assembly fullname="mscorlib" />
 	<assembly fullname="Uno.UI" />
+	<assembly fullname="Uno.UI.MediaPlayer.WebAssembly" />
 	<assembly fullname="Uno.UI.Lottie" />
 	<assembly fullname="Newtonsoft.Json" />
 	<assembly fullname="System.Core">
@@ -23,9 +24,9 @@
 	<assembly fullname="Microsoft.Toolkit.Uwp.DeveloperTools" />
 	<assembly fullname="Uno.UI.Toolkit" />
 
-	<assembly fullname="Uno.Material" />»
+	<assembly fullname="Uno.Material" />
 	<assembly fullname="Uno.Toolkit.UI" />
-	<assembly fullname="Uno.Toolkit.UI.Material" />»
+	<assembly fullname="Uno.Toolkit.UI.Material" />
 </linker>
 
 

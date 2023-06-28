@@ -2992,7 +2992,7 @@
 	<Style TargetType="GridViewItem"
 		   BasedOn="{StaticResource GridViewItemExpanded}" />
 
-	<!-- Style for Windows.UI.Xaml.Controls.GridViewItem -->
+	<!-- Style for Microsoft.UI.Xaml.Controls.GridViewItem -->
 	<Style TargetType="GridViewItem"
 		   x:Key="GridViewItemExpanded">
 		<Setter Property="FontFamily"

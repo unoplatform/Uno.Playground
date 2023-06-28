@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media.Animation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace Uno.UI.Demo.Behaviors
 {

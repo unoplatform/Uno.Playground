@@ -20,13 +20,13 @@ using Uno.Extensions;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Markup;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
 using Newtonsoft.Json.Linq;
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
@@ -240,7 +240,7 @@ namespace Uno.UI.Demo.Samples
 		private void SetDarkLightToggleInitialState()
 		{
 			// Initialize the toggle to the current theme.
-			var root = global::Windows.UI.Xaml.Window.Current.Content as FrameworkElement;
+			var root = global::Microsoft.UI.Xaml.Window.Current.Content as FrameworkElement;
 
 			var settings = new UISettings();
 			var systemBackground = settings.GetColorValue(UIColorType.Background);
@@ -457,9 +457,9 @@ namespace Uno.UI.Demo.Samples
 				("utu", "using:Uno.Toolkit.UI"),
 				("muxc", "using:Microsoft.UI.Xaml.Controls"),
 				("um", "using:Uno.Material.Extensions"),
-				("mtuc", "using:Microsoft.Toolkit.Uwp.UI.Controls"),
-				("mtud", "using:Microsoft.Toolkit.Uwp.DeveloperTools"),
-				("mtul", "using:Microsoft.Toolkit.Uwp.UI.Lottie"),
+				("cwuc", "using:CommunityToolkit.WinUI.UI.Controls"),
+				("cwd", "using:CommunityToolkit.WinUI.DeveloperTools"),
+				("cwl", "using:CommunityToolkit.WinUI.Lottie"),
 				("x", "http://schemas.microsoft.com/winfx/2006/xaml"),
 				("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006"),
 				("d", "http://schemas.microsoft.com/expression/blend/2008")

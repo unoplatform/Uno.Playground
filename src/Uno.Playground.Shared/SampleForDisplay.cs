@@ -3,16 +3,13 @@
 #if __WASM__
 	[Preserve]
 #endif
-	[Windows.UI.Xaml.Data.Bindable]
-	[GeneratedImmutable]
-	public partial class SampleForDisplay
+	[Microsoft.UI.Xaml.Data.Bindable]
+	public partial record class SampleForDisplay
 	{
-		[EqualityHash]
 		public string CategoryId { get; }
 
 		public string CategoryTitle { get; }
 
-		[EqualityHash]
 		public string Id { get; }
 
 		public string Title { get; }

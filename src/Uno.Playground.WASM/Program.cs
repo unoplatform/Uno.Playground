@@ -14,7 +14,7 @@ namespace Uno.UI.Demo
 			MonoInternals.mono_trace_set_options("E:all");
 #endif
 
-			Windows.UI.Xaml.Application.Start(_ => _app = new App());
+			Microsoft.UI.Xaml.Application.Start(_ => _app = new App());
 		}
 	}
 
