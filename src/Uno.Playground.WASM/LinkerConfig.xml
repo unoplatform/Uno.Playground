@@ -12,21 +12,21 @@
 	</assembly>
 
 	<assembly fullname="Microsoft.Toolkit" />
-	<assembly fullname="Microsoft.Toolkit.Uwp" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Core" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Input" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Layout" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Markdown" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Media" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI.Controls.Primitives" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.UI" />
-	<assembly fullname="Microsoft.Toolkit.Uwp.DeveloperTools" />
+	<assembly fullname="Microsoft.Toolkit.WinUI" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.Core" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.DataGrid" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.Input" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.Layout" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.Markdown" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.Media" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI.Controls.Primitives" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.UI" />
+	<assembly fullname="Microsoft.Toolkit.WinUI.DeveloperTools" />
 	<assembly fullname="Uno.UI.Toolkit" />
 
 	<assembly fullname="Uno.Material" />
-	<assembly fullname="Uno.Toolkit.UI" />
-	<assembly fullname="Uno.Toolkit.UI.Material" />
+	<assembly fullname="Uno.Toolkit.WinUI" />
+	<assembly fullname="Uno.Toolkit.WinUI.Material" />
 </linker>
 
 
