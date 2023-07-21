@@ -1,0 +1,5 @@
+<Project>
+    <PropertyGroup>
+        <UnoEnableXamlFuzzyMatching>false</UnoEnableXamlFuzzyMatching>
+    </PropertyGroup>
+</Project>
