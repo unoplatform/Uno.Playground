@@ -893,8 +893,6 @@
 		   TargetType="Button">
 		<Setter Property="Background"
 				Value="Transparent" />
-		<Setter Property="Foreground"
-				Value="#007aff" />
 		<Setter Property="Padding"
 				Value="0" />
 		<Setter Property="Height"
@@ -2156,8 +2154,6 @@
 	<SolidColorBrush x:Key="iOSSliderDisabledBrush"
 					 Color="#B0B0B0" />
 
-
-
 	<Style x:Key="AndroidSliderStyle"
 		   TargetType="Slider">
 		<Setter Property="Background"
@@ -2759,8 +2755,6 @@
 				Value="SemiBold" />
 		<Setter Property="FontSize"
 				Value="16" />
-		<Setter Property="Foreground"
-				Value="#242424" />
 		<Setter Property="Margin"
 				Value="0,8,0,0" />
 	</Style>
