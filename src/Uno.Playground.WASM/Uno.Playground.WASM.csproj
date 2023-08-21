@@ -93,7 +93,7 @@
 
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.1.200-dev.6+f657bb2e91" />
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.1.200-dev.6+f657bb2e91" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.200-dev.6+f657bb2e91" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.200-dev.13.gef3f523648" />
 
 		<PackageReference Include="Uno.Toolkit.WinUI" Version="3.1.0-dev.24" />
 		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="3.1.0-dev.24" />
