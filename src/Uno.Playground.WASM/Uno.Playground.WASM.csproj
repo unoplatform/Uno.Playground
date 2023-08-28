@@ -98,7 +98,7 @@
 		<PackageReference Include="Uno.Toolkit.WinUI" Version="3.1.0-dev.24" />
 		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="3.1.0-dev.24" />
 
-		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.0.0-dev.1728" />
+		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.0.0-dev.2280" />
 		<PackageReference Include="Uno.WinUI.Lottie" Version="5.0.0-dev.1728" />
 		<PackageReference Include="Uno.Core.Extensions" Version="4.0.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.0.1" />
