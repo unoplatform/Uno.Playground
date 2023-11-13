@@ -92,7 +92,7 @@
 		<PackageReference Include="Uno.Monaco.Editor" Version="2.0.0-dev.50" />
 
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.1.200-dev.13.gef3f523648" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.1.200-dev.13.gef3f523648" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.1.200-gcc80193f55" />
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.200-dev.13.gef3f523648" />
 
 		<PackageReference Include="Uno.Toolkit.WinUI" Version="5.0.0-dev.94" />
