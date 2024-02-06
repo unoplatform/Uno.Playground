@@ -118,9 +118,6 @@ namespace Uno.UI.Demo
 			Console.WriteLine("launched!");
 			SetupAppCenter();
 
-#if __WASM__
-			ApplicationView.GetForCurrentView().Title = "Uno Playground";
-#endif
 #if DEBUG
 			if (System.Diagnostics.Debugger.IsAttached)
 			{
@@ -155,6 +152,10 @@ namespace Uno.UI.Demo
 				// Place the frame in the current Window
 				Microsoft.UI.Xaml.Window.Current.Content = _rootFrame;
 			}
+
+#if HAS_UNO
+			Microsoft.UI.Xaml.Window.Current.Title = "Uno Playground";
+#endif
 
 			if (e.UWPLaunchActivatedEventArgs.PrelaunchActivated == false)
 			{
