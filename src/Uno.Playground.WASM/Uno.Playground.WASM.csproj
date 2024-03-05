@@ -18,6 +18,10 @@
 		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<WasmShellObfuscateAssemblies>true</WasmShellObfuscateAssemblies>
+	</PropertyGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)'!='net46'">
 		<None Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
 
