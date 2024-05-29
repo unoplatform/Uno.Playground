@@ -1,7 +1,7 @@
 
 steps:
 
-  - task: unoplatformCanaryUpdater@0
+  - task: unoplatformCanaryUpdater@1
     displayName: 'Canary Update'
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries/dev')
     inputs:
@@ -9,5 +9,5 @@ steps:
       branchToMerge: master
       summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
       resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
-      nugetUpdaterVersion: 1.0.15
+      nugetUpdaterVersion: 1.1.0
       packageAuthor: 'unoplatform,uno platform'
