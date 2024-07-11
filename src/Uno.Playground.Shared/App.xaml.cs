@@ -38,6 +38,8 @@ namespace Uno.UI.Demo
 		{
 			InitializeLogging();
 
+			global::Uno.UI.FeatureConfiguration.Font.DefaultTextFontFamily = "ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans.ttf";
+
 			this.InitializeComponent();
 			this.Suspending += OnSuspending;
 		}
