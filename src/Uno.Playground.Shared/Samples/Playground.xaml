@@ -102,12 +102,20 @@
 							   Margin="0,0,0,25"
 							   VerticalAlignment="Center" />
 
-					<HyperlinkButton Content="http://platform.uno"
-									 NavigateUri="http://platform.uno"
+					<HyperlinkButton Content="https://platform.uno"
+									 NavigateUri="https://platform.uno"
 									 Foreground="White"
 									 FontSize="16"
 									 Margin="1,30,0,0"
-									 VerticalAlignment="Center" />
+									 HorizontalContentAlignment="Left"
+									 VerticalAlignment="Center">
+						<HyperlinkButton.Resources>
+							<SolidColorBrush x:Key="HyperlinkButtonForegroundPointerOver"
+											 Color="{StaticResource Color08Brush}" />
+							<SolidColorBrush x:Key="HyperlinkButtonForegroundPressed"
+											 Color="{StaticResource Color08Brush}" />
+						</HyperlinkButton.Resources>
+					</HyperlinkButton>
 				</wasm:Grid>
 			</StackPanel>
 
@@ -456,7 +464,7 @@
 					   Foreground="White" />
 		</StackPanel>
 
-		
+
 
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup>
