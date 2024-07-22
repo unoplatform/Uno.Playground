@@ -1,7 +1,7 @@
 
 steps:
 
-  - task: nventiveCanaryUpdater@5
+  - task: unoplatformCanaryUpdater@1
     displayName: 'Canary Update'
     condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/canaries/dev')
     inputs:
@@ -9,5 +9,5 @@ steps:
       branchToMerge: master
       summaryFile: '$(Build.ArtifactStagingDirectory)/Canary.md'
       resultFile: '$(Build.ArtifactStagingDirectory)/result.json'
-      nugetUpdaterVersion: 2.3.0-alpha.46
-      packageAuthor: 'nventive,unoplatform,uno platform'
+      nugetUpdaterVersion: 1.1.0
+      packageAuthor: 'unoplatform,uno platform'
