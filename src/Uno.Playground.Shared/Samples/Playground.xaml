@@ -146,7 +146,7 @@
 					IsChecked="False"
 					Unchecked="DarkThemeChanged"
 					Checked="DarkThemeChanged">
-					<TextBlock Text="Dark theme"
+					<TextBlock Text="Dark Theme"
 							   Foreground="{StaticResource Color01Brush}"
 							   VerticalAlignment="Center"
 							   Margin="0,4,0,0"
