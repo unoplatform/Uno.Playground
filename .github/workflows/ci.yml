@@ -49,7 +49,7 @@ jobs:
           dotnet build -c Release "/p:PackageVersion=${{ steps.gitversion.outputs.fullSemVer }}"
         name: Build WebAssembly app
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: wasm-site
           path: ${{ env.DIST_PATH }}
