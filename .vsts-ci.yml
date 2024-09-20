@@ -32,7 +32,7 @@ jobs:
 
   - script: |
       cd $(build.sourcesdirectory)
-      dotnet msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground-playground-only.slnf  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/playground.binlog
+      dotnet publish -c Release $(build.sourcesdirectory)/src/Uno.Playground-playground-only.slnf  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/playground.binlog
 
     displayName: 'Build Playground'
 

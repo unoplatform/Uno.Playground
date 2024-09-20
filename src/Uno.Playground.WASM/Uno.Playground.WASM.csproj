@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
 		<WasmHead>true</WasmHead>
@@ -102,16 +102,16 @@
 		<PackageReference Include="Uno.Toolkit.WinUI" Version="6.2.0-dev.6" />
 		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="6.2.0-dev.6" />
 
-		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.3.90" />
-		<PackageReference Include="Uno.WinUI.Lottie" Version="5.3.90" />
+		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.5.0-dev.465" />
+		<PackageReference Include="Uno.WinUI.Lottie" Version="5.5.0-dev.465" />
 		<PackageReference Include="Uno.Core.Extensions" Version="4.1.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.1.1" />
 		<PackageReference Include="Uno.Core" Version="4.1.1" />
-		<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.3.90" Condition="'$(Configuration)'=='Debug'" />
-		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="5.3.90" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="5.3.90" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="9.0.0-dev.96" />
-		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="9.0.0-dev.96" />
+		<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.5.0-dev.465" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="5.5.0-dev.465" />
+		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="5.5.0-dev.465" />
+		<PackageReference Include="Uno.Wasm.Bootstrap" Version="9.0.0-dev.296" />
+		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="9.0.0-dev.296" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
 		

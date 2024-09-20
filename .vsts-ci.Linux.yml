@@ -25,7 +25,7 @@ jobs:
 
   - script: |
       cd $(build.sourcesdirectory)
-      dotnet msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/linux.binlog
+      dotnet publish -c Release $(build.sourcesdirectory)/src/Uno.Playground.WASM/Uno.Playground.WASM.csproj  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/linux.binlog
 
     env:
       GITVERSION_FullSemVer: $(GITVERSION_FullSemVer)
@@ -34,7 +34,7 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Publish Wasm Binaries'
     inputs:
-      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net8.0/dist
+      SourceFolder: $(build.sourcesdirectory)/src/Uno.Playground.WASM/bin/Release/net9.0/publish/wwwroot
       Contents: '**/*.*'
       TargetFolder: $(build.artifactstagingdirectory)/wasm
       CleanTargetFolder: false
