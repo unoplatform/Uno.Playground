@@ -41,7 +41,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1.7.2
         with:
-          dotnet-version: '8.0.101'
+          dotnet-version: '9.0.100-rc.1.24452.12'
           include-prerelease: true
     
       - run: |
