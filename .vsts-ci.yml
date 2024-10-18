@@ -24,7 +24,7 @@ jobs:
     displayName: 'Use .NET SDK'
     inputs:
       packageType: sdk
-      version: 8.0.101
+      version: 9.0.100-rc.2.24474.11
       includePreviewVersions: true
 
   - template: build/canary-updater.yml
@@ -32,7 +32,7 @@ jobs:
 
   - script: |
       cd $(build.sourcesdirectory)
-      dotnet msbuild /r /p:Configuration=Release $(build.sourcesdirectory)/src/Uno.Playground-playground-only.slnf  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/playground.binlog
+      dotnet publish -c Release $(build.sourcesdirectory)/src/Uno.Playground-playground-only.slnf  "/p:InformationalVersion=$GITVERSION_INFORMATIONALVERSION" /bl:$(build.artifactstagingdirectory)/playground.binlog
 
     displayName: 'Build Playground'
 
