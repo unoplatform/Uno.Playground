@@ -102,14 +102,14 @@
 		<PackageReference Include="Uno.Toolkit.WinUI" Version="6.4.1" />
 		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="6.4.1" />
 
-		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.6.27" />
-		<PackageReference Include="Uno.WinUI.Lottie" Version="5.6.27" />
+		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.6.30" />
+		<PackageReference Include="Uno.WinUI.Lottie" Version="5.6.30" />
 		<PackageReference Include="Uno.Core.Extensions" Version="4.1.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.1.1" />
 		<PackageReference Include="Uno.Core" Version="4.1.1" />
-		<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.6.27" Condition="'$(Configuration)'=='Debug'" />
-		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="5.6.27" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="5.6.27" />
+		<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.6.30" Condition="'$(Configuration)'=='Debug'" />
+		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="5.6.30" />
+		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="5.6.30" />
 		<PackageReference Include="Uno.Wasm.Bootstrap" Version="9.0.10" />
 		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="9.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
