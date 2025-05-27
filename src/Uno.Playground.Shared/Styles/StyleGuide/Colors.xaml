@@ -4,31 +4,44 @@
 
 	<!-- Color Resources -->
 	<ResourceDictionary.ThemeDictionaries>
-		<ResourceDictionary x:Key="Default">
-			<Color x:Key="Color01">#FFFFFFFF</Color>
-			<Color x:Key="Color02">#FF000000</Color>
-			<Color x:Key="Color03">#FF159BFF</Color>
-			<Color x:Key="Color04">#FF242424</Color>
-			<Color x:Key="Color05">#80242424</Color>
-			<Color x:Key="Color06">#FF313131</Color>
-			<Color x:Key="Color07">#FF7A67F8</Color>
-			<Color x:Key="Color08">#FF67E5AD</Color>
-			<Color x:Key="Color09">#FFCED0D3</Color>
-			<Color x:Key="Color10">#FF919191</Color>
-			<Color x:Key="Color11">#FFF85977</Color>
-			<Color x:Key="Color12">#FF9B9B9B</Color>
-			<Color x:Key="Color13">#FF229DFC</Color>
-			<Color x:Key="Color14">#FFF65678</Color>
-			<Color x:Key="Color15">#FF6CE5AE</Color>
-			<Color x:Key="Color16">#FF7A69F5</Color>
-			<Color x:Key="Color17">#FFD8D8D8</Color>
-			<Color x:Key="Color18">#1A159BFF</Color>
-			<Color x:Key="Color19">#FF272C35</Color>
-			<Color x:Key="Color20">#FFEEEEEE</Color>
-			<Color x:Key="Color21">#FF7A7A7A</Color>
-			<Color x:Key="Color22">#FFE6E6E6</Color>
+		<ResourceDictionary x:Key="Light">
+			<Color x:Key="AndroidBlue">#2196F3</Color>
+			<Color x:Key="AndroidForegroundDisabled">#42101010</Color>
+
+			<Color x:Key="iOSBlue">#007AFF</Color>
+			<Color x:Key="iOSForegroundDisabled">#33787880</Color>
+		</ResourceDictionary>
+		<ResourceDictionary x:Key="Dark">
+			<Color x:Key="AndroidBlue">#1976D2</Color>
+			<Color x:Key="AndroidForegroundDisabled">#42767676</Color>
+
+			<Color x:Key="iOSBlue">#0A84FF</Color>
+			<Color x:Key="iOSForegroundDisabled">#5B787880</Color>
 		</ResourceDictionary>
 	</ResourceDictionary.ThemeDictionaries>
+
+	<Color x:Key="Color01">#FFFFFFFF</Color>
+	<Color x:Key="Color02">#FF000000</Color>
+	<Color x:Key="Color03">#FF159BFF</Color>
+	<Color x:Key="Color04">#FF242424</Color>
+	<Color x:Key="Color05">#80242424</Color>
+	<Color x:Key="Color06">#FF313131</Color>
+	<Color x:Key="Color07">#FF7A67F8</Color>
+	<Color x:Key="Color08">#FF67E5AD</Color>
+	<Color x:Key="Color09">#FFCED0D3</Color>
+	<Color x:Key="Color10">#FF919191</Color>
+	<Color x:Key="Color11">#FFF85977</Color>
+	<Color x:Key="Color12">#FF9B9B9B</Color>
+	<Color x:Key="Color13">#FF229DFC</Color>
+	<Color x:Key="Color14">#FFF65678</Color>
+	<Color x:Key="Color15">#FF6CE5AE</Color>
+	<Color x:Key="Color16">#FF7A69F5</Color>
+	<Color x:Key="Color17">#FFD8D8D8</Color>
+	<Color x:Key="Color18">#1A159BFF</Color>
+	<Color x:Key="Color19">#FF272C35</Color>
+	<Color x:Key="Color20">#FFEEEEEE</Color>
+	<Color x:Key="Color21">#FF7A7A7A</Color>
+	<Color x:Key="Color22">#FFE6E6E6</Color>
 
 	<!-- SolidColorBrush Resources -->
 	<SolidColorBrush x:Key="Color01Brush"
