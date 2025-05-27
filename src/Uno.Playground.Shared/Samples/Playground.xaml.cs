@@ -82,6 +82,9 @@ namespace Uno.UI.Demo.Samples
 
 #if __WASM__
 			splitter.SetCssClass("resizeHandle");
+
+			// Eagerly create material theme
+			_ = new Uno.Material.MaterialTheme();
 #endif
 
 			jsonDataContext.TextChanged += OnDataContextTextChanged;
