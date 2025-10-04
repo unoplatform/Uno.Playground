@@ -1,64 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
-namespace Uno.UI.Demo.Api.Models
+namespace Uno.Playground.Api.Models;
+
+public class SampleCategoryViewModel
 {
-	public class SampleCategoryViewModel
+	private readonly SampleCategory _category;
+
+	public SampleCategoryViewModel(SampleCategory category, IEnumerable<Sample> samples)
 	{
-		private readonly SampleCategory _category;
+		_category = category;
+		Samples = samples
+			.Where(s => string.Equals(s.Category, category.Id))
+			.Select(s => new SampleViewModel(s)).ToArray();
+	}
 
-		public SampleCategoryViewModel(SampleCategory category, IEnumerable<Sample> samples)
+	public string CategoryId => _category.Id;
+
+	public string Title => _category.Title;
+
+	public string? DefaultIconPath => _category.PathData;
+
+	public string? DefaultIconAccentPath => _category.AccentPathData;
+
+	public SampleViewModel[] Samples { get; }
+
+	[IgnoreDataMember]
+	public int SamplesHash
+	{
+		get
 		{
-			_category = category;
-			Samples = samples
-				.Where(s => s.Category.Equals(category.Id))
-				.Select(s => new SampleViewModel(s)).ToArray();
-		}
-
-		public string CategoryId => _category.Id;
-
-		public string Title => _category.Title;
-
-		public string DefaultIconPath => _category.PathData;
-
-		public string DefaultIconAccentPath => _category.AccentPathData;
-
-		public SampleViewModel[] Samples { get; }
-
-		[IgnoreDataMember]
-		public int SamplesHash
-		{
-			get
+			var sum = 0;
+			foreach (var s in Samples)
 			{
-				var sum = 0;
-				foreach (var s in Samples)
+				unchecked
 				{
-					unchecked
-					{
-						sum += GetEtagHash(s.Etag);
-					}
+					sum += GetEtagHash(s.Etag ?? string.Empty);
 				}
-
-				return sum;
 			}
+
+			return sum;
 		}
+	}
 
-		private static int GetEtagHash(string s)
+	private static int GetEtagHash(string s)
+	{
+		unchecked
 		{
-			unchecked
+			var r = 0;
+
+			foreach (var c in s)
 			{
-				var r = 0;
-
-				foreach (var c in s)
-				{
-					r += c;
-				}
-
-				return r;
-
+				r += c;
 			}
+
+			return r;
+
 		}
 	}
 }

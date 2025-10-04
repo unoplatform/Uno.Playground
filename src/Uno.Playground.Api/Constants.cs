@@ -1,8 +1,7 @@
-﻿namespace Uno.UI.Demo.Api
+﻿namespace Uno.Playground.Api;
+
+internal static class Constants
 {
-	internal static class Constants
-	{
-		internal const string SamplesTableName = "Samples";
-		internal const string DefaultCategoryIdForSaving = "default";
-	}
+	internal const string SamplesTableName = "Samples";
+	internal const string DefaultCategoryIdForSaving = "default";
 }

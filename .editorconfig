@@ -12,7 +12,7 @@ indent_style = tab
 [*.xaml]
 indent_style = tab
 
-[{*.cs, *.ts}]
+[{*.cs,*.ts}]
 indent_style = tab
 
 [*.json]

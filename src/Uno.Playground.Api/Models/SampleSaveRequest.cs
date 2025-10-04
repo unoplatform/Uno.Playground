@@ -1,13 +1,18 @@
-﻿namespace Uno.UI.Demo.Api.Models
+﻿namespace Uno.Playground.Api.Models;
+
+public class SampleSaveRequest
 {
-	public class SampleSaveRequest
-	{
-		public string App { get; set; }
-		public string Category { get; set; }
-		public string Title { get; set; }
-		public string Xaml { get; set; }
-		public string Data { get; set; }
-		public string PathData { get; set; }
-		public string AccentPathData { get; set; }
-	}
+	public required string App { get; set; }
+
+	public string? Category { get; set; }
+
+	public string? Title { get; set; }
+
+	public required string Xaml { get; set; }
+
+	public string? Data { get; set; }
+
+	public string? PathData { get; set; }
+
+	public string? AccentPathData { get; set; }
 }

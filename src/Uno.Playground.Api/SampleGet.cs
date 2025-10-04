@@ -1,41 +1,45 @@
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
-using Uno.UI.Demo.Api.Helpers;
-using Uno.UI.Demo.Api.Models;
+using Azure.Data.Tables;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Uno.Playground.Api.Helpers;
+using Uno.Playground.Api.Models;
 
-namespace Uno.UI.Demo.Api
+namespace Uno.Playground.Api;
+
+public static class SampleGet
 {
-	public static class SampleGet
+	[Function("SampleGet")]
+	public static async Task<HttpResponseData> Run(
+		[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id}")] HttpRequestData req,
+		string id,
+		FunctionContext context)
 	{
-		[FunctionName("SampleGet")]
-		public static async Task<HttpResponseMessage> Run(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id}")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
-			TraceWriter log,
-			string id,
-			CancellationToken ct)
+		var logger = context.GetLogger("SampleGet");
+		var tableService = context.InstanceServices.GetService(typeof(TableServiceClient)) as TableServiceClient;
+		if (tableService == null)
 		{
-			var sampleQuery = table
-				.CreateQuery<Sample>()
-				.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id))
-				.AsTableQuery();
-
-			var queryResult = await table.ExecuteQuery(sampleQuery, ct);
-
-			var sample = queryResult.Select(s => new SampleDetailViewModel(s)).FirstOrDefault();
-
-			return sample == null
-				? req.CreateErrorResponse(HttpStatusCode.NotFound, "Sample not found")
-				: req.CreateResponse(HttpStatusCode.OK, sample);
+			var err = req.CreateResponse();
+			err.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+			await err.WriteStringAsync("TableServiceClient not configured.");
+			return err;
 		}
+		var table = tableService.GetSamplesTableClient();
+
+		var response = req.CreateResponse();
+
+		// Query the table for the specific RowKey using a filter string
+		var query = table.QueryAsync<Sample>(filter: $"PartitionKey eq '{nameof(Sample)}' and RowKey eq '{id}'");
+		await foreach (var item in query)
+		{
+			var vm = new SampleDetailViewModel(item);
+			response.StatusCode = System.Net.HttpStatusCode.OK;
+			await response.WriteAsJsonAsync(vm);
+			return response;
+		}
+
+		response.StatusCode = System.Net.HttpStatusCode.NotFound;
+		await response.WriteStringAsync("Sample not found");
+		return response;
 	}
 }

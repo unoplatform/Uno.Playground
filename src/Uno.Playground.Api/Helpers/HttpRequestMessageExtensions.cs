@@ -1,26 +1,44 @@
 ﻿using System.Net.Http;
-using System.ServiceModel.Channels;
-using System.Web;
 
-namespace Uno.UI.Demo.AspnetShell.Helpers
+namespace Uno.Playground.Api.Helpers;
+
+public static class HttpRequestMessageExtensions
 {
-	public static class HttpRequestMessageExtensions
+	public static string? GetClientIp(this HttpRequestMessage request)
 	{
-		public static string GetClientIp(this HttpRequestMessage request)
+		// Prefer X-Forwarded-For header (when behind proxies)
+		if (request.Headers.TryGetValues("X-Forwarded-For", out var values))
 		{
-			if (request.Properties.ContainsKey("MS_HttpContext"))
+			var header = System.Linq.Enumerable.FirstOrDefault(values);
+			if (!string.IsNullOrWhiteSpace(header))
 			{
-				return ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.UserHostAddress;
+				// May contain a list of IPs, take the first
+				return header.Split(',')[0].Trim();
 			}
-
-			if (request.Properties.ContainsKey(RemoteEndpointMessageProperty.Name))
-			{
-				RemoteEndpointMessageProperty prop;
-				prop = (RemoteEndpointMessageProperty)request.Properties[RemoteEndpointMessageProperty.Name];
-				return prop.Address;
-			}
-
-			return null;
 		}
+
+		if (request.Options != null && request.Options.TryGetValue(new HttpRequestOptionsKey<object>("MS_HttpContext"), out var ctxObj))
+		{
+			try
+			{
+				dynamic ctx = ctxObj;
+				var reqInner = ctx?.Request;
+				if (reqInner != null)
+				{
+					// Try common property names
+					var addr = reqInner.UserHostAddress as string;
+					if (!string.IsNullOrWhiteSpace(addr))
+					{
+						return addr;
+					}
+				}
+			}
+			catch
+			{
+				// ignore any reflection/dynamic errors and return null
+			}
+		}
+
+		return null;
 	}
 }

@@ -1,97 +1,79 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
-using Uno.UI.Demo.Api.Helpers;
-using Uno.UI.Demo.Api.Models;
+using Azure.Data.Tables;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Uno.Playground.Api.Helpers;
+using Uno.Playground.Api.Models;
 
-namespace Uno.UI.Demo.Api
+namespace Uno.Playground.Api;
+
+public static class SamplesGet
 {
-	public static class SamplesGet
+	[Function("SamplesGet")]
+	public static async Task<HttpResponseData> Run(
+		[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequestData req,
+		FunctionContext context)
 	{
-		[FunctionName("SamplesGet")]
-		public static async Task<HttpResponseMessage> Run(
-			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
-			TraceWriter log,
-			CancellationToken ct)
+		var logger = context.GetLogger("SamplesGet");
+		var tableService = context.InstanceServices.GetService(typeof(TableServiceClient)) as TableServiceClient;
+		if (tableService == null)
 		{
+			var err = req.CreateResponse();
+			err.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+			await err.WriteStringAsync("TableServiceClient not configured.");
+			return err;
+		}
+		var table = tableService.GetSamplesTableClient();
 
-			var categoriesQuery = table
-				.CreateQuery<SampleCategory>()
-				.Where(cat => cat.PartitionKey.Equals(nameof(SampleCategory)) && !cat.RowKey.Equals(Constants.DefaultCategoryIdForSaving))
-				.AsTableQuery()
-				.SelectColumn(nameof(SampleCategory.Title));
+		// Get categories (exclude default saving category)
+		var categories = new List<SampleCategory>();
+		var categoriesQuery = table.QueryAsync<SampleCategory>(filter: $"PartitionKey eq '{nameof(SampleCategory)}' and RowKey ne '{Constants.DefaultCategoryIdForSaving}'");
+		await foreach (var c in categoriesQuery)
+		{
+			categories.Add(c);
+		}
 
-			var categories = (await table.ExecuteQuery(categoriesQuery, ct))
-				.OrderBy(cat => cat.ListingOrder)
-				.ThenBy(cat => cat.Title)
-				.ThenBy(cat => cat.Id)
+		var orderedCats = categories
+			.OrderBy(cat => cat.ListingOrder)
+			.ThenBy(cat => cat.Title)
+			.ThenBy(cat => cat.Id)
+			.ToArray();
+
+		var result = new List<SampleCategoryViewModel>(orderedCats.Length);
+		var etagSb = new StringBuilder();
+		etagSb.Append('"');
+
+		foreach (var category in orderedCats)
+		{
+			var samples = new List<Sample>();
+			var samplesQuery = table.QueryAsync<Sample>(filter: $"PartitionKey eq '{nameof(Sample)}' and Category eq '{category.Id}'");
+			await foreach (var s in samplesQuery)
+			{
+				samples.Add(s);
+			}
+
+			var orderedSamples = samples
+				.OrderBy(s => s.ListingOrder)
+				.ThenBy(s => s.Title)
+				.ThenBy(s => s.Id)
 				.ToArray();
 
-			var result = new List<SampleCategoryViewModel>(categories.Length);
-
-			var etagSb = new StringBuilder();
-
-			etagSb.Append('"');
-
-			foreach (var category in categories)
-			{
-				var samplesQuery = table
-					.CreateQuery<Sample>()
-					.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.Category.Equals(category.Id))
-					.AsTableQuery()
-					.SelectColumn(nameof(Sample.Category))
-					.SelectColumn(nameof(Sample.Title))
-					.SelectColumn(nameof(Sample.Description))
-					.SelectColumn(nameof(Sample.Keywords));
-
-				var samples = (await table.ExecuteQuery(samplesQuery, ct))
-					.OrderBy(cat => cat.ListingOrder)
-					.ThenBy(cat => cat.Title)
-					.ThenBy(cat => cat.Id)
-					.ToArray();
-
-				var categoryVm = new SampleCategoryViewModel(category, samples);
-				result.Add(categoryVm);
-				etagSb.Append(categoryVm.SamplesHash.ToString("X"));
-			}
-
-			etagSb.Append('"');
-
-			var etag = etagSb.ToString();
-
-			if (req.Headers.IfMatch.Any(im => im.Tag.Equals(etag, StringComparison.OrdinalIgnoreCase)))
-			{
-				return req.CreateResponse(HttpStatusCode.NotModified);
-			}
-
-			var response = req.CreateResponse(HttpStatusCode.OK, result.ToArray());
-			response.Headers.CacheControl =
-				new CacheControlHeaderValue
-				{
-					NoCache = false,
-					Private = false,
-					MaxAge = TimeSpan.FromHours(0.5),
-					MustRevalidate = false,
-					NoStore = false,
-					NoTransform = true,
-					MaxStale = true
-				};
-			response.Headers.ETag = new EntityTagHeaderValue(etag, false);
-
-			return response;
+			var categoryVm = new SampleCategoryViewModel(category, orderedSamples);
+			result.Add(categoryVm);
+			etagSb.Append(categoryVm.SamplesHash.ToString("X"));
 		}
+
+		etagSb.Append('"');
+		var etag = etagSb.ToString();
+
+		var response = req.CreateResponse();
+		response.Headers.Add("Cache-Control", "public, max-age=1800");
+		response.Headers.Add("ETag", etag);
+		response.StatusCode = System.Net.HttpStatusCode.OK;
+		await response.WriteAsJsonAsync(result.ToArray());
+		return response;
 	}
 }
