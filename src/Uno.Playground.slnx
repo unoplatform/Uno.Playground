@@ -1,0 +1,6 @@
+﻿<Solution>
+  <Project Path="Uno.Playground.Api\Uno.Playground.Api.csproj" />
+  <Project Path="Uno.Playground.AspireHost\Uno.Playground.AspireHost.csproj" />
+  <Project Path="Uno.Playground.Shared\Uno.Playground.Shared.shproj" />
+  <Project Path="Uno.Playground.WASM\Uno.Playground.WASM.csproj" />
+</Solution>

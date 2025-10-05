@@ -8,6 +8,10 @@
 		<WarningsAsErrors>true</WarningsAsErrors>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(AspireMode)'=='true'">
+		<DefineConstants>RUNNING_ASPIRE;$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
+
 	<ItemGroup>
 		<PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.1.0" />

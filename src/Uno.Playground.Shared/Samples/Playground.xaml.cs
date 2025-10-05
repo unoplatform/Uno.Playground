@@ -40,15 +40,18 @@ using Monaco;
 using System.Drawing.Text;
 #endif
 
+using Uno.Playground;
+
 namespace Uno.UI.Demo.Samples
 {
 	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame. 
+	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
 	public sealed partial class Playground : Page
 	{
-		private const string BaseApiUrl = "https://uno-ui-api.azurewebsites.net/api/samples";
-		private const string PlaygroundUrl = "http://playground.platform.uno/";
+		// API and external URLs are centralized in PlaygroundConstants so they can be reused across the app.
+		private static string BaseApiUrl => ApiUrlProvider.GetBaseApiUrl();
+		private static readonly string PlaygroundUrl = PlaygroundConstants.PlaygroundUrl;
 		private const int CodeUpdateThrottleDelayMs = 550;
 		private const int HintDisplayTime = 5000;
 
@@ -629,7 +632,7 @@ namespace Uno.UI.Demo.Samples
 				else
 				{
 					windowRoot.RequestedTheme = ElementTheme.Light;
-					xamlText.RequestedTheme = ElementTheme.Light;					
+					xamlText.RequestedTheme = ElementTheme.Light;
 				}
 			}
 		}

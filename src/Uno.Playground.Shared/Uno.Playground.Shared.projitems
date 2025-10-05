@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Analytics.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics.others.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Analytics.wasm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ApiUrlProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -28,6 +29,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\IntToMod4DefaultValueConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\SampleGroupTypeToColorBrushConverter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlaygroundConstants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sample.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SampleForDisplay.cs" />
