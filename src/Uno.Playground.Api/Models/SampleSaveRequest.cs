@@ -8,7 +8,7 @@ public class SampleSaveRequest
 
 	public string? Title { get; set; }
 
-	public required string Xaml { get; set; }
+	public required string? Xaml { get; set; }
 
 	public string? Data { get; set; }
 

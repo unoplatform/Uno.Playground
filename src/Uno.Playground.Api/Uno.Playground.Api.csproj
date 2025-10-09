@@ -8,16 +8,16 @@
 		<WarningsAsErrors>true</WarningsAsErrors>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(AspireMode)'=='true'">
-		<DefineConstants>RUNNING_ASPIRE;$(DefineConstants)</DefineConstants>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<PackageReference Include="Azure.Data.Tables" Version="12.11.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.1.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.3.0" />
 		<PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.0.5" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Extensions.Azure" Version="1.13.0" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.0.0" />
+		<PackageReference Include="Aspire.Azure.Data.Tables" Version="9.5.1" />
+		<PackageReference Include="Scalar.AspNetCore" Version="2.8.10" />
+		<PackageReference Include="Scalar.AspNetCore.Microsoft" Version="2.8.10" />
 	</ItemGroup>
 
 	<ItemGroup>

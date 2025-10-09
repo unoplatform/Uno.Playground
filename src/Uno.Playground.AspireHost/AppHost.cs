@@ -1,22 +1,29 @@
+using Scalar.Aspire;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
-var azurite = builder
-	.AddContainer("azurite", "mcr.microsoft.com/azure-storage/azurite")
-	.WithHttpEndpoint(port: 10000, name: "blobstorage", targetPort: 10000);
+var storage = builder.AddAzureStorage("storage").RunAsEmulator();
 
-// API Project
-// Expose the API on a fixed host port so the playground can reliably call it.
-const int apiHostPort = 54050;
+var apistorage = storage.AddTables("apistorage");
 
-var api = builder.AddProject<Projects.Uno_Playground_Api>("api")
-	.WithReference(azurite.GetEndpoint("blobstorage"))
-	.WithHttpEndpoint(port: apiHostPort, name: "api")
-	.WaitFor(azurite);
+var api = builder.AddAzureFunctionsProject<Projects.Uno_Playground_Api>("api")
+	.WithReference(apistorage)
+	.WaitFor(apistorage)
+	.WithExternalHttpEndpoints();
 
 // Web Project (Playground)
 var playground = builder.AddProject<Projects.Uno_Playground_WASM>("playground")
-	.WithReference(api.GetEndpoint("api"))
-	.WithExternalHttpEndpoints()
+	.WithReference(api)
+	.WaitFor(api)
+	.WithExternalHttpEndpoints();
+
+// Sample Pump Worker
+builder.AddProject<Projects.Uno_Playground_SamplePump>("samplepump")
+	.WithReference(api)
 	.WaitFor(api);
+
+
+var scalar = builder.AddScalarApiReference();
+scalar.WithApiReference(api);
 
 builder.Build().Run();

@@ -6,25 +6,53 @@ namespace Uno.Playground.Api.Models;
 
 public class SampleCategoryViewModel
 {
-	private readonly SampleCategory _category;
+	private readonly SampleCategory? _category;
+	private string _categoryId = string.Empty;
+	private string _title = string.Empty;
+	private string? _defaultIconPath;
+	private string? _defaultIconAccentPath;
+
+	public SampleCategoryViewModel()
+	{
+	}
 
 	public SampleCategoryViewModel(SampleCategory category, IEnumerable<Sample> samples)
 	{
 		_category = category;
+		_categoryId = category.Id;
+		_title = category.Title;
+		_defaultIconPath = category.PathData;
+		_defaultIconAccentPath = category.AccentPathData;
 		Samples = samples
 			.Where(s => string.Equals(s.Category, category.Id))
 			.Select(s => new SampleViewModel(s)).ToArray();
 	}
 
-	public string CategoryId => _category.Id;
+	public string CategoryId
+	{
+		get => _category?.Id ?? _categoryId;
+		set => _categoryId = value;
+	}
 
-	public string Title => _category.Title;
+	public string Title
+	{
+		get => _category?.Title ?? _title;
+		set => _title = value;
+	}
 
-	public string? DefaultIconPath => _category.PathData;
+	public string? DefaultIconPath
+	{
+		get => _category?.PathData ?? _defaultIconPath;
+		set => _defaultIconPath = value;
+	}
 
-	public string? DefaultIconAccentPath => _category.AccentPathData;
+	public string? DefaultIconAccentPath
+	{
+		get => _category?.AccentPathData ?? _defaultIconAccentPath;
+		set => _defaultIconAccentPath = value;
+	}
 
-	public SampleViewModel[] Samples { get; }
+	public SampleViewModel[] Samples { get; set; } = [];
 
 	[IgnoreDataMember]
 	public int SamplesHash
