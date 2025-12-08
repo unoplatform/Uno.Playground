@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Azure.Functions.Worker;
@@ -9,7 +10,6 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Azure;
 using Azure.Data.Tables;
-using Newtonsoft.Json;
 using Uno.UI.Demo.Api.Models;
 
 namespace Uno.UI.Demo.Api
@@ -17,6 +17,7 @@ namespace Uno.UI.Demo.Api
 	public class SampleSave
 	{
 		private readonly ILogger<SampleSave> _logger;
+		private static readonly JsonSerializerOptions SerializerOptions = new(JsonSerializerDefaults.Web);
 
 		public SampleSave(ILogger<SampleSave> logger)
 		{
@@ -44,7 +45,7 @@ namespace Uno.UI.Demo.Api
 			}
 
 			string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-			SampleSaveRequest? saveRequestCandidate = JsonConvert.DeserializeObject<SampleSaveRequest>(requestBody);
+			SampleSaveRequest? saveRequestCandidate = JsonSerializer.Deserialize<SampleSaveRequest>(requestBody, SerializerOptions);
 
 			if (saveRequestCandidate is null)
 			{
