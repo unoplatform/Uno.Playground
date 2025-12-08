@@ -24,6 +24,6 @@ namespace Uno.UI.Demo.Api.Models
 		public string IconAccentPath => _sample.AccentPathData;
 
 		[IgnoreDataMember]
-		public string Etag => _sample.ETag;
+		public string Etag => _sample.ETag.ToString();
 	}
 }

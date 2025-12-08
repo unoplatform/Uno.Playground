@@ -1,41 +1,56 @@
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
-using Uno.UI.Demo.Api.Helpers;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.Tables;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using Azure.Data.Tables;
 using Uno.UI.Demo.Api.Models;
 
 namespace Uno.UI.Demo.Api
 {
-	public static class SampleGet
+	public class SampleGet
 	{
-		[FunctionName("SampleGet")]
-		public static async Task<HttpResponseMessage> Run(
+		private readonly ILogger<SampleGet> _logger;
+
+		public SampleGet(ILogger<SampleGet> logger)
+		{
+			_logger = logger;
+		}
+
+		[Function("SampleGet")]
+		public async Task<HttpResponseData> Run(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id}")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
-			TraceWriter log,
+			HttpRequestData req,
+			[TableInput(Constants.SamplesTableName)] TableClient table,
 			string id,
 			CancellationToken ct)
 		{
-			var sampleQuery = table
-				.CreateQuery<Sample>()
-				.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id))
-				.AsTableQuery();
+			ArgumentNullException.ThrowIfNull(req);
+			ArgumentNullException.ThrowIfNull(table);
+			ArgumentException.ThrowIfNullOrEmpty(id);
 
-			var queryResult = await table.ExecuteQuery(sampleQuery, ct);
+			var sampleQuery = table.QueryAsync<Sample>(s => s.PartitionKey == nameof(Sample) && s.RowKey == id, cancellationToken: ct);
 
-			var sample = queryResult.Select(s => new SampleDetailViewModel(s)).FirstOrDefault();
+			Sample? sample = null;
+			await foreach (var s in sampleQuery)
+			{
+				sample = s;
+				break;
+			}
 
-			return sample == null
-				? req.CreateErrorResponse(HttpStatusCode.NotFound, "Sample not found")
-				: req.CreateResponse(HttpStatusCode.OK, sample);
+			if (sample == null)
+			{
+				var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+				await notFoundResponse.WriteStringAsync("Sample not found");
+				return notFoundResponse;
+			}
+
+			var response = req.CreateResponse(HttpStatusCode.OK);
+			await response.WriteAsJsonAsync(new SampleDetailViewModel(sample));
+			return response;
 		}
 	}
 }

@@ -2,39 +2,53 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
-using Uno.UI.Demo.Api.Helpers;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.Tables;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using Azure.Data.Tables;
 using Uno.UI.Demo.Api.Models;
 
 namespace Uno.UI.Demo.Api
 {
-	public static class SamplesGet
+	public class SamplesGet
 	{
-		[FunctionName("SamplesGet")]
-		public static async Task<HttpResponseMessage> Run(
+		private readonly ILogger<SamplesGet> _logger;
+
+		public SamplesGet(ILogger<SamplesGet> logger)
+		{
+			_logger = logger;
+		}
+
+		[Function("SamplesGet")]
+		public async Task<HttpResponseData> Run(
 			[HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
-			TraceWriter log,
+			HttpRequestData req,
+			[TableInput(Constants.SamplesTableName)] TableClient table,
 			CancellationToken ct)
 		{
 
-			var categoriesQuery = table
-				.CreateQuery<SampleCategory>()
-				.Where(cat => cat.PartitionKey.Equals(nameof(SampleCategory)) && !cat.RowKey.Equals(Constants.DefaultCategoryIdForSaving))
-				.AsTableQuery()
-				.SelectColumn(nameof(SampleCategory.Title));
+			ArgumentNullException.ThrowIfNull(req);
+			ArgumentNullException.ThrowIfNull(table);
 
-			var categories = (await table.ExecuteQuery(categoriesQuery, ct))
+			await table.CreateIfNotExistsAsync(ct);
+
+			var categoriesQuery = table.QueryAsync<SampleCategory>(
+				filter: cat => cat.PartitionKey == nameof(SampleCategory) && cat.RowKey != Constants.DefaultCategoryIdForSaving,
+				select: new[] { nameof(SampleCategory.Title), nameof(SampleCategory.RowKey), nameof(SampleCategory.PartitionKey), nameof(SampleCategory.ListingOrder) },
+				cancellationToken: ct
+			);
+
+			var categoriesList = new List<SampleCategory>();
+			await foreach (var cat in categoriesQuery)
+			{
+				categoriesList.Add(cat);
+			}
+
+			var categories = categoriesList
 				.OrderBy(cat => cat.ListingOrder)
 				.ThenBy(cat => cat.Title)
 				.ThenBy(cat => cat.Id)
@@ -48,16 +62,19 @@ namespace Uno.UI.Demo.Api
 
 			foreach (var category in categories)
 			{
-				var samplesQuery = table
-					.CreateQuery<Sample>()
-					.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.Category.Equals(category.Id))
-					.AsTableQuery()
-					.SelectColumn(nameof(Sample.Category))
-					.SelectColumn(nameof(Sample.Title))
-					.SelectColumn(nameof(Sample.Description))
-					.SelectColumn(nameof(Sample.Keywords));
+				var samplesQuery = table.QueryAsync<Sample>(
+					filter: smpl => smpl.PartitionKey == nameof(Sample) && smpl.Category == category.Id,
+					select: new[] { nameof(Sample.Category), nameof(Sample.Title), nameof(Sample.Description), nameof(Sample.Keywords), nameof(Sample.RowKey), nameof(Sample.PartitionKey), nameof(Sample.ListingOrder) },
+					cancellationToken: ct
+				);
 
-				var samples = (await table.ExecuteQuery(samplesQuery, ct))
+				var samplesList = new List<Sample>();
+				await foreach (var s in samplesQuery)
+				{
+					samplesList.Add(s);
+				}
+
+				var samples = samplesList
 					.OrderBy(cat => cat.ListingOrder)
 					.ThenBy(cat => cat.Title)
 					.ThenBy(cat => cat.Id)
@@ -72,24 +89,16 @@ namespace Uno.UI.Demo.Api
 
 			var etag = etagSb.ToString();
 
-			if (req.Headers.IfMatch.Any(im => im.Tag.Equals(etag, StringComparison.OrdinalIgnoreCase)))
+			if (req.Headers.TryGetValues("If-Match", out var ifMatch) && ifMatch.Any(im => im.Equals(etag, StringComparison.OrdinalIgnoreCase)))
 			{
 				return req.CreateResponse(HttpStatusCode.NotModified);
 			}
 
-			var response = req.CreateResponse(HttpStatusCode.OK, result.ToArray());
-			response.Headers.CacheControl =
-				new CacheControlHeaderValue
-				{
-					NoCache = false,
-					Private = false,
-					MaxAge = TimeSpan.FromHours(0.5),
-					MustRevalidate = false,
-					NoStore = false,
-					NoTransform = true,
-					MaxStale = true
-				};
-			response.Headers.ETag = new EntityTagHeaderValue(etag, false);
+			var response = req.CreateResponse(HttpStatusCode.OK);
+			await response.WriteAsJsonAsync(result.ToArray());
+			
+			response.Headers.Add("Cache-Control", "public, max-age=1800, max-stale"); // Simplified Cache-Control
+			response.Headers.Add("ETag", etag);
 
 			return response;
 		}

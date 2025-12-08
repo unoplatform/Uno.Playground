@@ -1,129 +1,159 @@
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.WindowsAzure.Storage.Table;
-using Microsoft.WindowsAzure.Storage.Table.Queryable;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.Tables;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Logging;
+using Azure;
+using Azure.Data.Tables;
 using Newtonsoft.Json;
-using Uno.UI.Demo.Api.Helpers;
 using Uno.UI.Demo.Api.Models;
-using Uno.UI.Demo.AspnetShell.Helpers;
 
 namespace Uno.UI.Demo.Api
 {
-	public static class SampleSave
+	public class SampleSave
 	{
-		[FunctionName("SampleSave")]
-		public static async Task<HttpResponseMessage> Run(
+		private readonly ILogger<SampleSave> _logger;
+
+		public SampleSave(ILogger<SampleSave> logger)
+		{
+			_logger = logger;
+		}
+
+		[Function("SampleSave")]
+		public async Task<HttpResponseData> Run(
 			[HttpTrigger(AuthorizationLevel.Admin, "put", Route = "samples/{id}")]
-			HttpRequestMessage req,
-			[Table(Constants.SamplesTableName)] CloudTable table,
+			HttpRequestData req,
+			[TableInput(Constants.SamplesTableName)] TableClient table,
 			string id,
-			TraceWriter log,
 			CancellationToken ct)
 		{
-			var clientIp = req.GetClientIp();
+			ArgumentNullException.ThrowIfNull(req);
+			ArgumentNullException.ThrowIfNull(table);
+			ArgumentException.ThrowIfNullOrEmpty(id);
 
-			var saveRequest =
-				JsonConvert.DeserializeObject<SampleSaveRequest>(await req.Content.ReadAsStringAsync());
-
-
-			var existingQuery = table
-				.CreateQuery<Sample>()
-				.Where(smpl => smpl.PartitionKey.Equals(nameof(Sample)) && smpl.RowKey.Equals(id))
-				.AsTableQuery();
-
-			var existing = (await table.ExecuteQuery(existingQuery, ct)).FirstOrDefault();
-			var sample = existing ?? new Sample(id);
-
-			var exists = existing != null;
-
-			if (saveRequest == null)
+			// Note: In Isolated Worker, getting Client IP is different.
+			// It might be in headers like X-Forwarded-For.
+			string? clientIp = null;
+			if (req.Headers.TryGetValues("X-Forwarded-For", out var forwardedFor))
 			{
-				return req.CreateErrorResponse(HttpStatusCode.BadRequest, "Request payload required.");
+				clientIp = forwardedFor.FirstOrDefault()?.Split(',').FirstOrDefault()?.Trim();
 			}
+
+			string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+			SampleSaveRequest? saveRequestCandidate = JsonConvert.DeserializeObject<SampleSaveRequest>(requestBody);
+
+			if (saveRequestCandidate is null)
+			{
+				var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+				await badRequest.WriteStringAsync("Request payload required.");
+				return badRequest;
+			}
+
+			SampleSaveRequest saveRequest = saveRequestCandidate!;
+
+			var existing = await table.GetEntityIfExistsAsync<Sample>(nameof(Sample), id, cancellationToken: ct);
+			Sample sample = existing.HasValue && existing.Value is Sample s ? s : new Sample(id);
+			var exists = existing.HasValue;
 
 			if (!exists && (saveRequest.Xaml == null || saveRequest.Xaml.Length < 5))
 			{
-				return req.CreateErrorResponse(HttpStatusCode.BadRequest, "Xaml required.");
+				var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+				await badRequest.WriteStringAsync("Xaml required.");
+				return badRequest;
 			}
 
 			if (saveRequest.Xaml != null && saveRequest.Xaml.Length > 512 * 1024)
 			{
-				return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "Xaml too big.");
+				var tooLarge = req.CreateResponse(HttpStatusCode.RequestEntityTooLarge);
+				await tooLarge.WriteStringAsync("Xaml too big.");
+				return tooLarge;
 			}
 
 			if (saveRequest.Data != null && saveRequest.Data.Length > 16 * 1024)
 			{
-				return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "Data too big.");
+				var tooLarge = req.CreateResponse(HttpStatusCode.RequestEntityTooLarge);
+				await tooLarge.WriteStringAsync("Data too big.");
+				return tooLarge;
 			}
 
 			if (saveRequest.Title != null && saveRequest.Title.Length > 255)
 			{
-				return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "Title too big.");
+				var tooLarge = req.CreateResponse(HttpStatusCode.RequestEntityTooLarge);
+				await tooLarge.WriteStringAsync("Title too big.");
+				return tooLarge;
 			}
 
 			if (saveRequest.App != null && saveRequest.App.Length > 255)
 			{
-				return req.CreateErrorResponse(HttpStatusCode.RequestEntityTooLarge, "App name too big.");
+				var tooLarge = req.CreateResponse(HttpStatusCode.RequestEntityTooLarge);
+				await tooLarge.WriteStringAsync("App name too big.");
+				return tooLarge;
 			}
 
 
 			if (!string.IsNullOrWhiteSpace(saveRequest.Data))
 			{
-				sample.Data = saveRequest.Data;
+				sample.Data = saveRequest.Data!;
 			}
 
 			if (!string.IsNullOrWhiteSpace(saveRequest.Xaml))
 			{
-				sample.Xaml = saveRequest.Xaml;
+				sample.Xaml = saveRequest.Xaml!;
 			}
 
-			if (string.IsNullOrWhiteSpace(sample.Category) || !string.IsNullOrWhiteSpace(saveRequest.Category))
+			var category = saveRequest.Category;
+			if (string.IsNullOrWhiteSpace(sample.Category) || !string.IsNullOrWhiteSpace(category))
 			{
-				sample.Category = saveRequest.Category ?? Constants.DefaultCategoryIdForSaving;
+				sample.Category = string.IsNullOrWhiteSpace(category)
+					? Constants.DefaultCategoryIdForSaving
+					: category;
 			}
 			if (!string.IsNullOrWhiteSpace(saveRequest.Title))
 			{
-				sample.Title = saveRequest.Title;
+				sample.Title = saveRequest.Title!;
 			}
 			if (string.IsNullOrWhiteSpace(sample.IpAddress))
 			{
-				sample.IpAddress = clientIp;
+				sample.IpAddress = clientIp ?? string.Empty;
 			}
 			if (string.IsNullOrWhiteSpace(sample.UserAgent))
 			{
-				sample.UserAgent = req.Headers.UserAgent.ToString();
+				string? userAgent = null;
+				if (req.Headers.TryGetValues("User-Agent", out var ua))
+				{
+					userAgent = ua.FirstOrDefault();
+				}
+				sample.UserAgent = userAgent ?? string.Empty;
 			}
 			if (!string.IsNullOrWhiteSpace(saveRequest.App))
 			{
-				sample.App = saveRequest.App;
+				sample.App = saveRequest.App ?? string.Empty;
 			}
 			if (!string.IsNullOrWhiteSpace(saveRequest.PathData))
 			{
-				sample.PathData = saveRequest.PathData;
+				sample.PathData = saveRequest.PathData ?? string.Empty;
 			}
 			if (!string.IsNullOrWhiteSpace(saveRequest.AccentPathData))
 			{
-				sample.AccentPathData = saveRequest.AccentPathData;
+				sample.AccentPathData = saveRequest.AccentPathData ?? string.Empty;
 			}
 
-			var operation = new TableBatchOperation();
-			if (existing == null)
+			if (!exists)
 			{
-				operation.Insert(sample);
+				await table.AddEntityAsync(sample, cancellationToken: ct);
 			}
 			else
 			{
-				operation.Merge(sample);
+				await table.UpdateEntityAsync(sample, ETag.All, TableUpdateMode.Merge, cancellationToken: ct);
 			}
-			await table.ExecuteBatchAsync(operation, null, null, ct);
 
-			return req.CreateResponse(HttpStatusCode.OK, id);
+			var response = req.CreateResponse(HttpStatusCode.OK);
+			await response.WriteAsJsonAsync(id);
+			return response;
 		}
 	}
 }
