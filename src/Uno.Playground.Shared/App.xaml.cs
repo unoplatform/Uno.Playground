@@ -1,25 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.Extensions.Logging;
-using Uno.Extensions;
-using Uno.Logging;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI;
-using Windows.UI.Core;
-using Windows.UI.ViewManagement;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+
+using System;
+using System.Linq;
+
+using Uno.Extensions;
+using Uno.Logging;
+
+using Windows.ApplicationModel;
+using Windows.ApplicationModel.Activation;
+using Windows.UI.Core;
 
 namespace Uno.UI.Demo
 {
@@ -47,7 +39,7 @@ namespace Uno.UI.Demo
 		/// <summary>
 		/// Configures global Uno Platform logging
 		/// </summary>
-		private static void InitializeLogging()
+		public static void InitializeLogging()
 		{
 			System.Threading.Tasks.TaskScheduler.UnobservedTaskException
 				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.Exception);

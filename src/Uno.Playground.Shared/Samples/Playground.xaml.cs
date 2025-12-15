@@ -14,12 +14,17 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using Windows.ApplicationModel.DataTransfer;
+
 using Newtonsoft.Json;
+
 using Uno.Extensions;
+
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.ViewManagement;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
@@ -27,17 +32,17 @@ using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Markup;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+
 using Newtonsoft.Json.Linq;
+
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Toolkit;
-using System.Threading;
 
 #if __WASM__
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
-using System.Drawing.Text;
 #endif
 
 namespace Uno.UI.Demo.Samples
@@ -74,14 +79,15 @@ namespace Uno.UI.Demo.Samples
 
 			xamlText.SizeChanged += (snd, evt) =>
 			{
-				xamlText.ExecuteJavascript("if(typeof editor !== 'undefined') editor.layout();");
+				_ = xamlText.InvokeScriptAsync("if(typeof editor !== 'undefined') editor.layout();");
 			};
 #else
 			xamlText.TextChanged += OnTextChanged;
 #endif
 
 #if __WASM__
-			splitter.SetCssClass("resizeHandle");
+			//splitter.SetCssClass("resizeHandle");
+
 
 			// Eagerly create material theme
 			_ = new Uno.Material.MaterialTheme();
@@ -296,7 +302,7 @@ namespace Uno.UI.Demo.Samples
 			jsonDataContext.Text = data;
 		}
 
-		private async void OnEditorLoading(object sender, RoutedEventArgs e)
+		private async void OnEditorLoading(FrameworkElement sender, object e)
 		{
 #if MONACO
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
@@ -629,7 +635,7 @@ namespace Uno.UI.Demo.Samples
 				else
 				{
 					windowRoot.RequestedTheme = ElementTheme.Light;
-					xamlText.RequestedTheme = ElementTheme.Light;					
+					xamlText.RequestedTheme = ElementTheme.Light;
 				}
 			}
 		}
@@ -829,51 +835,49 @@ namespace Uno.UI.Demo.Samples
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
 
-		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		public async Task<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
 		{
-			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
-			{
-				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
-				if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
+
+			if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
 							new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
 							new CompletionItem("booboo", "booboo", CompletionItemKind.File),
 						}
-					};
-				}
-				else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+				};
+			}
+			else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
 							new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
 						{
 							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
 						},
 						}
-					};
-				}
-
-				return new CompletionList()
-				{
-					Suggestions = new CompletionItem[0]
 				};
-			});
+			}
+
+			return new CompletionList()
+			{
+				Suggestions = new CompletionItem[0]
+			};
 		}
 
-		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
+		public async Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
 		{
-			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
-			{
-				return Task.FromResult(item); // throw new NotImplementedException();
-			});
+
+			throw new NotImplementedException();
+
 		}
+
 	}
 #endif
 }

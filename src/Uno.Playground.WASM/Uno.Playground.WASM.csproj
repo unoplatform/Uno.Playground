@@ -5,7 +5,8 @@
 		<TargetFramework>net10.0-browserwasm</TargetFramework>
 		<AssemblyName>Uno.Playground.WASM</AssemblyName>
 		<RootNamespace>Uno.Playground.WASM</RootNamespace>
-		<WasmHead>true</WasmHead>
+		<!--<WasmHead>true</WasmHead>-->
+		<UnoSingleProject>true</UnoSingleProject>
 		<DefineConstants>__WASM__</DefineConstants>
 		<NoWarn>NU1701;Uno0001</NoWarn>
 
@@ -16,6 +17,16 @@
 		<!--<WasmShellDisableSDKCheckSumValidation>true</WasmShellDisableSDKCheckSumValidation>-->
 		<WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
 		<!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
+
+
+		<!--
+      UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
+      https://aka.platform.uno/singleproject-features
+    -->
+		<UnoFeatures>
+			SkiaRenderer;
+		</UnoFeatures>
+
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -86,40 +97,44 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.5.2">
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.9.3">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.3" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.Windows.Compatibility" Version="10.0.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 		<PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.8.0-dev.1" />
-		<PackageReference Include="Uno.Monaco.Editor" Version="2.0.0-dev.60" />
+		<PackageReference Include="Uno.Monaco.Editor" Version="6.4.0-dev.41.gfc42320b13" />
 
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.1.200" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.1.200" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.200" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.1.204" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.1.204" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.204" />
 
-		<PackageReference Include="Uno.Toolkit.WinUI" Version="6.4.1" />
-		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="6.4.1" />
+		<!--<PackageReference Include="Uno.Toolkit.WinUI" Version="6.4.1" /> -->
+		<PackageReference Include="Uno.Toolkit.WinUI.Material" Version="8.3.2" />
 
-		<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.6.30" />
-		<PackageReference Include="Uno.WinUI.Lottie" Version="5.6.30" />
+		<!--<PackageReference Include="Uno.WinUI.WebAssembly" Version="5.6.30" />
+		<PackageReference Include="Uno.WinUI.Lottie" Version="5.6.30" />-->
 		<PackageReference Include="Uno.Core.Extensions" Version="4.1.1" />
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" Version="4.1.1" />
 		<PackageReference Include="Uno.Core" Version="4.1.1" />
-		<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.6.30" Condition="'$(Configuration)'=='Debug'" />
-		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="5.6.30" />
-		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="5.6.30" />
-		<PackageReference Include="Uno.Wasm.Bootstrap" Version="9.0.10" />
-		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+		<!--<PackageReference Include="Uno.WinUI.RemoteControl" Version="5.6.30" Condition="'$(Configuration)'=='Debug'" />-->
+		<PackageReference Include="Uno.WinUI.MediaPlayer.WebAssembly" Version="6.4.195" />
+		<PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="6.4.195" />
+		<!--<PackageReference Include="Uno.Wasm.Bootstrap" Version="9.0.10" />
+		<PackageReference Include="Uno.Wasm.Bootstrap.DevServer" Version="9.0.10" />-->
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.2" />
 		
-		<PackageReference Include="Uno.Fonts.OpenSans" Version="2.6.1" />
+		<PackageReference Include="Uno.Fonts.OpenSans" Version="2.8.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UnoSplashScreen Include="Assets\splashscreen.png" />
 	</ItemGroup>
 
 	<Import Project="..\Uno.Playground.Shared\Uno.Playground.Shared.projitems" Label="Shared" />
