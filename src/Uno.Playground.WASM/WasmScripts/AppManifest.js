@@ -1,6 +1,6 @@
 ﻿var UnoAppManifest = {
 
-    splashScreenImage: "Assets/SplashScreen.scale-200.png",
+    displayName: "Uno Playground WASM",
     splashScreenColor: "#fff"
 
 }

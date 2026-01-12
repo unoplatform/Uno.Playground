@@ -1,0 +1,10 @@
+{
+  "background_color": "#ffffff",
+  "description": "Uno.Playground.WASM",
+  "display": "standalone",
+  "name": "Uno.Playground.WASM",
+  "short_name": "Uno.Playground.WASM",
+  "start_url": "/index.html",
+  "theme_color": "#ffffff",
+  "scope": "/"
+}

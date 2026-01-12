@@ -1,27 +1,31 @@
 {
   "iisSettings": {
-    "windowsAuthentication": false,
-    "anonymousAuthentication": true,
-    "iisExpress": {
-      "applicationUrl": "http://localhost:51256/",
-      "sslPort": 0
-    }
+	"windowsAuthentication": false,
+	"anonymousAuthentication": true,
+	"iisExpress": {
+	  "applicationUrl": "http://localhost:8080",
+	  "sslPort": 0
+	}
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
-    "Uno.Playground.WASM": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:51258/"
-    }
+	// This profile is first in order for dotnet run to pick it up by default
+	"MonacoEditorTestApp (WebAssembly)": {
+	  "commandName": "Project",
+	  "dotnetRunMessages": true,
+	  "launchBrowser": true,
+	  "applicationUrl": "http://localhost:5000",
+	  "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+	  "environmentVariables": {
+		"ASPNETCORE_ENVIRONMENT": "Development"
+	  }
+	},
+	"MonacoEditorTestApp (WebAssembly IIS Express)": {
+	  "commandName": "IISExpress",
+	  "launchBrowser": true,
+	  "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
+	  "environmentVariables": {
+		"ASPNETCORE_ENVIRONMENT": "Development"
+	  }
+	}
   }
 }
