@@ -292,7 +292,7 @@ namespace Uno.UI.Demo.Samples
 			jsonDataContext.Text = data;
 		}
 
-		private async void OnEditorLoading(object sender, RoutedEventArgs e)
+		private async void OnEditorLoading(FrameworkElement sender, object args)
 		{
 #if MONACO
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
@@ -825,51 +825,43 @@ namespace Uno.UI.Demo.Samples
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
 
-		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		public async Task<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
 		{
-			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
-			{
-				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
+			var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
-				if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
-							new CompletionItem("booboo", "booboo", CompletionItemKind.File),
-						}
-					};
-				}
-				else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+						new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
+						new CompletionItem("booboo", "booboo", CompletionItemKind.File),
+					}
+				};
+			}
+			else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
+						new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
 						{
 							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
 						},
-						}
-					};
-				}
-
-				return new CompletionList()
-				{
-					Suggestions = new CompletionItem[0]
+					}
 				};
-			});
+			}
+
+			return new CompletionList()
+			{
+				Suggestions = new CompletionItem[0]
+			};
 		}
 
-		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
-		{
-			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
-			{
-				return Task.FromResult(item); // throw new NotImplementedException();
-			});
-		}
+		public Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
+			=> Task.FromResult(item);
 	}
 #endif
 }
