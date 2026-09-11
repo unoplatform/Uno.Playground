@@ -290,18 +290,16 @@
 
 				</Grid>
 
-				<wasm:Border Grid.Row="1">
+				<!-- Uno.Monaco.Editor 6.x hosts the editor through BrowserHtmlElement, which requires
+				     the Skia renderer. The wasm:/not_wasm: split selected the CodeBox fallback under
+				     Skia; this project only targets net10.0-browserwasm, so the editor is unconditional. -->
+				<Border Grid.Row="1">
 					<monaco:CodeEditor x:Name="xamlText"
 									   Background="Transparent"
 									   RequestedTheme="Light"
 									   HasGlyphMargin="True"
 									   CodeLanguage="csharp" />
-				</wasm:Border>
-
-				<not_wasm:Border Grid.Row="1">
-					<local:CodeBox x:Name="xamlText"
-								   Background="Transparent" />
-				</not_wasm:Border>
+				</Border>
 			</Grid>
 
 			<Grid Name="dataContextPane"

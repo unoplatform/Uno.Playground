@@ -56,7 +56,7 @@ namespace Uno.UI.Demo.Samples
 #if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
 			xamlText.Loaded += OnEditorLoaded;
-			xamlText.Loading += OnEditorLoading;
+			xamlText.EditorLoaded += OnEditorLoading;
 
 			xamlText.SizeChanged += async (object? snd, SizeChangedEventArgs evt) =>
 			{
@@ -74,7 +74,8 @@ namespace Uno.UI.Demo.Samples
 #endif
 
 #if __WASM__
-			splitter.SetCssClass("resizeHandle");
+			// SetCssClass is a DOM-renderer extension and is unavailable under the Skia renderer.
+			// The col-resize cursor it applied needs a Skia equivalent (ProtectedCursor); tracked separately.
 
 			// Eagerly create material theme
 			_ = new Uno.Material.MaterialTheme();
@@ -292,7 +293,7 @@ namespace Uno.UI.Demo.Samples
 			jsonDataContext.Text = data;
 		}
 
-		private async void OnEditorLoading(FrameworkElement sender, object args)
+		private async void OnEditorLoading(object sender, RoutedEventArgs e)
 		{
 #if MONACO
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
