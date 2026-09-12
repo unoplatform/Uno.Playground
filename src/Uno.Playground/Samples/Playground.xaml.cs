@@ -55,8 +55,21 @@ namespace Uno.UI.Demo.Samples
 
 #if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
+
+			// Monaco 6.x pushes JS-originated edits back into Text but suppresses the
+			// INotifyPropertyChanged notification to avoid re-entrancy, so typing in the editor
+			// never reaches OnPropertyChanged. TextProperty is a dependency property, and DP
+			// callbacks are not affected by that suppression.
+			xamlText.RegisterPropertyChangedCallback(
+				global::Monaco.CodeEditor.TextProperty,
+				(snd, dp) => OnTextChanged(snd, null!));
 			xamlText.Loaded += OnEditorLoaded;
 			xamlText.EditorLoaded += OnEditorLoading;
+
+			// The Monaco backend fails silently otherwise: a failed presenter leaves an empty pane
+			// with nothing in the browser console. Surface it.
+			xamlText.InternalException += (snd, exception) =>
+				this.Log().Error("Monaco editor backend failed.", exception);
 
 			xamlText.SizeChanged += async (object? snd, SizeChangedEventArgs evt) =>
 			{
