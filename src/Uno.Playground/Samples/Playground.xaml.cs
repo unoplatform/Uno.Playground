@@ -55,8 +55,21 @@ namespace Uno.UI.Demo.Samples
 
 #if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
+
+			// Monaco 6.x pushes JS-originated edits back into Text but suppresses the
+			// INotifyPropertyChanged notification to avoid re-entrancy, so typing in the editor
+			// never reaches OnPropertyChanged. TextProperty is a dependency property, and DP
+			// callbacks are not affected by that suppression.
+			xamlText.RegisterPropertyChangedCallback(
+				global::Monaco.CodeEditor.TextProperty,
+				(snd, dp) => OnTextChanged(snd, null!));
 			xamlText.Loaded += OnEditorLoaded;
-			xamlText.Loading += OnEditorLoading;
+			xamlText.EditorLoaded += OnEditorLoading;
+
+			// The Monaco backend fails silently otherwise: a failed presenter leaves an empty pane
+			// with nothing in the browser console. Surface it.
+			xamlText.InternalException += (snd, exception) =>
+				this.Log().Error("Monaco editor backend failed.", exception);
 
 			xamlText.SizeChanged += async (object? snd, SizeChangedEventArgs evt) =>
 			{
@@ -74,7 +87,8 @@ namespace Uno.UI.Demo.Samples
 #endif
 
 #if __WASM__
-			splitter.SetCssClass("resizeHandle");
+			// SetCssClass is a DOM-renderer extension and is unavailable under the Skia renderer.
+			// The col-resize cursor it applied needs a Skia equivalent (ProtectedCursor); tracked separately.
 
 			// Eagerly create material theme
 			_ = new Uno.Material.MaterialTheme();
@@ -825,51 +839,43 @@ namespace Uno.UI.Demo.Samples
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
 
-		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		public async Task<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
 		{
-			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
-			{
-				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
+			var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
-				if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
-							new CompletionItem("booboo", "booboo", CompletionItemKind.File),
-						}
-					};
-				}
-				else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+						new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
+						new CompletionItem("booboo", "booboo", CompletionItemKind.File),
+					}
+				};
+			}
+			else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
+						new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
 						{
 							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
 						},
-						}
-					};
-				}
-
-				return new CompletionList()
-				{
-					Suggestions = new CompletionItem[0]
+					}
 				};
-			});
+			}
+
+			return new CompletionList()
+			{
+				Suggestions = new CompletionItem[0]
+			};
 		}
 
-		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
-		{
-			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
-			{
-				return Task.FromResult(item); // throw new NotImplementedException();
-			});
-		}
+		public Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
+			=> Task.FromResult(item);
 	}
 #endif
 }
