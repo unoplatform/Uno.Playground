@@ -1,19 +1,27 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Uno.UI.Hosting;
 
 namespace Uno.UI.Demo
 {
 	public class Program
 	{
-		private static App _app = null!;
-
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 #if ENABLE_EXCEPTIONS_LOGGING
 			MonoInternals.mono_trace_enable(1);
 			MonoInternals.mono_trace_set_options("E:all");
 #endif
 
-			Microsoft.UI.Xaml.Application.Start(_ => _app = new App());
+			// Uno 6 / Skia renderer bootstrap. The legacy Application.Start(...) entry point does not
+			// start the Skia host on WebAssembly: the runtime loads and then nothing renders.
+			// See https://platform.uno/docs/articles/migrating-to-uno-6.html
+			var host = UnoPlatformHostBuilder.Create()
+				.App(() => new App())
+				.UseWebAssembly()
+				.Build();
+
+			await host.RunAsync();
 		}
 	}
 

@@ -15,7 +15,7 @@
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 
 		<UnoFeatures>
-			NativeRenderer;
+			SkiaRenderer;
 			Material;
 			Toolkit;
 			Lottie;

@@ -290,18 +290,16 @@
 
 				</Grid>
 
-				<wasm:Border Grid.Row="1">
+				<!-- The project only targets net10.0-browserwasm, so the editor is unconditional: no
+				     XAML prefix selects "WebAssembly with the Skia renderer" on both Uno 6 (wasmskia:)
+				     and Uno 7 (wasm:, where wasmskia: is removed and would select nothing). -->
+				<Border Grid.Row="1">
 					<monaco:CodeEditor x:Name="xamlText"
 									   Background="Transparent"
 									   RequestedTheme="Light"
 									   HasGlyphMargin="True"
 									   CodeLanguage="csharp" />
-				</wasm:Border>
-
-				<not_wasm:Border Grid.Row="1">
-					<local:CodeBox x:Name="xamlText"
-								   Background="Transparent" />
-				</not_wasm:Border>
+				</Border>
 			</Grid>
 
 			<Grid Name="dataContextPane"
