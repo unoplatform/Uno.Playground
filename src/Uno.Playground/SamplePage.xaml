@@ -4,7 +4,6 @@
 	  xmlns:local="using:Uno.UI.Demo"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  xmlns:toolkit="using:Uno.UI.Toolkit"
 	  mc:Ignorable="d">
 
 	<Grid Background="{StaticResource Color01Brush}"		  
