@@ -7,11 +7,9 @@
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:wasm="http://uno.ui/wasm"
 	  xmlns:not_wasm="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	  xmlns:ios="http://uno.ui/ios"
-	  xmlns:android="http://uno.ui/android"
 	  xmlns:monaco="using:Monaco"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  mc:Ignorable="d wasm ios android">
+	  mc:Ignorable="d wasm">
 
 	<Page.Resources>
 		<!-- TODO: This is a workaround because ComboBoxItems don't measure themselves properly in WASM -->
@@ -87,9 +85,7 @@
 						  Fill="{StaticResource Color08Brush}" />
 				</Button>
 
-				<TextBlock android:Text="Playground"
-						   ios:Text="Playground"
-						   win:Text="Playground"
+				<TextBlock win:Text="Playground"
 						   Foreground="White"
 						   FontSize="20"
 						   VerticalAlignment="Center"

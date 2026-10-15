@@ -162,30 +162,6 @@ namespace Uno.UI.Demo
 #endif
 		}
 
-#if __IOS__ || __ANDROID__
-		protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
-		{
-			if (e.SourcePageType == typeof(Samples.Playground))
-			{
-				Windows.Graphics.Display.DisplayInformation.AutoRotationPreferences = Windows.Graphics.Display.DisplayOrientations.Portrait;
-			}
-
-			base.OnNavigatingFrom(e);
-		}
-
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-			base.OnNavigatedTo(e);
-
-			if (e.NavigationMode == NavigationMode.Back)
-			{
-				// Force the portrait mode, the reset to none
-				Windows.Graphics.Display.DisplayInformation.AutoRotationPreferences = Windows.Graphics.Display.DisplayOrientations.Portrait;
-				Windows.Graphics.Display.DisplayInformation.AutoRotationPreferences = Windows.Graphics.Display.DisplayOrientations.None;
-			}
-		}
-#endif
-
 		private void SamplesList_ItemClick(object sender, ItemClickEventArgs e)
 		{
 			var sample = e.ClickedItem as Sample;

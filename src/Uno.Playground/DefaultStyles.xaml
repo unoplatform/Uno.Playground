@@ -3,11 +3,7 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:local="using:Uno.UI.Demo"
 					xmlns:toolkit="using:Uno.UI.Toolkit"
-					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-					xmlns:xamarin="http://uno.ui/xamarin"
-					xmlns:ios="http://uno.ui/ios"
-					xmlns:android="http://uno.ui/android"
-					mc:Ignorable="xamarin android ios">	
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">	
 
 	<Style x:Key="iOSToggleSwitchStyle"
 		   TargetType="ToggleSwitch">
@@ -2729,7 +2725,7 @@
 						<ContentPresenter x:Name="ContentPresenter"
 										  ContentTransitions="{TemplateBinding ContentTransitions}"
 										  ContentTemplate="{TemplateBinding ContentTemplate}"
-										  xamarin:ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+										  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
 										  Content="{TemplateBinding Content}"
 										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -3214,9 +3210,9 @@
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
 						<ContentPresenter x:Name="ContentPresenter"
-										  xamarin:Content="{TemplateBinding Content}"
-										  xamarin:ContentTemplate="{TemplateBinding ContentTemplate}"
-										  xamarin:ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+										  Content="{TemplateBinding Content}"
+										  ContentTemplate="{TemplateBinding ContentTemplate}"
+										  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
 										  ContentTransitions="{TemplateBinding ContentTransitions}"
 										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -3254,8 +3250,7 @@
 								Visibility="Collapsed">
 							<FontIcon x:Name="MultiSelectCheck"
 									  FontFamily="{ThemeResource SymbolThemeFontFamily}"
-									  win:Glyph="&#xE73E;"
-									  xamarin:Glyph="&#xE081;"
+									  Glyph="&#xE081;"
 									  FontSize="16"
 									  Foreground="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
 									  Opacity="0" />
@@ -3344,9 +3339,9 @@
 						</VisualStateManager.VisualStateGroups>
 
 						<ContentPresenter x:Name="ContentPresenter"
-										  xamarin:Content="{TemplateBinding Content}"
-										  xamarin:ContentTemplate="{TemplateBinding ContentTemplate}"
-										  xamarin:ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+										  Content="{TemplateBinding Content}"
+										  ContentTemplate="{TemplateBinding ContentTemplate}"
+										  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
 										  ContentTransitions="{TemplateBinding ContentTransitions}"
 										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
 										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"

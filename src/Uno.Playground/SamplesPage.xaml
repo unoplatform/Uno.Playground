@@ -9,11 +9,8 @@
 	  xmlns:converters="using:Uno.UI.Demo.Converters"
 	  xmlns:templateSelectors="using:Uno.UI.Demo.TemplateSelectors"
 	  xmlns:toolkit="using:Uno.UI.Toolkit"
-	  xmlns:ios="http://uno.ui/ios"
-	  xmlns:android="http://uno.ui/android"
-	  xmlns:xamarin="http://uno.ui/xamarin"
 	  NavigationCacheMode="Required"
-	  mc:Ignorable="d ios android xamarin">
+	  mc:Ignorable="d">
 
 	<Page.Resources>
 		<converters:SampleGroupTypeToColorBrushConverter x:Key="SampleGroupTypeToForegroundColorBrush"

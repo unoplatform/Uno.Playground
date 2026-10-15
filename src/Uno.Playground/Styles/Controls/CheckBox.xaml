@@ -3,11 +3,7 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:local="using:Uno.UI.Demo"
 					xmlns:toolkit="using:Uno.UI.Toolkit"
-					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-					xmlns:xamarin="http://uno.ui/xamarin"
-					xmlns:ios="http://uno.ui/ios"
-					xmlns:android="http://uno.ui/android"
-					mc:Ignorable="xamarin android ios">
+					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
 
 	<ResourceDictionary.MergedDictionaries>
 		<ResourceDictionary Source="../StyleGuide/Colors.xaml" />
@@ -500,8 +496,7 @@
 									   Width="20" />
 							<FontIcon x:Name="CheckGlyph"
 									  FontFamily="{ThemeResource SymbolThemeFontFamily}"
-									  win:Glyph="&#xE001;"
-									  xamarin:Glyph="&#xE10B;"
+									  Glyph="&#xE10B;"
 									  FontSize="16"
 									  Foreground="#242424"
 									  Opacity="0" />

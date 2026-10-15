@@ -6,7 +6,7 @@ namespace Uno.UI.Demo.Behaviors
 	[Bindable]
 	public static class DynamicAnimation
     {
-#if !WINDOWS_UWP
+#if !WINAPPSDK
 		[Preserve]
 #endif
 		public static readonly DependencyProperty StoryboardProperty = DependencyProperty.RegisterAttached(
@@ -36,13 +36,13 @@ namespace Uno.UI.Demo.Behaviors
 			}
 		}
 
-#if !WINDOWS_UWP
+#if !WINAPPSDK
 		[Preserve]
 #endif
 		public static Storyboard GetStoryboard(DependencyObject target)
 			=> (Storyboard) target.GetValue(StoryboardProperty);
 
-#if !WINDOWS_UWP
+#if !WINAPPSDK
 		[Preserve]
 #endif
 		public static void SetStoryboard(DependencyObject target, Storyboard value)
