@@ -32,8 +32,6 @@
 		<UpToDateCheckInput Include="Platforms\WebAssembly\ts\**\*" />
 		<UpToDateCheckInput Include="Platforms\WebAssembly\WasmCSS\**\*" />
 		<UpToDateCheckInput Include="Platforms\WebAssembly\WasmScripts\**\*" />
-
-		<Content Include="Fonts\*.woff2" />
 	</ItemGroup>
 
 	<ItemGroup>
