@@ -13,15 +13,16 @@
 	<win:FontFamily x:Key="FontFamily01Bold">ms-appx:///Assets/Fonts/OpenSans-Bold.ttf#Open Sans</win:FontFamily>
 	<win:FontFamily x:Key="FontFamily01ExtraBold">ms-appx:///Assets/Fonts/OpenSans-ExtraBold.ttf#Open Sans Extrabold</win:FontFamily>
 	
-	<not_wasm:FontFamily x:Key="FontFamily01">ms-appx:///Assets/Fonts/OpenSans-Regular.ttf#Open Sans</not_wasm:FontFamily>
-	<not_wasm:FontFamily x:Key="FontFamily01Light">ms-appx:///Assets/Fonts/OpenSans-Light.ttf#Open Sans</not_wasm:FontFamily>
-	<not_wasm:FontFamily x:Key="FontFamily01Semibold">ms-appx:///Assets/Fonts/OpenSans-Semibold.ttf#Open Sans</not_wasm:FontFamily>
-	<not_wasm:FontFamily x:Key="FontFamily01Bold">ms-appx:///Assets/Fonts/OpenSans-Bold.ttf#Open Sans</not_wasm:FontFamily>
-	<not_wasm:FontFamily x:Key="FontFamily01ExtraBold">ms-appx:///Assets/Fonts/OpenSans-ExtraBold.ttf#Open Sans Extrabold</not_wasm:FontFamily>
+	<!-- Uno.Fonts.OpenSans is referenced implicitly by the Uno.Sdk (UnoDefaultFont) -->
+	<not_wasm:FontFamily x:Key="FontFamily01">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-Regular.ttf#Open Sans</not_wasm:FontFamily>
+	<not_wasm:FontFamily x:Key="FontFamily01Light">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-Light.ttf#Open Sans</not_wasm:FontFamily>
+	<not_wasm:FontFamily x:Key="FontFamily01Semibold">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-SemiBold.ttf#Open Sans</not_wasm:FontFamily>
+	<not_wasm:FontFamily x:Key="FontFamily01Bold">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-Bold.ttf#Open Sans</not_wasm:FontFamily>
+	<not_wasm:FontFamily x:Key="FontFamily01ExtraBold">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-ExtraBold.ttf#Open Sans</not_wasm:FontFamily>
 
-	<wasm:FontFamily x:Key="FontFamily01">Open Sans</wasm:FontFamily>
-	<wasm:FontFamily x:Key="FontFamily01Light">Open Sans</wasm:FontFamily>
-	<wasm:FontFamily x:Key="FontFamily01Semibold">Open Sans</wasm:FontFamily>
-	<wasm:FontFamily x:Key="FontFamily01Bold">Open Sans</wasm:FontFamily>
-	<wasm:FontFamily x:Key="FontFamily01ExtraBold">Open Sans Extrabold</wasm:FontFamily>
+	<wasm:FontFamily x:Key="FontFamily01">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-Regular.ttf#Open Sans</wasm:FontFamily>
+	<wasm:FontFamily x:Key="FontFamily01Light">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-Light.ttf#Open Sans</wasm:FontFamily>
+	<wasm:FontFamily x:Key="FontFamily01Semibold">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-SemiBold.ttf#Open Sans</wasm:FontFamily>
+	<wasm:FontFamily x:Key="FontFamily01Bold">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-Bold.ttf#Open Sans</wasm:FontFamily>
+	<wasm:FontFamily x:Key="FontFamily01ExtraBold">ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans-ExtraBold.ttf#Open Sans</wasm:FontFamily>
 </ResourceDictionary>
