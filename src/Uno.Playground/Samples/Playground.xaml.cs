@@ -1,7 +1,4 @@
-﻿#if HAS_UNO
-#define MONACO
-#endif
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Net.Http.Headers;
