@@ -34,9 +34,9 @@
 			return "ok";
 		}
 
-		private static notifyFragmentChangedMethod: any;
+		private static notifyFragmentChangedMethod: (fragment: string) => void;
 
-		private static notifyFragmentChanged() {
+		private static async notifyFragmentChanged() {
 			const newFragment: string = this.getCurrentFragment();
 			if (newFragment === this.currentFragment) {
 				return;  // nothing to do
@@ -44,21 +44,18 @@
 
 			this.currentFragment = newFragment;
 
-			this.initializeMethods();
-			const newFragmentStr = MonoRuntime.mono_string(newFragment);
-			MonoRuntime.call_method(this.notifyFragmentChangedMethod, null, [newFragmentStr]);
+			await this.initializeMethods();
+			this.notifyFragmentChangedMethod(newFragment);
 		}
 
-		private static initializeMethods(): void {
+		private static async initializeMethods(): Promise<void> {
 			if (this.notifyFragmentChangedMethod) {
 				return; // already initialized.
 			}
 
-				   const asm = MonoRuntime.assembly_load("Uno.Playground");
-			const handlerClass = MonoRuntime.find_class(asm, "Uno.UI.Wasm", "FragmentNavigationHandler");
-			this.notifyFragmentChangedMethod = MonoRuntime.find_method(handlerClass, "NotifyFragmentChanged", -1);
+			// [JSExport] methods of Uno.UI.Wasm.FragmentNavigationHandler
+			const exports = await (<any>globalThis).Module.getAssemblyExports("Uno.Playground");
+			this.notifyFragmentChangedMethod = exports.Uno.UI.Wasm.FragmentNavigationHandler.NotifyFragmentChanged;
 		}
 	}
-
-	declare var MonoRuntime: any;
 }

@@ -20,23 +20,22 @@ var Uno;
                 window.addEventListener("hashchange", _ => this.notifyFragmentChanged(), false);
                 return "ok";
             }
-            static notifyFragmentChanged() {
+            static async notifyFragmentChanged() {
                 const newFragment = this.getCurrentFragment();
                 if (newFragment === this.currentFragment) {
                     return; // nothing to do
                 }
                 this.currentFragment = newFragment;
-                this.initializeMethods();
-                const newFragmentStr = MonoRuntime.mono_string(newFragment);
-                MonoRuntime.call_method(this.notifyFragmentChangedMethod, null, [newFragmentStr]);
+                await this.initializeMethods();
+                this.notifyFragmentChangedMethod(newFragment);
             }
-            static initializeMethods() {
+            static async initializeMethods() {
                 if (this.notifyFragmentChangedMethod) {
                     return; // already initialized.
                 }
-                const asm = MonoRuntime.assembly_load("Uno.Playground");
-                const handlerClass = MonoRuntime.find_class(asm, "Uno.UI.Wasm", "FragmentNavigationHandler");
-                this.notifyFragmentChangedMethod = MonoRuntime.find_method(handlerClass, "NotifyFragmentChanged", -1);
+                // [JSExport] methods of Uno.UI.Wasm.FragmentNavigationHandler
+                const exports = await globalThis.Module.getAssemblyExports("Uno.Playground");
+                this.notifyFragmentChangedMethod = exports.Uno.UI.Wasm.FragmentNavigationHandler.NotifyFragmentChanged;
             }
         }
         FragmentNavigationHandler.subscribed = false;

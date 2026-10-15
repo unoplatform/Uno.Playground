@@ -11,6 +11,9 @@
 		     data binding, and Newtonsoft.Json deserialization — all reflection-heavy.
 		     Trimming must be disabled to preserve these code paths. -->
 		<PublishTrimmed>false</PublishTrimmed>
+
+		<!-- Required by the [JSImport]/[JSExport] interop source generators -->
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<TypeScriptConfig>Platforms\WebAssembly\tsconfig.json</TypeScriptConfig>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 
