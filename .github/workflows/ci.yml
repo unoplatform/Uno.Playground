@@ -52,6 +52,11 @@ jobs:
           dotnet publish -c Release -f net10.0-browserwasm "/p:PackageVersion=${{ steps.gitversion.outputs.fullSemVer }}"
         name: Build WebAssembly app
 
+      - run: |
+          cd src/Uno.Playground
+          dotnet build -c Release -f net10.0-desktop
+        name: Build Desktop app
+
       - uses: actions/upload-artifact@v4
         with:
           name: wasm-site
