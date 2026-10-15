@@ -191,23 +191,6 @@ namespace Uno.UI.Demo.Samples
 
 		private async void Playground_Loaded(object sender, RoutedEventArgs e)
 		{
-#if !__WASM__
-			xamlText.Text = @"<StackPanel Orientation=""Vertical"">
-	<!-- Type your favorite XAML code here
-	...or pick a snippet in the menu. -->
-
-	<TextBlock Text=""{Binding message}"" />
-</StackPanel>
-";
-
-			jsonDataContext.Text = @"{
-	message: ""Hello World!""
-}
-
-/* Tip: two-way bindings supported */";
-
-			LaunchUpdate();
-#endif
 #if !MONACO
 			await LoadSamples();
 #endif
