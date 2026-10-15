@@ -51,24 +51,6 @@
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
 			<StackPanel Orientation="Horizontal">
-				<Button Name="backButton"
-						Visibility="Collapsed"
-						Height="40"
-						Width="40"
-						VerticalAlignment="Stretch"
-						HorizontalAlignment="Stretch"
-						Padding="0"
-						Margin="0"
-						Background="Transparent"
-						Click="OnBackClicked">
-					<Path Data="M1 6h14M1 6l3.748-4.685M1 6l4.243 4.243"
-						  Stroke="White"
-						  StrokeThickness="2"
-						  HorizontalAlignment="Center"
-						  VerticalAlignment="Center"
-						  Stretch="Uniform"
-						  Width="22" />
-				</Button>
 				<Button Height="72"
 						Width="72"
 						Padding="0"

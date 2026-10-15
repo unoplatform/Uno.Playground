@@ -188,16 +188,10 @@ namespace Uno.UI.Demo.Samples
 				await LoadSample(sample.Id);
 			}
 		}
-		private void OnBackClicked(object sender, RoutedEventArgs e)
-		{
-			Frame.GoBack();
-		}
 
 		private async void Playground_Loaded(object sender, RoutedEventArgs e)
 		{
 #if !__WASM__
-			backButton.Visibility = base.Frame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
-
 			xamlText.Text = @"<StackPanel Orientation=""Vertical"">
 	<!-- Type your favorite XAML code here
 	...or pick a snippet in the menu. -->
