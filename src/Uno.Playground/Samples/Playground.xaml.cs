@@ -298,7 +298,9 @@ namespace Uno.UI.Demo.Samples
 			{
 				Console.WriteLine("setLanguage");
 #if MONACO
-				xamlText.CodeLanguage = "text";
+				// Assigning the current language again is a no-op; toggling through "text" to force it
+				// (an old Monaco initialization workaround) re-created the model's mode on every refresh
+				// and dismissed the completion popup as soon as it opened.
 				xamlText.CodeLanguage = "xml";
 #endif
 			}
