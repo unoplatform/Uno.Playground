@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
+		<TargetFrameworks>net10.0-desktop;net10.0-browserwasm</TargetFrameworks>
 		<AssemblyName>Uno.Playground</AssemblyName>
 		<RootNamespace>Uno.Playground</RootNamespace>
 		<UnoSingleProject>true</UnoSingleProject>
