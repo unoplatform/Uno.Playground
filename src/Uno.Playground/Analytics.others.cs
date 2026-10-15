@@ -6,13 +6,8 @@ namespace Uno.UI.Demo
 	{
 		static partial void InnerReportPageView(string pageName, string? pageParam)
 		{
-			Microsoft.AppCenter.Analytics.Analytics.TrackEvent(
-				"Navigate",
-				new Dictionary<string, string> { 
-					{ "PageName", pageName },
-					{ "Arguments", arguments }
-				}
-			);
+			// No analytics backend outside of WebAssembly (AppCenter was retired).
+			System.Diagnostics.Debug.WriteLine($"Navigate: {pageName} ({pageParam})");
 		}
 	}
 }

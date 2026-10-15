@@ -23,7 +23,7 @@
 
 			UpdateItemSize(weakItemsWrapGrid.Target as ItemsWrapGrid);
 
-			WindowSizeChangedEventHandler? handler = null;
+			TypedEventHandler<object, WindowSizeChangedEventArgs>? handler = null;
 
 			handler = (_, __) =>
 			{

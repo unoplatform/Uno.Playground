@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net10.0-browserwasm</TargetFrameworks>
+		<TargetFrameworks>net10.0-browserwasm;net10.0-desktop</TargetFrameworks>
 		<AssemblyName>Uno.Playground</AssemblyName>
 		<RootNamespace>Uno.Playground</RootNamespace>
 		<UnoSingleProject>true</UnoSingleProject>
@@ -15,11 +15,10 @@
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 
 		<UnoFeatures>
-			NativeRenderer;
 			Material;
 			Toolkit;
-			Lottie;
 			MediaElement;
+			WebView;
 		</UnoFeatures>
 	</PropertyGroup>
 
@@ -50,14 +49,14 @@
 		<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="Uno.Monaco.Editor" />
 
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" />
+		<!-- TODO(uno7): temporarily disabled — Uno.CommunityToolkit.WinUI.* has no Uno 7 compatible build yet; restore once it is updated. -->
+		<!--<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" />
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />-->
 
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" />
 
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Filter" />
 	</ItemGroup>
 
 </Project>

@@ -1,7 +1,0 @@
-﻿.resizeHandle {
-	cursor: col-resize;
-}
-
-.resizeHandle:active {
-	cursor: ew-resize;
-}

@@ -24,7 +24,7 @@ namespace Uno.UI.Demo
 			global::Uno.UI.FeatureConfiguration.Font.DefaultTextFontFamily = "ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans.ttf";
 
 			this.InitializeComponent();
-			this.Suspending += OnSuspending;
+			Windows.ApplicationModel.Core.CoreApplication.Suspending += OnSuspending;
 		}
 
 		/// <summary>
@@ -188,7 +188,7 @@ namespace Uno.UI.Demo
 		/// </summary>
 		/// <param name="sender">The source of the suspend request.</param>
 		/// <param name="e">Details about the suspend request.</param>
-		private void OnSuspending(object sender, SuspendingEventArgs e)
+		private void OnSuspending(object? sender, SuspendingEventArgs e)
 		{
 			//var deferral = e.SuspendingOperation.GetDeferral();
 			////TODO: Save application state and stop any background activity

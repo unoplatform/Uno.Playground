@@ -1,4 +1,4 @@
-﻿#if __WASM__
+﻿#if HAS_UNO
 #define MONACO
 #endif
 using System.ComponentModel;
@@ -17,13 +17,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
-using Uno.UI.Toolkit;
+using Uno.UI.Behaviors;
 
-#if __WASM__
+#if MONACO
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
-using System.Drawing.Text;
 #endif
 
 namespace Uno.UI.Demo.Samples
@@ -55,27 +54,16 @@ namespace Uno.UI.Demo.Samples
 
 #if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
-			xamlText.Loaded += OnEditorLoaded;
-			xamlText.Loading += OnEditorLoading;
+			xamlText.EditorLoaded += OnEditorLoaded;
 
-			xamlText.SizeChanged += async (object? snd, SizeChangedEventArgs evt) =>
-			{
-				try
-				{
-					await xamlText.InvokeScriptAsync("if(typeof editor !== 'undefined') editor.layout();");
-				}
-				catch (Exception ex)
-				{
-					this.Log().Error("Failed to invoke Monaco editor layout script on SizeChanged.", ex);
-				}
-			};
+			// The Monaco backend fails silently otherwise: a failed presenter leaves an empty pane.
+			xamlText.InternalException += (snd, exception) =>
+				this.Log().Error("Monaco editor backend failed.", exception);
 #else
 			xamlText.TextChanged += OnTextChanged;
 #endif
 
 #if __WASM__
-			splitter.SetCssClass("resizeHandle");
-
 			// Eagerly create material theme
 			_ = new Uno.Material.MaterialTheme();
 #endif
@@ -292,15 +280,13 @@ namespace Uno.UI.Demo.Samples
 			jsonDataContext.Text = data;
 		}
 
-		private async void OnEditorLoading(object sender, RoutedEventArgs e)
-		{
-#if MONACO
-			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
-#endif
-		}
-
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
+#if MONACO
+			// Must run once the editor is initialized: registrations made before that are dropped.
+			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
+#endif
+
 			SetCodeLanguage();
 
 			await LoadSamples();
@@ -456,8 +442,9 @@ namespace Uno.UI.Demo.Samples
 				("utu", "using:Uno.Toolkit.UI"),
 				("muxc", "using:Microsoft.UI.Xaml.Controls"),
 				("um", "using:Uno.Material.Extensions"),
-				("cwuc", "using:CommunityToolkit.WinUI.UI.Controls"),
-				("cwd", "using:CommunityToolkit.WinUI.DeveloperTools"),
+				// TODO(uno7): temporarily disabled — Uno.CommunityToolkit.WinUI.* has no Uno 7 compatible build yet; restore once it is updated.
+				//("cwuc", "using:CommunityToolkit.WinUI.UI.Controls"),
+				//("cwd", "using:CommunityToolkit.WinUI.DeveloperTools"),
 				("cwl", "using:CommunityToolkit.WinUI.Lottie"),
 				("x", "http://schemas.microsoft.com/winfx/2006/xaml"),
 				("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006"),
@@ -825,51 +812,43 @@ namespace Uno.UI.Demo.Samples
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
 
-		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		public async Task<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
 		{
-			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
-			{
-				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
+			var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
-				if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
-							new CompletionItem("booboo", "booboo", CompletionItemKind.File),
-						}
-					};
-				}
-				else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+						new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
+						new CompletionItem("booboo", "booboo", CompletionItemKind.File),
+					}
+				};
+			}
+			else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
+						new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
 						{
 							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
 						},
-						}
-					};
-				}
-
-				return new CompletionList()
-				{
-					Suggestions = new CompletionItem[0]
+					}
 				};
-			});
+			}
+
+			return new CompletionList()
+			{
+				Suggestions = new CompletionItem[0]
+			};
 		}
 
-		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
-		{
-			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
-			{
-				return Task.FromResult(item); // throw new NotImplementedException();
-			});
-		}
+		public Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
+			=> Task.FromResult(item);
 	}
 #endif
 }
