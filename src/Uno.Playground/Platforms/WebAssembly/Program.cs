@@ -1,19 +1,23 @@
 ﻿using System.Runtime.InteropServices;
+using Uno.UI.Hosting;
 
 namespace Uno.UI.Demo
 {
 	public class Program
 	{
-		private static App _app = null!;
-
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 #if ENABLE_EXCEPTIONS_LOGGING
 			MonoInternals.mono_trace_enable(1);
 			MonoInternals.mono_trace_set_options("E:all");
 #endif
 
-			Microsoft.UI.Xaml.Application.Start(_ => _app = new App());
+			var host = UnoPlatformHostBuilder.Create()
+				.App(() => new App())
+				.UseWebAssembly()
+				.Build();
+
+			await host.RunAsync();
 		}
 	}
 

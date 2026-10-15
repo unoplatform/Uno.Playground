@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFrameworks>net10.0-browserwasm</TargetFrameworks>
+		<TargetFrameworks>net10.0-desktop;net10.0-browserwasm</TargetFrameworks>
 		<AssemblyName>Uno.Playground</AssemblyName>
 		<RootNamespace>Uno.Playground</RootNamespace>
 		<UnoSingleProject>true</UnoSingleProject>
@@ -11,16 +11,23 @@
 		     data binding, and Newtonsoft.Json deserialization — all reflection-heavy.
 		     Trimming must be disabled to preserve these code paths. -->
 		<PublishTrimmed>false</PublishTrimmed>
+
+		<!-- Required by the [JSImport]/[JSExport] interop source generators -->
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<TypeScriptConfig>Platforms\WebAssembly\tsconfig.json</TypeScriptConfig>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 
 		<UnoFeatures>
-			NativeRenderer;
 			Material;
 			Toolkit;
-			Lottie;
 			MediaElement;
+			WebView;
 		</UnoFeatures>
+	</PropertyGroup>
+
+	<!-- Uno.Monaco.Editor hosts the XAML editor on these targets; elsewhere it falls back to CodeBox -->
+	<PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browserwasm' or '$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'desktop'">
+		<DefineConstants>$(DefineConstants);MONACO</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -30,8 +37,6 @@
 		<UpToDateCheckInput Include="Platforms\WebAssembly\ts\**\*" />
 		<UpToDateCheckInput Include="Platforms\WebAssembly\WasmCSS\**\*" />
 		<UpToDateCheckInput Include="Platforms\WebAssembly\WasmScripts\**\*" />
-
-		<Content Include="Fonts\*.woff2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -50,14 +55,14 @@
 		<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="Uno.Monaco.Editor" />
 
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" />
+		<!-- TODO(uno7): temporarily disabled — Uno.CommunityToolkit.WinUI.* has no Uno 7 compatible build yet; restore once it is updated. -->
+		<!--<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" />
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />-->
 
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" />
 
 		<PackageReference Include="Microsoft.Extensions.Logging.Console" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Filter" />
 	</ItemGroup>
 
 </Project>

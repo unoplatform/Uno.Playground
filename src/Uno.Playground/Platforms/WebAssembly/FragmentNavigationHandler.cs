@@ -1,26 +1,21 @@
 ﻿using System.ComponentModel;
-using Uno.Foundation;
+using System.Runtime.InteropServices.JavaScript;
+using System.Runtime.Versioning;
 
 namespace Uno.UI.Wasm
 {
-	public static class FragmentNavigationHandler
+	public static partial class FragmentNavigationHandler
 	{
 		public static string CurrentFragment
 		{
 			get
 			{
-				const string command = "Uno.UI.FragmentNavigationHandler.getCurrentFragment()";
-				var fragment = WebAssemblyRuntime.InvokeJS(command);
-				return RemoveLeadingHash(fragment);
+				return RemoveLeadingHash(NativeMethods.GetCurrentFragment());
 			}
 
 			set
 			{
-				var escaped = WebAssemblyRuntime.EscapeJs(value);
-				var command =
-					"Uno.UI.FragmentNavigationHandler.setCurrentFragment(\"" + escaped + "\")";
-
-				WebAssemblyRuntime.InvokeJS(command);
+				NativeMethods.SetCurrentFragment(value);
 			}
 		}
 
@@ -32,14 +27,14 @@ namespace Uno.UI.Wasm
 			{
 				_navigatedToFragment += value;
 
-				const string command = "Uno.UI.FragmentNavigationHandler.subscribeToFragmentChanged()";
-				WebAssemblyRuntime.InvokeJS(command);
+				NativeMethods.SubscribeToFragmentChanged();
 			}
 			remove => _navigatedToFragment -= value;
 		}
 
 		[EditorBrowsable(EditorBrowsableState.Never)]
-		[Preserve]
+		[JSExport]
+		[SupportedOSPlatform("browser")]
 		public static void NotifyFragmentChanged(string newFragment)
 		{
 			_navigatedToFragment?.Invoke(null, new NewFragmentEventArgs(RemoveLeadingHash(newFragment)));

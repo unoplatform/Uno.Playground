@@ -1,14 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-					xmlns:xamarin="http://uno.ui/xamarin"
 					xmlns:wasm="http://uno.ui/wasm"
 					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-					mc:Ignorable="xamarin wasm"
+					mc:Ignorable="wasm"
 					xmlns:local="using:Uno.UI.Demo.Styles.Controls">
 
-	<xamarin:Style x:Key="DefaultSplitViewStyle"
-				   TargetType="SplitView">
+	<Style x:Key="DefaultSplitViewStyle"
+		   TargetType="SplitView">
 		<Setter Property="HorizontalContentAlignment"
 				Value="Stretch" />
 		<Setter Property="VerticalContentAlignment"
@@ -40,27 +38,11 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<xamarin:DoubleAnimation Storyboard.TargetName="PaneTransform"
-																	 Storyboard.TargetProperty="TranslateX"
-																	 From="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-																	 To="0"
-																	 Duration="0:0:0.35" />
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.35"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="0" />
-											</win:DoubleAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.35"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="0" />
-											</win:DoubleAnimationUsingKeyFrames>
+											<DoubleAnimation Storyboard.TargetName="PaneTransform"
+															 Storyboard.TargetProperty="TranslateX"
+															 From="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+															 To="0"
+															 Duration="0:0:0.35" />
 											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="LightDismissLayer"
 																		   Storyboard.TargetProperty="Visibility">
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
@@ -91,27 +73,11 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<xamarin:DoubleAnimation Storyboard.TargetName="PaneTransform"
-																	 Storyboard.TargetProperty="TranslateX"
-																	 From="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-																	 To="0"
-																	 Duration="0:0:0.35" />
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.35"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="0" />
-											</win:DoubleAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.35"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="0" />
-											</win:DoubleAnimationUsingKeyFrames>
+											<DoubleAnimation Storyboard.TargetName="PaneTransform"
+															 Storyboard.TargetProperty="TranslateX"
+															 From="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+															 To="0"
+															 Duration="0:0:0.35" />
 											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="LightDismissLayer"
 																		   Storyboard.TargetProperty="Visibility">
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
@@ -147,14 +113,6 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="{Binding TemplateSettings.NegativeOpenPaneLengthMinusCompactLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.35"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="0" />
-											</win:DoubleAnimationUsingKeyFrames>
 											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="LightDismissLayer"
 																		   Storyboard.TargetProperty="Visibility">
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
@@ -200,14 +158,6 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="{Binding TemplateSettings.OpenPaneLengthMinusCompactLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.35"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="0" />
-											</win:DoubleAnimationUsingKeyFrames>
 											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="LightDismissLayer"
 																		   Storyboard.TargetProperty="Visibility">
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
@@ -228,23 +178,11 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<xamarin:DoubleAnimation Storyboard.TargetName="PaneTransform"
-																	 Storyboard.TargetProperty="TranslateX"
-																	 From="0"
-																	 To="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-																	 Duration="0:0:0.12" />
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<SplineDoubleKeyFrame KeyTime="0:0:0.12"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</win:DoubleAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<SplineDoubleKeyFrame KeyTime="0:0:0.12"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</win:DoubleAnimationUsingKeyFrames>
+											<DoubleAnimation Storyboard.TargetName="PaneTransform"
+															 Storyboard.TargetProperty="TranslateX"
+															 From="0"
+															 To="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+															 Duration="0:0:0.12" />
 										</Storyboard>
 									</VisualTransition>
 									<VisualTransition From="OpenOverlayRight"
@@ -270,22 +208,10 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<xamarin:DoubleAnimation Storyboard.TargetName="PaneTransform"
-																	 Storyboard.TargetProperty="TranslateX"
-																	 To="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-																	 Duration="0:0:0.12" />
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<SplineDoubleKeyFrame KeyTime="0:0:0.12"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</win:DoubleAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<SplineDoubleKeyFrame KeyTime="0:0:0.12"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="{Binding TemplateSettings.NegativeOpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</win:DoubleAnimationUsingKeyFrames>
+											<DoubleAnimation Storyboard.TargetName="PaneTransform"
+															 Storyboard.TargetProperty="TranslateX"
+															 To="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+															 Duration="0:0:0.12" />
 										</Storyboard>
 									</VisualTransition>
 									<VisualTransition From="OpenCompactOverlayLeft"
@@ -316,24 +242,16 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="0" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.12"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="{Binding TemplateSettings.NegativeOpenPaneLengthMinusCompactLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</win:DoubleAnimationUsingKeyFrames>
 										</Storyboard>
 									</VisualTransition>
 									<VisualTransition From="OpenCompactOverlayRight"
 													  To="ClosedCompactRight">
 										<Storyboard>
-											<xamarin:ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Clip"
-																				   Storyboard.TargetName="PaneRoot">
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Clip"
+																		   Storyboard.TargetName="PaneRoot">
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="{Binding TemplateSettings.RightClip, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</xamarin:ObjectAnimationUsingKeyFrames>
+											</ObjectAnimationUsingKeyFrames>
 											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="ColumnDefinition1"
 																		   Storyboard.TargetProperty="Width">
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
@@ -369,14 +287,6 @@
 												<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																		Value="Visible" />
 											</ObjectAnimationUsingKeyFrames>
-											<win:DoubleAnimationUsingKeyFrames Storyboard.TargetName="PaneClipRectangleTransform"
-																			   Storyboard.TargetProperty="TranslateX">
-												<DiscreteDoubleKeyFrame KeyTime="0:0:0"
-																		Value="0" />
-												<SplineDoubleKeyFrame KeyTime="0:0:0.12"
-																	  KeySpline="0.1,0.9 0.2,1.0"
-																	  Value="{Binding TemplateSettings.OpenPaneLengthMinusCompactLength, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-											</win:DoubleAnimationUsingKeyFrames>
 										</Storyboard>
 									</VisualTransition>
 								</VisualStateGroup.Transitions>
@@ -397,11 +307,11 @@
 								</VisualState>
 								<VisualState x:Name="ClosedCompactLeft">
 									<Storyboard>
-										<xamarin:ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Clip"
-																			   Storyboard.TargetName="PaneRoot">
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Clip"
+																	   Storyboard.TargetName="PaneRoot">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																	Value="{Binding TemplateSettings.LeftClip, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-										</xamarin:ObjectAnimationUsingKeyFrames>
+										</ObjectAnimationUsingKeyFrames>
 										<ObjectAnimationUsingKeyFrames Storyboard.TargetName="ColumnDefinition1"
 																	   Storyboard.TargetProperty="Width">
 											<DiscreteObjectKeyFrame KeyTime="0:0:0"
@@ -422,10 +332,6 @@
 											<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																	Value="Visible" />
 										</ObjectAnimationUsingKeyFrames>
-										<win:DoubleAnimation Storyboard.TargetName="PaneClipRectangleTransform"
-															 Storyboard.TargetProperty="TranslateX"
-															 To="{Binding TemplateSettings.NegativeOpenPaneLengthMinusCompactLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-															 Duration="0:0:0" />
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="ClosedCompactRight">
@@ -460,10 +366,6 @@
 											<DiscreteObjectKeyFrame KeyTime="0:0:0"
 																	Value="Right" />
 										</ObjectAnimationUsingKeyFrames>
-										<win:DoubleAnimation Storyboard.TargetName="PaneClipRectangleTransform"
-															 Storyboard.TargetProperty="TranslateX"
-															 To="{Binding TemplateSettings.OpenPaneLengthMinusCompactLength, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-															 Duration="0:0:0" />
 									</Storyboard>
 								</VisualState>
 								<VisualState x:Name="OpenOverlayLeft">
@@ -680,19 +582,16 @@
 							  Grid.Column="1"
 							  Grid.ColumnSpan="2">
 							<Border Child="{TemplateBinding Content}" />
-							<win:Rectangle x:Name="LightDismissLayer"
-										   Fill="{StaticResource SplitViewDismissBackgroundColor}"
-										   Visibility="Collapsed" />
-							<xamarin:Button x:Name="LightDismissLayer"
-											Visibility="Collapsed"
-											HorizontalAlignment="Stretch"
-											VerticalAlignment="Stretch">
+							<Button x:Name="LightDismissLayer"
+									Visibility="Collapsed"
+									HorizontalAlignment="Stretch"
+									VerticalAlignment="Stretch">
 								<Button.Template>
 									<ControlTemplate>
 										<Border Background="{StaticResource SplitViewDismissBackgroundColor}" />
 									</ControlTemplate>
 								</Button.Template>
-							</xamarin:Button>
+							</Button>
 						</Grid>
 
 						<!--Pane Content Area-->
@@ -702,13 +601,6 @@
 							  Visibility="Collapsed"
 							  Background="{TemplateBinding PaneBackground}"
 							  Width="{Binding TemplateSettings.OpenPaneLength, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-							<win:Grid.Clip>
-								<RectangleGeometry x:Name="PaneClipRectangle">
-									<win:RectangleGeometry.Transform>
-										<CompositeTransform x:Name="PaneClipRectangleTransform" />
-									</win:RectangleGeometry.Transform>
-								</RectangleGeometry>
-							</win:Grid.Clip>
 							<Grid.RenderTransform>
 								<CompositeTransform x:Name="PaneTransform" />
 							</Grid.RenderTransform>
@@ -724,7 +616,7 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
-	</xamarin:Style>
+	</Style>
 
 
 </ResourceDictionary>

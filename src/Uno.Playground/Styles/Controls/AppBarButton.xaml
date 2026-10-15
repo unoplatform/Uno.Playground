@@ -2,10 +2,7 @@
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:local="using:Uno.Playground.Styles.Controls"
 					xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-					xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					xmlns:android="http://nventive.com/android"
-					xmlns:ios="http://nventive.com/ios"
-					mc:Ignorable="android ios">
+					xmlns:win="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
 	<!-- 
 		Find the latest styles here:
@@ -16,20 +13,6 @@
 	-->
 
 	<!---->
-	<ios:Style x:Key="NativeDefaultAppBarButton"
-			   TargetType="AppBarButton">
-		<Setter Property="Background"
-				Value="Transparent" />
-		<ios:Setter Property="Foreground"
-					Value="{x:Null}" />
-	</ios:Style>
-	
-
-	<android:Style x:Key="NativeDefaultAppBarButton"
-				   TargetType="AppBarButton">
-		<Setter Property="Background"
-				Value="Transparent" />
-	</android:Style>
 
 	<win:Style x:Key="NativeDefaultAppBarButton"
 			   TargetType="AppBarButton">
