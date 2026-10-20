@@ -10,7 +10,7 @@ namespace Uno.UI.Demo
 			var host = UnoPlatformHostBuilder.Create()
 				.App(() => new App())
 				.UseX11()
-				.UseLinuxFrameBuffer()
+				//.UseLinuxFrameBuffer() // no WebView on this backend, so the Monaco editor can never start
 				.UseMacOS()
 				.UseWin32()
 				.Build();
