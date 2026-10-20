@@ -10,9 +10,9 @@
     <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="4.5.2" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Uno.Monaco.Editor" Version="7.0.0-dev.3" />
-    <PackageVersion Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.2.0-dev.30" />
-    <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.2.0-dev.30" />
-    <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.2.0-dev.30" />
+    <PackageVersion Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.2.0-dev.35" />
+    <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.2.0-dev.35" />
+    <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.2.0-dev.35" />
     <PackageVersion Include="Uno.Core.Extensions.Compatibility" Version="5.0.0-dev.34" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.13" />
 
