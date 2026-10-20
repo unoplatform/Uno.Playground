@@ -25,11 +25,6 @@
 		</UnoFeatures>
 	</PropertyGroup>
 
-	<!-- Uno.Monaco.Editor hosts the XAML editor on these targets; elsewhere it falls back to CodeBox -->
-	<PropertyGroup Condition="'$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'browserwasm' or '$([MSBuild]::GetTargetPlatformIdentifier($(TargetFramework)))' == 'desktop'">
-		<DefineConstants>$(DefineConstants);MONACO</DefineConstants>
-	</PropertyGroup>
-
 	<ItemGroup>
 		<EmbeddedResource Include="Platforms\WebAssembly\WasmCSS\**\*.css" />
 		<EmbeddedResource Include="Platforms\WebAssembly\WasmScripts\**\*.js" />

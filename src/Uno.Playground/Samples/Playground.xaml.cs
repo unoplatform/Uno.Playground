@@ -16,11 +16,9 @@ using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
 using Uno.UI.Behaviors;
 
-#if MONACO
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
-#endif
 
 namespace Uno.UI.Demo.Samples
 {
@@ -79,7 +77,6 @@ namespace Uno.UI.Demo.Samples
 
 			Loaded += Playground_Loaded;
 
-#if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
 			xamlText.EditorLoaded += OnEditorLoaded;
 
@@ -97,9 +94,6 @@ namespace Uno.UI.Demo.Samples
 					}
 				});
 			};
-#else
-			xamlText.TextChanged += OnTextChanged;
-#endif
 
 #if __WASM__
 			// Eagerly create material theme
@@ -295,11 +289,9 @@ namespace Uno.UI.Demo.Samples
 
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
-#if MONACO
 			// Before the guard below: a retry can succeed after an error was listed.
 			editorStatus.Visibility = Visibility.Collapsed;
 			editorStatusErrors.Text = "";
-#endif
 
 			// Raised again when the desktop backend re-bootstraps Monaco in the same page, where the
 			// completion provider is still registered: registering it again would duplicate every item.
@@ -310,10 +302,8 @@ namespace Uno.UI.Demo.Samples
 
 			_isEditorInitialized = true;
 
-#if MONACO
 			// Must run once the editor is initialized: registrations made before that are dropped.
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
-#endif
 		}
 
 		private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -654,9 +644,7 @@ namespace Uno.UI.Demo.Samples
 			_currentError = null;
 			errorBorder.Visibility = Visibility.Collapsed;
 			errorText.Text = "No error";
-#if MONACO
 			ClearMarkers();
-#endif
 		}
 
 		private void ShowError(Exception? error)
@@ -665,7 +653,6 @@ namespace Uno.UI.Demo.Samples
 			if (error != null && !_isLoadingSample)
 			{
 				errorText.Text = error.Message;
-#if MONACO
 				errorBorder.Visibility = Visibility.Visible;
 
 				// The editor pushes the whole Markers list to Monaco on every change: keep only the current error in it
@@ -687,12 +674,10 @@ namespace Uno.UI.Demo.Samples
 							EndColumn = (uint)xamlError.LinePosition + 5
 						});
 				}
-#endif
 			}
 
 		}
 
-#if MONACO
 		private void ClearMarkers()
 		{
 			// Clear() notifies even when empty, and each notification is a round-trip to Monaco
@@ -701,7 +686,6 @@ namespace Uno.UI.Demo.Samples
 				xamlText.Markers.Clear();
 			}
 		}
-#endif
 
 		private void CopyError(object sender, RoutedEventArgs e)
 		{
@@ -828,7 +812,6 @@ namespace Uno.UI.Demo.Samples
 		}
 	}
 
-#if MONACO
 	public class XamlLanguageProvider : CompletionItemProvider
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
@@ -871,5 +854,4 @@ namespace Uno.UI.Demo.Samples
 		public Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
 			=> Task.FromResult(item);
 	}
-#endif
 }
