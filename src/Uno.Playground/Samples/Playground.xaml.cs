@@ -497,6 +497,8 @@ namespace Uno.UI.Demo.Samples
 		private static readonly Regex _lineEndingRegex = new Regex(@"\r\n|\n\r|\n|\r");
 		private Exception? _currentError;
 		private bool _isLoadingSample;
+		private CancellationTokenSource? _loadSampleCts;
+		private bool? _autoUpdateBeforeLoad;
 
 		private static string UniformizeLineEndings(string xamlTextText)
 		{
@@ -505,34 +507,46 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSample(string id)
 		{
+			// Loads can overlap (hash change, snippet pick): the newest one wins and older ones drop their results.
+			_loadSampleCts?.Cancel();
+			var ct = (_loadSampleCts = new CancellationTokenSource()).Token;
+
+			// Captured by the first of overlapping loads only: later ones would see the false it set.
+			_autoUpdateBeforeLoad ??= autoUpdate.IsChecked;
+
 			using (var httpClient = CreateHttp())
 			{
-				var previousAutoUpdate = autoUpdate.IsChecked;
 				try
 				{
 					autoUpdate.IsChecked = false;
 					xamlText.Text = "<!-- loading... -->";
 					jsonDataContext.Text = "/* loading... */";
 
-					var response = await httpClient.GetAsync($"{BaseApiUrl}/{System.Uri.EscapeDataString(id)}");
-					var responsePayload = await response.Content.ReadAsStringAsync();
+					var response = await httpClient.GetAsync($"{BaseApiUrl}/{System.Uri.EscapeDataString(id)}", ct);
+					var responsePayload = await response.Content.ReadAsStringAsync(ct);
 					var json = JObject.Parse(responsePayload);
 
 					_isLoadingSample = true;
 					await ClearError();
+					ct.ThrowIfCancellationRequested();
 
 					var xaml = ((string?)json["Xaml"]) ?? "<!-- empty xaml -->";
 					var data = ((string?)json["Data"]) ?? "// empty";
 					xamlText.Text = UniformizeLineEndings(xaml);
 					jsonDataContext.Text = UniformizeLineEndings(data);
 
-					await Task.Delay(10);
+					await Task.Delay(10, ct);
 
 					SetCodeDirtyState();
 
 					await Update();
+					ct.ThrowIfCancellationRequested();
 
 					SetLink(id);
+				}
+				catch (OperationCanceledException) when (ct.IsCancellationRequested)
+				{
+					// Superseded by a newer load, which owns the editor, the link and the cleanup below.
 				}
 				catch (Exception ex)
 				{
@@ -553,12 +567,16 @@ namespace Uno.UI.Demo.Samples
 				}
 				finally
 				{
-					Analytics.ReportPageView($"snippet/{id}", "");
+					if (!ct.IsCancellationRequested)
+					{
+						Analytics.ReportPageView($"snippet/{id}", "");
 
-					_isLoadingSample = false;
-					ShowError(_currentError);
+						_isLoadingSample = false;
+						ShowError(_currentError);
 
-					autoUpdate.IsChecked = previousAutoUpdate;
+						autoUpdate.IsChecked = _autoUpdateBeforeLoad;
+						_autoUpdateBeforeLoad = null;
+					}
 				}
 			}
 		}
