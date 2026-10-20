@@ -42,8 +42,6 @@ namespace Uno.UI.Demo.Samples
 
 		public Playground()
 		{
-			MeasureStartup();
-
 			this.InitializeComponent();
 
 #if false // simulate monaco slow initialization
@@ -158,15 +156,9 @@ namespace Uno.UI.Demo.Samples
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
+				this.Log().Error("Failed to load the snippet list.", e);
 				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
-		}
-
-		private void MeasureStartup()
-		{
-			var sw = Stopwatch.StartNew();
-			_ = Dispatcher.RunIdleAsync(_ => { Console.WriteLine($"First idle dispatch: {sw.Elapsed}"); });
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -308,7 +300,6 @@ namespace Uno.UI.Demo.Samples
 
 		private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			Console.WriteLine("Property: " + e.PropertyName);
 			if (e.PropertyName == "Text")
 			{
 				OnTextChanged(sender, null!);
@@ -407,7 +398,7 @@ namespace Uno.UI.Demo.Samples
 			try
 			{
 				var r = XamlReader.Load(GetXamlInput());
-				Console.WriteLine($@"Read Xaml in {sw.Elapsed}");
+				this.Log().Debug($"Read Xaml in {sw.Elapsed}");
 
 				await Task.Yield();
 

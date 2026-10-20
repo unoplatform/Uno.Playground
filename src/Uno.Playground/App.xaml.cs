@@ -32,11 +32,6 @@ namespace Uno.UI.Demo
 		/// </summary>
 		private static void InitializeLogging()
 		{
-			System.Threading.Tasks.TaskScheduler.UnobservedTaskException
-				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.Exception);
-			AppDomain.CurrentDomain.UnhandledException
-				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.ExceptionObject);
-
 			var factory = LoggerFactory.Create(builder =>
 			{
 #if __WASM__
@@ -84,6 +79,9 @@ namespace Uno.UI.Demo
 			});
 
 			global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
+
+			System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) => typeof(App).Log().Error("UnobservedTaskException", e.Exception);
+			AppDomain.CurrentDomain.UnhandledException += (s, e) => typeof(App).Log().Error("UnhandledException", e.ExceptionObject as Exception);
 		}
 
 		/// <summary>
@@ -93,12 +91,6 @@ namespace Uno.UI.Demo
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs e)
 		{
-#if HAS_UNO
-			System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) => typeof(App).Log().Error("UnobservedTaskException", e.Exception);
-			AppDomain.CurrentDomain.UnhandledException += (s, e) => typeof(App).Log().Error("UnhandledException", e.ExceptionObject as Exception);
-#endif
-
-			Console.WriteLine("launched!");
 			SetupAppCenter();
 
 #if DEBUG
