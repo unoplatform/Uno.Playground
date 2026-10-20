@@ -738,39 +738,28 @@ namespace Uno.UI.Demo.Samples
 
 			var capturedWidth = codePane.ActualWidth;
 			var capturedPoint = e.GetCurrentPoint(this).Position;
-			var transform = splitter.RenderTransform as TranslateTransform
-				?? (TranslateTransform)(splitter.RenderTransform = new TranslateTransform());
+			var maxWidth = Math.Max(0, mainContent.ActualWidth - splitterColumn.ActualWidth);
 
 			splitter.PointerMoved += Move;
-			splitter.PointerReleased += Release;
-			splitter.PointerCaptureLost += Lost;
+			splitter.PointerReleased += End;
+			splitter.PointerCaptureLost += End;
 
 			splitter.Opacity = .5;
 
-
+			// Resize the column live rather than moving the splitter with a RenderTransform: Monaco is a
+			// native element, and Uno controls transformed over one neither clip nor blend correctly.
 			void Move(object o, PointerRoutedEventArgs args)
 			{
-				transform.X = args.GetCurrentPoint(this).Position.X - capturedPoint.X;
+				var width = capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X;
+				codePaneColumn.Width = new GridLength(Math.Clamp(width, 0, maxWidth));
 			}
 
-			void Release(object o, PointerRoutedEventArgs args)
+			void End(object o, PointerRoutedEventArgs args)
 			{
 				splitter.PointerMoved -= Move;
-				splitter.PointerReleased -= Release;
-				splitter.PointerCaptureLost -= Lost;
+				splitter.PointerReleased -= End;
+				splitter.PointerCaptureLost -= End;
 
-				codePaneColumn.Width = new GridLength(capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X);
-				transform.X = 0;
-				splitter.Opacity = 1;
-			}
-
-			void Lost(object o, PointerRoutedEventArgs args)
-			{
-				splitter.PointerMoved -= Move;
-				splitter.PointerReleased -= Release;
-				splitter.PointerCaptureLost -= Lost;
-
-				transform.X = 0;
 				splitter.Opacity = 1;
 			}
 		}

@@ -375,11 +375,7 @@
 								x:Name="splitter"
 								Grid.Column="1"
 								Grid.RowSpan="3"
-								PointerPressed="BeginResizeCodePane">
-				<local:ResizeHandle.RenderTransform>
-					<TranslateTransform />
-				</local:ResizeHandle.RenderTransform>
-			</local:ResizeHandle>
+								PointerPressed="BeginResizeCodePane" />
 
 			<!--Error Message-->
 			<Border CornerRadius="28"
