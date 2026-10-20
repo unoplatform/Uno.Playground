@@ -1,0 +1,9 @@
+﻿/*
+	Uno doesn't capture the pointer on WebAssembly and ignores the pointer events of native elements, so a
+	drag that crosses Monaco stops moving and never sees its release. While NativeElementPointerPassThrough
+	is on, the pointer goes through native elements to the Uno canvas instead.
+*/
+body[data-native-pointer-pass-through="true"] #uno-native-element-host,
+body[data-native-pointer-pass-through="true"] #uno-native-element-host * {
+	pointer-events: none !important;
+}

@@ -707,11 +707,22 @@ namespace Uno.UI.Demo.Samples
 			splitter.PointerCaptureLost += End;
 
 			splitter.Opacity = .5;
+#if __WASM__
+			// Without it, Monaco swallows the moves and the release once the pointer is over it.
+			Wasm.NativeElementPointerPassThrough.Set(true);
+#endif
 
 			// Resize the column live rather than moving the splitter with a RenderTransform: Monaco is a
 			// native element, and Uno controls transformed over one neither clip nor blend correctly.
 			void Move(object o, PointerRoutedEventArgs args)
 			{
+				// Released where Uno couldn't see it (e.g. outside the browser window, as WebAssembly has no capture)
+				if (!args.Pointer.IsInContact)
+				{
+					End(o, args);
+					return;
+				}
+
 				var width = capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X;
 				codePaneColumn.Width = new GridLength(Math.Clamp(width, 0, maxWidth));
 			}
@@ -721,8 +732,12 @@ namespace Uno.UI.Demo.Samples
 				splitter.PointerMoved -= Move;
 				splitter.PointerReleased -= End;
 				splitter.PointerCaptureLost -= End;
+				splitter.ReleasePointerCapture(args.Pointer);
 
 				splitter.Opacity = 1;
+#if __WASM__
+				Wasm.NativeElementPointerPassThrough.Set(false);
+#endif
 			}
 		}
 
