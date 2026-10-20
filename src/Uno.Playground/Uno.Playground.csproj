@@ -55,10 +55,9 @@
 		<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="Uno.Monaco.Editor" />
 
-		<!-- TODO(uno7): temporarily disabled — Uno.CommunityToolkit.WinUI.* has no Uno 7 compatible build yet; restore once it is updated. -->
-		<!--<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" />
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.DeveloperTools" />
 		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls" />
-		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />-->
+		<PackageReference Include="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />
 
 		<PackageReference Include="Uno.Core.Extensions.Compatibility" />
 

@@ -470,9 +470,8 @@ namespace Uno.UI.Demo.Samples
 				("utu", "using:Uno.Toolkit.UI"),
 				("muxc", "using:Microsoft.UI.Xaml.Controls"),
 				("um", "using:Uno.Material.Extensions"),
-				// TODO(uno7): temporarily disabled — Uno.CommunityToolkit.WinUI.* has no Uno 7 compatible build yet; restore once it is updated.
-				//("cwuc", "using:CommunityToolkit.WinUI.UI.Controls"),
-				//("cwd", "using:CommunityToolkit.WinUI.DeveloperTools"),
+				("cwuc", "using:CommunityToolkit.WinUI.UI.Controls"),
+				("cwd", "using:CommunityToolkit.WinUI.DeveloperTools"),
 				("cwl", "using:CommunityToolkit.WinUI.Lottie"),
 				("x", "http://schemas.microsoft.com/winfx/2006/xaml"),
 				("mc", "http://schemas.openxmlformats.org/markup-compatibility/2006"),

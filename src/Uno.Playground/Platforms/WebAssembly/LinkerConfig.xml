@@ -7,10 +7,9 @@
 	</assembly>
 
 	<!-- Explicitly referenced Community Toolkit packages -->
-	<!-- TODO(uno7): temporarily disabled — Uno.CommunityToolkit.WinUI.* has no Uno 7 compatible build yet; restore once it is updated. -->
-	<!--<assembly fullname="Uno.CommunityToolkit.WinUI.UI.Controls" />
+	<assembly fullname="Uno.CommunityToolkit.WinUI.UI.Controls" />
 	<assembly fullname="Uno.CommunityToolkit.WinUI.UI.Controls.DataGrid" />
-	<assembly fullname="Uno.CommunityToolkit.WinUI.DeveloperTools" />-->
+	<assembly fullname="Uno.CommunityToolkit.WinUI.DeveloperTools" />
 
 	<!-- Monaco Editor -->
 	<assembly fullname="MonacoEditorComponent" />
