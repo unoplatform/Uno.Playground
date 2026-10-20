@@ -188,11 +188,10 @@ namespace Uno.UI.Demo.Samples
 
 		private async void Playground_Loaded(object sender, RoutedEventArgs e)
 		{
-#if !MONACO
-			await LoadSamples();
-#endif
-
 			SetDarkLightToggleInitialState();
+
+			// Not tied to the editor: if Monaco can't start (no WebView), snippets still load in the preview.
+			await LoadSamples();
 		}
 
 		private void SetDarkLightToggleInitialState()
@@ -271,8 +270,6 @@ namespace Uno.UI.Demo.Samples
 #endif
 
 			SetCodeLanguage();
-
-			await LoadSamples();
 		}
 
 		private void SetCodeLanguage()
