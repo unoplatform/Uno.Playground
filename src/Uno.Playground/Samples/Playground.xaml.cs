@@ -264,7 +264,7 @@ namespace Uno.UI.Demo.Samples
 
 				DataContext = data;
 
-				_ = ClearError();
+				ClearError();
 
 				if (data is not null)
 				{
@@ -441,7 +441,7 @@ namespace Uno.UI.Demo.Samples
 
 				content.Content = r;
 
-				await ClearError();
+				ClearError();
 			}
 			catch (Exception ex)
 			{
@@ -459,7 +459,7 @@ namespace Uno.UI.Demo.Samples
 
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
 		/// of the XAML, causing any errors to be off by that many lines
-		private int GetXamlPrefixLineCount => 4;
+		private int GetXamlPrefixLineCount => 3;
 
 
 
@@ -480,12 +480,13 @@ namespace Uno.UI.Demo.Samples
 
 			var nsTags = string.Join(" ", ns.Select(v => $"xmlns:{v.Item1}=\"{v.Item2}\""));
 
+			// The snippet starts its own line at column 0, so error positions only shift by GetXamlPrefixLineCount lines
 			return
 				$@"<Grid
 					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
 					{nsTags}>
-				{xamlText.Text}
-				</Grid>";
+{xamlText.Text}
+</Grid>";
 		}
 
 		private static readonly string _appName =
@@ -578,7 +579,7 @@ namespace Uno.UI.Demo.Samples
 					var json = JObject.Parse(responsePayload);
 
 					_isLoadingSample = true;
-					await ClearError();
+					ClearError();
 					ct.ThrowIfCancellationRequested();
 
 					var xaml = ((string?)json["Xaml"]) ?? "<!-- empty xaml -->";
@@ -668,36 +669,31 @@ namespace Uno.UI.Demo.Samples
 			LaunchUpdate();
 		}
 
-		private async Task ClearError()
+		private void ClearError()
 		{
 			_currentError = null;
-			if (errorBorder.Visibility == Visibility.Visible)
-			{
-				errorBorder.Visibility = Visibility.Collapsed;
-				errorText.Text = "No error";
+			errorBorder.Visibility = Visibility.Collapsed;
+			errorText.Text = "No error";
 #if MONACO
-				await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
+			ClearMarkers();
 #endif
-			}
 		}
 
-		private async void ShowError(Exception? error)
+		private void ShowError(Exception? error)
 		{
 			_currentError = error;
 			if (error != null && !_isLoadingSample)
 			{
 				errorText.Text = error.Message;
 #if MONACO
-				if (errorBorder.Visibility == Visibility.Visible)
-				{
-					// Only clear the errors if the error bubble is already showing, in which
-					// case we need to update the errors
-					await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
-				}
 				errorBorder.Visibility = Visibility.Visible;
 
+				// The editor pushes the whole Markers list to Monaco on every change: keep only the current error in it
+				ClearMarkers();
 				if (error is System.Xml.XmlException xamlError)
 				{
+					// Clamped so an error in the prepended Grid still lands in the editor
+					var line = (uint)Math.Max(1, xamlError.LineNumber - GetXamlPrefixLineCount);
 					xamlText.Markers.Add(
 						new MarkerData()
 						{
@@ -705,9 +701,9 @@ namespace Uno.UI.Demo.Samples
 							Message = error.Message,
 							Severity = MarkerSeverity.Error,
 							Source = "Origin",
-							StartLineNumber = (uint)(xamlError.LineNumber - GetXamlPrefixLineCount),
+							StartLineNumber = line,
 							StartColumn = (uint)xamlError.LinePosition,
-							EndLineNumber = (uint)(xamlError.LineNumber - GetXamlPrefixLineCount),
+							EndLineNumber = line,
 							EndColumn = (uint)xamlError.LinePosition + 5
 						});
 				}
@@ -715,6 +711,17 @@ namespace Uno.UI.Demo.Samples
 			}
 
 		}
+
+#if MONACO
+		private void ClearMarkers()
+		{
+			// Clear() notifies even when empty, and each notification is a round-trip to Monaco
+			if (xamlText.Markers.Count > 0)
+			{
+				xamlText.Markers.Clear();
+			}
+		}
+#endif
 
 		private void CopyError(object sender, RoutedEventArgs e)
 		{
