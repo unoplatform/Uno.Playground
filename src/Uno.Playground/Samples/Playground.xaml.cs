@@ -48,6 +48,35 @@ namespace Uno.UI.Demo.Samples
 
 			this.InitializeComponent();
 
+#if false // simulate monaco slow initialization
+			// Keeps Monaco out of the tree for 5s, so the editor status message stays visible.
+			var editorHost = (Border)xamlText.Parent;
+			editorHost.Child = null;
+			_ = DelayEditor();
+			async Task DelayEditor()
+			{
+				await Task.Delay(5000);
+				editorHost.Child = xamlText;
+			}
+#elif false // simulate monaco initialization failure
+			// Keeps Monaco out of the tree so it never loads, and after 5s raises a fake startup error
+			// through the real InternalException handler.
+			((Border)xamlText.Parent).Child = null;
+			_ = SimulateEditorError();
+			async Task SimulateEditorError()
+			{
+				await Task.Delay(5000);
+				var internalException = typeof(EditorHostBase).GetField(nameof(EditorHostBase.InternalException), BindingFlags.Instance | BindingFlags.NonPublic);
+				(internalException?.GetValue(xamlText) as Delegate)?.DynamicInvoke(
+					xamlText,
+					new PlatformNotSupportedException(
+						"(simulated) WebKitGTK runtime library not found. Monaco Editor requires WebKitGTK on Linux.\n\n" +
+						"Install it with:\n" +
+						"  Ubuntu 24.04+: sudo apt install libgtk-3-0t64 libwebkit2gtk-4.1-0\n" +
+						"  Ubuntu 22.04:  sudo apt install libwebkit2gtk-4.0-37"));
+			}
+#endif
+
 			Loaded += Playground_Loaded;
 
 #if MONACO
@@ -56,7 +85,18 @@ namespace Uno.UI.Demo.Samples
 
 			// The Monaco backend fails silently otherwise: a failed presenter leaves an empty pane.
 			xamlText.InternalException += (snd, exception) =>
+			{
 				this.Log().Error("Monaco editor backend failed.", exception);
+
+				DispatcherQueue.TryEnqueue(() =>
+				{
+					// Once the editor is up, these are non-fatal script errors: the log is enough.
+					if (!xamlText.IsEditorLoaded)
+					{
+						editorStatusErrors.Text += (editorStatusErrors.Text.Length > 0 ? "\n" : "") + exception.Message;
+					}
+				});
+			};
 #else
 			xamlText.TextChanged += OnTextChanged;
 #endif
@@ -255,6 +295,12 @@ namespace Uno.UI.Demo.Samples
 
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
+#if MONACO
+			// Before the guard below: a retry can succeed after an error was listed.
+			editorStatus.Visibility = Visibility.Collapsed;
+			editorStatusErrors.Text = "";
+#endif
+
 			// Raised again when the desktop backend re-bootstraps Monaco in the same page, where the
 			// completion provider is still registered: registering it again would duplicate every item.
 			if (_isEditorInitialized)

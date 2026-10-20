@@ -275,6 +275,19 @@
 									   CodeLanguage="csharp" />
 				</not_win:Border>
 
+				<!-- Shown until the editor is up, with whatever keeps it from starting -->
+				<not_win:StackPanel x:Name="editorStatus"
+									Grid.Row="1"
+									Margin="16">
+					<TextBlock Text="Initializing Monaco editor..."
+							   Foreground="{StaticResource Color08Brush}" />
+					<TextBlock x:Name="editorStatusErrors"
+							   Margin="0,8,0,0"
+							   TextWrapping="Wrap"
+							   IsTextSelectionEnabled="True"
+							   Foreground="#f85977" />
+				</not_win:StackPanel>
+
 				<win:Border Grid.Row="1">
 					<local:CodeBox x:Name="xamlText"
 								   Background="Transparent" />
