@@ -8,7 +8,7 @@
   <ItemGroup>
     <!-- Uno.Playground -->
     <PackageVersion Include="Microsoft.TypeScript.MSBuild" Version="4.5.2" />
-    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageVersion Include="Uno.Monaco.Editor" Version="7.0.0-dev.3" />
     <PackageVersion Include="Uno.CommunityToolkit.WinUI.DeveloperTools" Version="7.2.0-dev.35" />
     <PackageVersion Include="Uno.CommunityToolkit.WinUI.UI.Controls" Version="7.2.0-dev.35" />
