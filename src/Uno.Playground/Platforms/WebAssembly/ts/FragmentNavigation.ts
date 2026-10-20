@@ -28,7 +28,7 @@
 
 			window.addEventListener(
 				"hashchange",
-				_ => this.notifyFragmentChanged(),
+				_ => this.notifyFragmentChanged().catch(e => console.error("Fragment change not delivered to .NET", e)),
 				false);
 
 			return "ok";
@@ -42,10 +42,11 @@
 				return;  // nothing to do
 			}
 
-			this.currentFragment = newFragment;
-
 			await this.initializeMethods();
 			this.notifyFragmentChangedMethod(newFragment);
+
+			// Only once .NET has it: if delivery fails, the fragment is retried on the next hashchange.
+			this.currentFragment = newFragment;
 		}
 
 		private static async initializeMethods(): Promise<void> {
