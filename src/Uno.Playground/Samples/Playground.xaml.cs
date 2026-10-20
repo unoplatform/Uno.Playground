@@ -314,24 +314,6 @@ namespace Uno.UI.Demo.Samples
 			// Must run once the editor is initialized: registrations made before that are dropped.
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
 #endif
-
-			SetCodeLanguage();
-		}
-
-		private void SetCodeLanguage()
-		{
-			void setLanguage()
-			{
-				Console.WriteLine("setLanguage");
-#if MONACO
-				// Assigning the current language again is a no-op; toggling through "text" to force it
-				// (an old Monaco initialization workaround) re-created the model's mode on every refresh
-				// and dismissed the completion popup as soon as it opened.
-				xamlText.CodeLanguage = "xml";
-#endif
-			}
-
-			_ = Dispatcher.RunIdleAsync(_ => setLanguage());
 		}
 
 		private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -453,8 +435,6 @@ namespace Uno.UI.Demo.Samples
 				loading.Visibility = Visibility.Collapsed;
 				SetCodeDirtyState(isDirty: false);
 			}
-
-			SetCodeLanguage();
 		}
 
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start

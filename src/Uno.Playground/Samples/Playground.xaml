@@ -272,7 +272,7 @@
 									   Background="Transparent"
 									   RequestedTheme="Light"
 									   HasGlyphMargin="True"
-									   CodeLanguage="csharp" />
+									   CodeLanguage="xml" />
 				</not_win:Border>
 
 				<!-- Shown until the editor is up, with whatever keeps it from starting -->
