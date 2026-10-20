@@ -38,6 +38,7 @@ namespace Uno.UI.Demo.Samples
 
 		private bool _isMobileFormFactor = false;
 		private bool _isDirty = false;
+		private bool _isEditorInitialized = false;
 		private bool _codeChangePending = false;
 		private DateTimeOffset _lastChange;
 
@@ -118,7 +119,6 @@ namespace Uno.UI.Demo.Samples
 					.ToArray();
 
 				samplesCombobox.ItemsSource = samplesForDisplay;
-				samplesCombobox.SelectionChanged += Samples_SelectionChanged;
 				samplesCombobox.PlaceholderText = "Snippets";
 				samplesCombobox.IsEnabled = true;
 			}
@@ -256,6 +256,15 @@ namespace Uno.UI.Demo.Samples
 
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
+			// Raised again when the desktop backend re-bootstraps Monaco in the same page, where the
+			// completion provider is still registered: registering it again would duplicate every item.
+			if (_isEditorInitialized)
+			{
+				return;
+			}
+
+			_isEditorInitialized = true;
+
 #if MONACO
 			// Must run once the editor is initialized: registrations made before that are dropped.
 			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());

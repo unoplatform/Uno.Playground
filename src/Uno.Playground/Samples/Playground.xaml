@@ -159,7 +159,8 @@
 					  VerticalAlignment="Center"
 					  Style="{StaticResource SampleComboBoxStyle}"
 					  ItemTemplate="{StaticResource SampleItemTemplate}"
-					  ItemContainerStyle="{StaticResource SampleComboboxItemStyle}" />
+					  ItemContainerStyle="{StaticResource SampleComboboxItemStyle}"
+					  SelectionChanged="Samples_SelectionChanged" />
 		</Grid>
 		<!--ToolBar END-->
 
