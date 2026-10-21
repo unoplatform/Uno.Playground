@@ -12,7 +12,7 @@
 	<assembly fullname="Uno.CommunityToolkit.WinUI.DeveloperTools" />
 
 	<!-- Monaco Editor -->
-	<assembly fullname="Uno.Monaco.Editor" />
+	<assembly fullname="MonacoEditorComponent" />
 
 	<!-- Logging -->
 	<assembly fullname="Microsoft.Extensions.Logging.Console" />

@@ -1,4 +1,5 @@
-﻿using Windows.UI.Core;
+﻿using Uno.Logging;
+using Windows.UI.Core;
 using Microsoft.UI.Xaml.Media.Animation;
 
 namespace Uno.UI.Demo.Behaviors
@@ -6,7 +7,7 @@ namespace Uno.UI.Demo.Behaviors
 	[Bindable]
 	public static class DynamicAnimation
     {
-#if !WINDOWS_UWP
+#if !WINAPPSDK
 		[Preserve]
 #endif
 		public static readonly DependencyProperty StoryboardProperty = DependencyProperty.RegisterAttached(
@@ -30,19 +31,19 @@ namespace Uno.UI.Demo.Behaviors
 					}
 					catch (Exception err)
 					{
-						Console.Error.WriteLine("Failed to start storyboard: " + err);
+						typeof(DynamicAnimation).Log().Error("Failed to start storyboard.", err);
 					}
 				});
 			}
 		}
 
-#if !WINDOWS_UWP
+#if !WINAPPSDK
 		[Preserve]
 #endif
 		public static Storyboard GetStoryboard(DependencyObject target)
 			=> (Storyboard) target.GetValue(StoryboardProperty);
 
-#if !WINDOWS_UWP
+#if !WINAPPSDK
 		[Preserve]
 #endif
 		public static void SetStoryboard(DependencyObject target, Storyboard value)

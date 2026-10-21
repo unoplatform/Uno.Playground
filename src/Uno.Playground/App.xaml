@@ -15,7 +15,6 @@
 				<ResourceDictionary Source="CodeBox.xaml" />
 				<ResourceDictionary Source="DefaultStyles.xaml" />
 				<ResourceDictionary Source="Styles/_Styles.xaml" />
-				<ResourceDictionary Source="Icons.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Application.Resources>

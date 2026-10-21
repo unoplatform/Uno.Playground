@@ -24,7 +24,7 @@ namespace Uno.UI.Demo
 			global::Uno.UI.FeatureConfiguration.Font.DefaultTextFontFamily = "ms-appx:///Uno.Fonts.OpenSans/Fonts/OpenSans.ttf";
 
 			this.InitializeComponent();
-			this.Suspending += OnSuspending;
+			Windows.ApplicationModel.Core.CoreApplication.Suspending += OnSuspending;
 		}
 
 		/// <summary>
@@ -32,18 +32,11 @@ namespace Uno.UI.Demo
 		/// </summary>
 		private static void InitializeLogging()
 		{
-			System.Threading.Tasks.TaskScheduler.UnobservedTaskException
-				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.Exception);
-			AppDomain.CurrentDomain.UnhandledException
-				+= (s, e) => Console.WriteLine("UnobservedTaskException" + e.ExceptionObject);
-
 			var factory = LoggerFactory.Create(builder =>
 			{
 #if __WASM__
 				builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
-#elif __IOS__
-                builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
-#elif NETFX_CORE
+#elif WINAPPSDK
                 builder.AddDebug();
 #else
                 builder.AddConsole();
@@ -86,6 +79,9 @@ namespace Uno.UI.Demo
 			});
 
 			global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
+
+			System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) => typeof(App).Log().Error("UnobservedTaskException", e.Exception);
+			AppDomain.CurrentDomain.UnhandledException += (s, e) => typeof(App).Log().Error("UnhandledException", e.ExceptionObject as Exception);
 		}
 
 		/// <summary>
@@ -95,12 +91,6 @@ namespace Uno.UI.Demo
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs e)
 		{
-#if HAS_UNO
-			System.Threading.Tasks.TaskScheduler.UnobservedTaskException += (s, e) => typeof(App).Log().Error("UnobservedTaskException", e.Exception);
-			AppDomain.CurrentDomain.UnhandledException += (s, e) => typeof(App).Log().Error("UnhandledException", e.ExceptionObject as Exception);
-#endif
-
-			Console.WriteLine("launched!");
 			SetupAppCenter();
 
 #if DEBUG
@@ -117,13 +107,7 @@ namespace Uno.UI.Demo
 			if (_rootFrame == null)
 			{
 				// Create a Frame to act as the navigation context and navigate to the first page
-				_rootFrame = new Frame()
-				{
-#if __ANDROID__
-					// Workaround to hide splash screen (window background) on Android during navigation
-					Background = new SolidColorBrush(Colors.White)
-#endif
-				};
+				_rootFrame = new Frame();
 
 				_rootFrame.NavigationFailed += OnNavigationFailed;
 				_rootFrame.Navigated += RootFrame_Navigated;
@@ -149,11 +133,7 @@ namespace Uno.UI.Demo
 					// When the navigation stack isn't restored navigate to the first page,
 					// configuring the new page by passing required information as a navigation
 					// parameter
-#if __WASM__
 					_rootFrame.Navigate(typeof(Samples.Playground), e.Arguments);
-#else
-					_rootFrame.Navigate(typeof(SamplesPage), e.Arguments);
-#endif
 				}
 
 				// Ensure the current window is active
@@ -196,7 +176,7 @@ namespace Uno.UI.Demo
 		/// </summary>
 		/// <param name="sender">The source of the suspend request.</param>
 		/// <param name="e">Details about the suspend request.</param>
-		private void OnSuspending(object sender, SuspendingEventArgs e)
+		private void OnSuspending(object? sender, SuspendingEventArgs e)
 		{
 			//var deferral = e.SuspendingOperation.GetDeferral();
 			////TODO: Save application state and stop any background activity
@@ -205,17 +185,9 @@ namespace Uno.UI.Demo
 
 		private void SetupAppCenter()
 		{
-#if __IOS__ || __ANDROID__ || NETFX_CORE
+#if WINAPPSDK
 
-			var secret =
-#if __IOS__
-				"190c7b7f-244c-4d05-85b4-5bdcfe332d6f"
-#elif __ANDROID__
-				"9eb84f65-1c0e-4f59-b5c4-4749cb4b148f"
-#elif NETFX_CORE
-				"2b40f50e-0047-41a5-9ca0-879568df0f1e"
-#endif
-			;
+			var secret = "2b40f50e-0047-41a5-9ca0-879568df0f1e";
 
 			Microsoft.AppCenter.AppCenter.Start(
 				secret,

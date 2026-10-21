@@ -17,26 +17,26 @@ var Uno;
                 }
                 this.subscribed = true;
                 this.currentFragment = this.getCurrentFragment();
-                window.addEventListener("hashchange", _ => this.notifyFragmentChanged(), false);
+                window.addEventListener("hashchange", _ => this.notifyFragmentChanged().catch(e => console.error("Fragment change not delivered to .NET", e)), false);
                 return "ok";
             }
-            static notifyFragmentChanged() {
+            static async notifyFragmentChanged() {
                 const newFragment = this.getCurrentFragment();
                 if (newFragment === this.currentFragment) {
                     return; // nothing to do
                 }
+                await this.initializeMethods();
+                this.notifyFragmentChangedMethod(newFragment);
+                // Only once .NET has it: if delivery fails, the fragment is retried on the next hashchange.
                 this.currentFragment = newFragment;
-                this.initializeMethods();
-                const newFragmentStr = MonoRuntime.mono_string(newFragment);
-                MonoRuntime.call_method(this.notifyFragmentChangedMethod, null, [newFragmentStr]);
             }
-            static initializeMethods() {
+            static async initializeMethods() {
                 if (this.notifyFragmentChangedMethod) {
                     return; // already initialized.
                 }
-                const asm = MonoRuntime.assembly_load("Uno.Playground");
-                const handlerClass = MonoRuntime.find_class(asm, "Uno.UI.Wasm", "FragmentNavigationHandler");
-                this.notifyFragmentChangedMethod = MonoRuntime.find_method(handlerClass, "NotifyFragmentChanged", -1);
+                // [JSExport] methods of Uno.UI.Wasm.FragmentNavigationHandler
+                const exports = await globalThis.Module.getAssemblyExports("Uno.Playground");
+                this.notifyFragmentChangedMethod = exports.Uno.UI.Wasm.FragmentNavigationHandler.NotifyFragmentChanged;
             }
         }
         FragmentNavigationHandler.subscribed = false;

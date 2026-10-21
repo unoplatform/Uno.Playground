@@ -1,7 +1,4 @@
-﻿#if __WASM__
-#define MONACO
-#endif
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Net.Http.Headers;
@@ -17,14 +14,11 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Uno.Logging;
 using Uno.UI.Demo.Behaviors;
-using Uno.UI.Toolkit;
+using Uno.UI.Behaviors;
 
-#if __WASM__
 using Monaco.Languages;
 using Monaco.Editor;
 using Monaco;
-using System.Drawing.Text;
-#endif
 
 namespace Uno.UI.Demo.Samples
 {
@@ -42,40 +36,64 @@ namespace Uno.UI.Demo.Samples
 
 		private bool _isMobileFormFactor = false;
 		private bool _isDirty = false;
+		private bool _isEditorInitialized = false;
 		private bool _codeChangePending = false;
 		private DateTimeOffset _lastChange;
 
 		public Playground()
 		{
-			MeasureStartup();
-
 			this.InitializeComponent();
+
+#if false // simulate monaco slow initialization
+			// Keeps Monaco out of the tree for 5s, so the editor status message stays visible.
+			var editorHost = (Border)xamlText.Parent;
+			editorHost.Child = null;
+			_ = DelayEditor();
+			async Task DelayEditor()
+			{
+				await Task.Delay(5000);
+				editorHost.Child = xamlText;
+			}
+#elif false // simulate monaco initialization failure
+			// Keeps Monaco out of the tree so it never loads, and after 5s raises a fake startup error
+			// through the real InternalException handler.
+			((Border)xamlText.Parent).Child = null;
+			_ = SimulateEditorError();
+			async Task SimulateEditorError()
+			{
+				await Task.Delay(5000);
+				var internalException = typeof(EditorHostBase).GetField(nameof(EditorHostBase.InternalException), BindingFlags.Instance | BindingFlags.NonPublic);
+				(internalException?.GetValue(xamlText) as Delegate)?.DynamicInvoke(
+					xamlText,
+					new PlatformNotSupportedException(
+						"(simulated) WebKitGTK runtime library not found. Monaco Editor requires WebKitGTK on Linux.\n\n" +
+						"Install it with:\n" +
+						"  Ubuntu 24.04+: sudo apt install libgtk-3-0t64 libwebkit2gtk-4.1-0\n" +
+						"  Ubuntu 22.04:  sudo apt install libwebkit2gtk-4.0-37"));
+			}
+#endif
 
 			Loaded += Playground_Loaded;
 
-#if MONACO
 			xamlText.PropertyChanged += OnPropertyChanged;
-			xamlText.Loaded += OnEditorLoaded;
-			xamlText.Loading += OnEditorLoading;
+			xamlText.EditorLoaded += OnEditorLoaded;
 
-			xamlText.SizeChanged += async (object? snd, SizeChangedEventArgs evt) =>
+			// The Monaco backend fails silently otherwise: a failed presenter leaves an empty pane.
+			xamlText.InternalException += (snd, exception) =>
 			{
-				try
+				this.Log().Error("Monaco editor backend failed.", exception);
+
+				DispatcherQueue.TryEnqueue(() =>
 				{
-					await xamlText.InvokeScriptAsync("if(typeof editor !== 'undefined') editor.layout();");
-				}
-				catch (Exception ex)
-				{
-					this.Log().Error("Failed to invoke Monaco editor layout script on SizeChanged.", ex);
-				}
+					// Once the editor is up, these are non-fatal script errors: the log is enough.
+					if (!xamlText.IsEditorLoaded)
+					{
+						editorStatusErrors.Text += (editorStatusErrors.Text.Length > 0 ? "\n" : "") + exception.Message;
+					}
+				});
 			};
-#else
-			xamlText.TextChanged += OnTextChanged;
-#endif
 
 #if __WASM__
-			splitter.SetCssClass("resizeHandle");
-
 			// Eagerly create material theme
 			_ = new Uno.Material.MaterialTheme();
 #endif
@@ -133,21 +151,14 @@ namespace Uno.UI.Demo.Samples
 					.ToArray();
 
 				samplesCombobox.ItemsSource = samplesForDisplay;
-				samplesCombobox.SelectionChanged += Samples_SelectionChanged;
 				samplesCombobox.PlaceholderText = "Snippets";
 				samplesCombobox.IsEnabled = true;
 			}
 			catch (Exception e)
 			{
-				Console.WriteLine(e);
+				this.Log().Error("Failed to load the snippet list.", e);
 				samplesCombobox.PlaceholderText = "[Error loading samples]";
 			}
-		}
-
-		private void MeasureStartup()
-		{
-			var sw = Stopwatch.StartNew();
-			_ = Dispatcher.RunIdleAsync(_ => { Console.WriteLine($"First idle dispatch: {sw.Elapsed}"); });
 		}
 
 		protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -200,37 +211,13 @@ namespace Uno.UI.Demo.Samples
 				await LoadSample(sample.Id);
 			}
 		}
-		private void OnBackClicked(object sender, RoutedEventArgs e)
-		{
-			Frame.GoBack();
-		}
 
 		private async void Playground_Loaded(object sender, RoutedEventArgs e)
 		{
-#if !__WASM__
-			backButton.Visibility = base.Frame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
-
-			xamlText.Text = @"<StackPanel Orientation=""Vertical"">
-	<!-- Type your favorite XAML code here
-	...or pick a snippet in the menu. -->
-
-	<TextBlock Text=""{Binding message}"" />
-</StackPanel>
-";
-
-			jsonDataContext.Text = @"{
-	message: ""Hello World!""
-}
-
-/* Tip: two-way bindings supported */";
-
-			LaunchUpdate();
-#endif
-#if !MONACO
-			await LoadSamples();
-#endif
-
 			SetDarkLightToggleInitialState();
+
+			// Not tied to the editor: if Monaco can't start (no WebView), snippets still load in the preview.
+			await LoadSamples();
 		}
 
 		private void SetDarkLightToggleInitialState()
@@ -263,7 +250,7 @@ namespace Uno.UI.Demo.Samples
 
 				DataContext = data;
 
-				_ = ClearError();
+				ClearError();
 
 				if (data is not null)
 				{
@@ -292,37 +279,27 @@ namespace Uno.UI.Demo.Samples
 			jsonDataContext.Text = data;
 		}
 
-		private async void OnEditorLoading(object sender, RoutedEventArgs e)
-		{
-#if MONACO
-			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
-#endif
-		}
-
 		private async void OnEditorLoaded(object sender, RoutedEventArgs e)
 		{
-			SetCodeLanguage();
+			// Before the guard below: a retry can succeed after an error was listed.
+			editorStatus.Visibility = Visibility.Collapsed;
+			editorStatusErrors.Text = "";
 
-			await LoadSamples();
-		}
-
-		private void SetCodeLanguage()
-		{
-			void setLanguage()
+			// Raised again when the desktop backend re-bootstraps Monaco in the same page, where the
+			// completion provider is still registered: registering it again would duplicate every item.
+			if (_isEditorInitialized)
 			{
-				Console.WriteLine("setLanguage");
-#if MONACO
-				xamlText.CodeLanguage = "text";
-				xamlText.CodeLanguage = "xml";
-#endif
+				return;
 			}
 
-			_ = Dispatcher.RunIdleAsync(_ => setLanguage());
+			_isEditorInitialized = true;
+
+			// Must run once the editor is initialized: registrations made before that are dropped.
+			await xamlText.Languages.RegisterCompletionItemProviderAsync("xml", new XamlLanguageProvider());
 		}
 
 		private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
 		{
-			Console.WriteLine("Property: " + e.PropertyName);
 			if (e.PropertyName == "Text")
 			{
 				OnTextChanged(sender, null!);
@@ -421,13 +398,13 @@ namespace Uno.UI.Demo.Samples
 			try
 			{
 				var r = XamlReader.Load(GetXamlInput());
-				Console.WriteLine($@"Read Xaml in {sw.Elapsed}");
+				this.Log().Debug($"Read Xaml in {sw.Elapsed}");
 
 				await Task.Yield();
 
 				content.Content = r;
 
-				await ClearError();
+				ClearError();
 			}
 			catch (Exception ex)
 			{
@@ -439,13 +416,11 @@ namespace Uno.UI.Demo.Samples
 				loading.Visibility = Visibility.Collapsed;
 				SetCodeDirtyState(isDirty: false);
 			}
-
-			SetCodeLanguage();
 		}
 
 		/// When parsing XAML we need to prepend a Grid element (see GetXamlInput) which adds lines to the start
 		/// of the XAML, causing any errors to be off by that many lines
-		private int GetXamlPrefixLineCount => 4;
+		private int GetXamlPrefixLineCount => 3;
 
 
 
@@ -466,12 +441,13 @@ namespace Uno.UI.Demo.Samples
 
 			var nsTags = string.Join(" ", ns.Select(v => $"xmlns:{v.Item1}=\"{v.Item2}\""));
 
+			// The snippet starts its own line at column 0, so error positions only shift by GetXamlPrefixLineCount lines
 			return
 				$@"<Grid
 					xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
 					{nsTags}>
-				{xamlText.Text}
-				</Grid>";
+{xamlText.Text}
+</Grid>";
 		}
 
 		private static readonly string _appName =
@@ -534,6 +510,8 @@ namespace Uno.UI.Demo.Samples
 		private static readonly Regex _lineEndingRegex = new Regex(@"\r\n|\n\r|\n|\r");
 		private Exception? _currentError;
 		private bool _isLoadingSample;
+		private CancellationTokenSource? _loadSampleCts;
+		private bool? _autoUpdateBeforeLoad;
 
 		private static string UniformizeLineEndings(string xamlTextText)
 		{
@@ -542,34 +520,46 @@ namespace Uno.UI.Demo.Samples
 
 		private async Task LoadSample(string id)
 		{
+			// Loads can overlap (hash change, snippet pick): the newest one wins and older ones drop their results.
+			_loadSampleCts?.Cancel();
+			var ct = (_loadSampleCts = new CancellationTokenSource()).Token;
+
+			// Captured by the first of overlapping loads only: later ones would see the false it set.
+			_autoUpdateBeforeLoad ??= autoUpdate.IsChecked;
+
 			using (var httpClient = CreateHttp())
 			{
-				var previousAutoUpdate = autoUpdate.IsChecked;
 				try
 				{
 					autoUpdate.IsChecked = false;
 					xamlText.Text = "<!-- loading... -->";
 					jsonDataContext.Text = "/* loading... */";
 
-					var response = await httpClient.GetAsync($"{BaseApiUrl}/{System.Uri.EscapeDataString(id)}");
-					var responsePayload = await response.Content.ReadAsStringAsync();
+					var response = await httpClient.GetAsync($"{BaseApiUrl}/{System.Uri.EscapeDataString(id)}", ct);
+					var responsePayload = await response.Content.ReadAsStringAsync(ct);
 					var json = JObject.Parse(responsePayload);
 
 					_isLoadingSample = true;
-					await ClearError();
+					ClearError();
+					ct.ThrowIfCancellationRequested();
 
 					var xaml = ((string?)json["Xaml"]) ?? "<!-- empty xaml -->";
 					var data = ((string?)json["Data"]) ?? "// empty";
 					xamlText.Text = UniformizeLineEndings(xaml);
 					jsonDataContext.Text = UniformizeLineEndings(data);
 
-					await Task.Delay(10);
+					await Task.Delay(10, ct);
 
 					SetCodeDirtyState();
 
 					await Update();
+					ct.ThrowIfCancellationRequested();
 
 					SetLink(id);
+				}
+				catch (OperationCanceledException) when (ct.IsCancellationRequested)
+				{
+					// Superseded by a newer load, which owns the editor, the link and the cleanup below.
 				}
 				catch (Exception ex)
 				{
@@ -590,12 +580,16 @@ namespace Uno.UI.Demo.Samples
 				}
 				finally
 				{
-					Analytics.ReportPageView($"snippet/{id}", "");
+					if (!ct.IsCancellationRequested)
+					{
+						Analytics.ReportPageView($"snippet/{id}", "");
 
-					_isLoadingSample = false;
-					ShowError(_currentError);
+						_isLoadingSample = false;
+						ShowError(_currentError);
 
-					autoUpdate.IsChecked = previousAutoUpdate;
+						autoUpdate.IsChecked = _autoUpdateBeforeLoad;
+						_autoUpdateBeforeLoad = null;
+					}
 				}
 			}
 		}
@@ -636,36 +630,28 @@ namespace Uno.UI.Demo.Samples
 			LaunchUpdate();
 		}
 
-		private async Task ClearError()
+		private void ClearError()
 		{
 			_currentError = null;
-			if (errorBorder.Visibility == Visibility.Visible)
-			{
-				errorBorder.Visibility = Visibility.Collapsed;
-				errorText.Text = "No error";
-#if MONACO
-				await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
-#endif
-			}
+			errorBorder.Visibility = Visibility.Collapsed;
+			errorText.Text = "No error";
+			ClearMarkers();
 		}
 
-		private async void ShowError(Exception? error)
+		private void ShowError(Exception? error)
 		{
 			_currentError = error;
 			if (error != null && !_isLoadingSample)
 			{
 				errorText.Text = error.Message;
-#if MONACO
-				if (errorBorder.Visibility == Visibility.Visible)
-				{
-					// Only clear the errors if the error bubble is already showing, in which
-					// case we need to update the errors
-					await xamlText.SetModelMarkersAsync("CodeEditor", Array.Empty<IMarkerData>());
-				}
 				errorBorder.Visibility = Visibility.Visible;
 
+				// The editor pushes the whole Markers list to Monaco on every change: keep only the current error in it
+				ClearMarkers();
 				if (error is System.Xml.XmlException xamlError)
 				{
+					// Clamped so an error in the prepended Grid still lands in the editor
+					var line = (uint)Math.Max(1, xamlError.LineNumber - GetXamlPrefixLineCount);
 					xamlText.Markers.Add(
 						new MarkerData()
 						{
@@ -673,15 +659,23 @@ namespace Uno.UI.Demo.Samples
 							Message = error.Message,
 							Severity = MarkerSeverity.Error,
 							Source = "Origin",
-							StartLineNumber = (uint)(xamlError.LineNumber - GetXamlPrefixLineCount),
+							StartLineNumber = line,
 							StartColumn = (uint)xamlError.LinePosition,
-							EndLineNumber = (uint)(xamlError.LineNumber - GetXamlPrefixLineCount),
+							EndLineNumber = line,
 							EndColumn = (uint)xamlError.LinePosition + 5
 						});
 				}
-#endif
 			}
 
+		}
+
+		private void ClearMarkers()
+		{
+			// Clear() notifies even when empty, and each notification is a round-trip to Monaco
+			if (xamlText.Markers.Count > 0)
+			{
+				xamlText.Markers.Clear();
+			}
 		}
 
 		private void CopyError(object sender, RoutedEventArgs e)
@@ -706,40 +700,44 @@ namespace Uno.UI.Demo.Samples
 
 			var capturedWidth = codePane.ActualWidth;
 			var capturedPoint = e.GetCurrentPoint(this).Position;
-			var transform = splitter.RenderTransform as TranslateTransform
-				?? (TranslateTransform)(splitter.RenderTransform = new TranslateTransform());
+			var maxWidth = Math.Max(0, mainContent.ActualWidth - splitterColumn.ActualWidth);
 
 			splitter.PointerMoved += Move;
-			splitter.PointerReleased += Release;
-			splitter.PointerCaptureLost += Lost;
+			splitter.PointerReleased += End;
+			splitter.PointerCaptureLost += End;
 
 			splitter.Opacity = .5;
+#if __WASM__
+			// Without it, Monaco swallows the moves and the release once the pointer is over it.
+			Wasm.NativeElementPointerPassThrough.Set(true);
+#endif
 
-
+			// Resize the column live rather than moving the splitter with a RenderTransform: Monaco is a
+			// native element, and Uno controls transformed over one neither clip nor blend correctly.
 			void Move(object o, PointerRoutedEventArgs args)
 			{
-				transform.X = args.GetCurrentPoint(this).Position.X - capturedPoint.X;
+				// Released where Uno couldn't see it (e.g. outside the browser window, as WebAssembly has no capture)
+				if (!args.Pointer.IsInContact)
+				{
+					End(o, args);
+					return;
+				}
+
+				var width = capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X;
+				codePaneColumn.Width = new GridLength(Math.Clamp(width, 0, maxWidth));
 			}
 
-			void Release(object o, PointerRoutedEventArgs args)
+			void End(object o, PointerRoutedEventArgs args)
 			{
 				splitter.PointerMoved -= Move;
-				splitter.PointerReleased -= Release;
-				splitter.PointerCaptureLost -= Lost;
+				splitter.PointerReleased -= End;
+				splitter.PointerCaptureLost -= End;
+				splitter.ReleasePointerCapture(args.Pointer);
 
-				codePaneColumn.Width = new GridLength(capturedWidth + args.GetCurrentPoint(this).Position.X - capturedPoint.X);
-				transform.X = 0;
 				splitter.Opacity = 1;
-			}
-
-			void Lost(object o, PointerRoutedEventArgs args)
-			{
-				splitter.PointerMoved -= Move;
-				splitter.PointerReleased -= Release;
-				splitter.PointerCaptureLost -= Lost;
-
-				transform.X = 0;
-				splitter.Opacity = 1;
+#if __WASM__
+				Wasm.NativeElementPointerPassThrough.Set(false);
+#endif
 			}
 		}
 
@@ -820,56 +818,46 @@ namespace Uno.UI.Demo.Samples
 		}
 	}
 
-#if MONACO
 	public class XamlLanguageProvider : CompletionItemProvider
 	{
 		public string[] TriggerCharacters => new string[] { "<" };
 
-		public IAsyncOperation<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
+		public async Task<CompletionList> ProvideCompletionItemsAsync(IModel document, Position position, CompletionContext context)
 		{
-			return AsyncInfo.Run(async delegate (CancellationToken cancelationToken)
-			{
-				var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
+			var textUntilPosition = await document.GetValueInRangeAsync(new Monaco.Range(1, 1, position.LineNumber, position.Column));
 
-				if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			if (textUntilPosition is not null && textUntilPosition.EndsWith("boo"))
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
-							new CompletionItem("booboo", "booboo", CompletionItemKind.File),
-						}
-					};
-				}
-				else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+						new CompletionItem("booyah", "booyah", CompletionItemKind.Folder),
+						new CompletionItem("booboo", "booboo", CompletionItemKind.File),
+					}
+				};
+			}
+			else if (context.TriggerKind == CompletionTriggerKind.TriggerCharacter)
+			{
+				return new CompletionList()
 				{
-					return new CompletionList()
+					Suggestions = new[]
 					{
-						Suggestions = new[]
-						{
-							new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
+						new CompletionItem("TextBlock", "TextBlock>\n\t$0\n</TextBlock", CompletionItemKind.Snippet)
 						{
 							InsertTextRules = CompletionItemInsertTextRule.InsertAsSnippet
 						},
-						}
-					};
-				}
-
-				return new CompletionList()
-				{
-					Suggestions = new CompletionItem[0]
+					}
 				};
-			});
+			}
+
+			return new CompletionList()
+			{
+				Suggestions = new CompletionItem[0]
+			};
 		}
 
-		public IAsyncOperation<CompletionItem> ResolveCompletionItemAsync(IModel model, Position position, CompletionItem item)
-		{
-			return AsyncInfo.Run(delegate (CancellationToken cancelationToken)
-			{
-				return Task.FromResult(item); // throw new NotImplementedException();
-			});
-		}
+		public Task<CompletionItem> ResolveCompletionItemAsync(IModel model, CompletionItem item)
+			=> Task.FromResult(item);
 	}
-#endif
 }
